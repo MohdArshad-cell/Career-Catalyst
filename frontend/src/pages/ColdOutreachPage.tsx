@@ -191,8 +191,8 @@ const ColdOutreachPage: React.FC = () => {
                 </div>
 
                 {outreachData && (
-                    <div className="output-section" style={{ marginTop: '3rem', animation: 'fadeInUp 0.6s ease-out', maxWidth: '1000px', margin: '0 auto' }}>
-                        <div className="panel output-panel glass-card" style={{ padding: '3rem', borderRadius: '16px', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.7), rgba(30, 41, 59, 0.5))', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
+                    <div className="output-section" style={{ marginTop: '3rem', animation: 'fadeInUp 0.6s ease-out', maxWidth: '100%', margin: '0 auto' }}>
+                        <div className="panel output-panel glass-panel" style={{ padding: '3rem' }}>
                             <h3 style={{ margin: '0 0 2.5rem 0', color: '#ea580c', borderBottom: '1px solid rgba(234, 88, 12, 0.2)', paddingBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.6rem' }}>
                                 <Sparkles size={26} /> Networking Templates
                             </h3>

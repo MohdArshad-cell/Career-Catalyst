@@ -122,7 +122,7 @@ const BulletRewriterPage: React.FC = () => {
 
                 {resultData && (
                     <div className="output-section">
-                        <div className="panel output-panel glass-card" style={{ padding: '2rem', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(168, 85, 247, 0.3)' }}>
+                        <div className="panel output-panel glass-panel" style={{ padding: '2rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
                                 <h3 style={{ margin: 0, color: '#c084fc', fontSize: '1.5rem' }}>Optimized Result</h3>
                                 <button className="btn-outline" onClick={() => handleCopy(resultData.rewritten)} style={{ padding: '0.4rem 0.8rem', color: '#c084fc', borderColor: 'rgba(168,85,247,0.4)' }}>
@@ -140,7 +140,7 @@ const BulletRewriterPage: React.FC = () => {
                         </div>
 
                         {/* Upsell CTA */}
-                        <div className="glass-card text-center" style={{ marginTop: '2rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(168,85,247,0.1), rgba(0,0,0,0))' }}>
+                        <div className="glass-panel text-center" style={{ marginTop: '2rem' }}>
                             <h3 style={{ margin: '0 0 1rem 0', color: 'white' }}>Want to upgrade your ENTIRE resume?</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Let our AI Tailor scan your full resume and rewrite it perfectly for any job description.</p>
                             <button className="btn-premium" onClick={() => navigate('/ai-tailor')} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
