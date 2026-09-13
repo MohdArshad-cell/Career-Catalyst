@@ -178,11 +178,11 @@ body {
     left: 0;
     width: 100%;
     padding: 1.2rem 0; /* Thoda aur space add kiya hai */
-    background: rgba(10, 15, 30, 0.4); /* Zyada transparent taaki aurora dikhe */
-    backdrop-filter: blur(16px) saturate(180%); /* Saturation se piche ke colors pop honge */
-    -webkit-backdrop-filter: blur(16px) saturate(180%);
+    background: rgba(3, 3, 3, 0.75); /* Deep pitch black glass */
+    backdrop-filter: blur(20px) saturate(200%); /* Stronger blur for elite look */
+    -webkit-backdrop-filter: blur(20px) saturate(200%);
     z-index: 1000;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Ekdum soft border */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08); /* Crisp thin line */
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
     box-sizing: border-box;
 }
@@ -211,7 +211,6 @@ body {
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     margin-left: 2px;
-    filter: drop-shadow(0 0 8px rgba(0, 246, 255, 0.4));
 }
 
 .nav-logo:hover {
@@ -349,16 +348,18 @@ body {
     padding: 0.6rem 1.6rem;
     border-radius: 8px;
     font-weight: 600;
-    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(98, 72, 255, 0.4);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4), 0 0 10px rgba(0, 246, 255, 0.2);
+    background: linear-gradient(135deg, #7c3aed, var(--accent-purple, #8b5cf6));
+    border-radius: 8px; /* Slightly sharper */
 }
 
 .nav-cta-premium:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(98, 72, 255, 0.6), 0 0 10px rgba(0, 246, 255, 0.2);
-    background: linear-gradient(135deg, #7c3aed, var(--accent-purple, #8b5cf6));
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6), 0 0 15px rgba(0, 246, 255, 0.4);
+    background: linear-gradient(135deg, #8b5cf6, var(--accent-purple, #a78bfa));
 }
 
 /* === NEW DESKTOP HELPER CLASSES === */
@@ -473,10 +474,10 @@ body {
 .footer-long {
     margin-top: auto;
     width: 100%;
-    background: rgba(10, 15, 30, 0.6);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(3, 3, 3, 0.85); /* Deep pitch black glass */
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
     box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
     padding: 4rem 0 0 0; /* Upar se thoda space */
     position: relative;
@@ -522,7 +523,6 @@ body {
     background: linear-gradient(to right, var(--accent-cyan), var(--accent-purple));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    filter: drop-shadow(0 0 8px rgba(0, 246, 255, 0.2));
 }
 
 .footer-col p {
