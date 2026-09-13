@@ -208,7 +208,7 @@ export function Hero() {
             
             <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500 to-transparent opacity-50" />
             <img
-              src="/hero-mockup.png"
+              src="/hero-mockup.jpg"
               alt="Resume Transformation from Word to LaTeX"
               className="w-full h-auto object-cover opacity-90 hover:opacity-100 transition-opacity duration-700"
             />
