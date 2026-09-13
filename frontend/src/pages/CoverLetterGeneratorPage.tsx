@@ -229,10 +229,10 @@ const CoverLetterGeneratorPage: React.FC = () => {
                         ) : (
                             <div className="results-wrapper">
                                 <div className="tailor-output-grid">
-                                    <div className="panel output-panel glass-panel">
+                                    <div className="panel output-panel glass-card-premium">
                                         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                             <h3 style={{ margin: 0, color: '#8b5cf6' }}>💻 LaTeX Source</h3>
-                                            <button onClick={handleDownloadLatex} className="btn-outline">
+                                            <button onClick={handleDownloadLatex} className="btn-outline" style={{ width: 'auto' }}>
                                                 ⬇️ .TEX
                                             </button>
                                         </div>
@@ -244,10 +244,10 @@ const CoverLetterGeneratorPage: React.FC = () => {
                                         />
                                     </div>
 
-                                    <div className="panel output-panel glass-panel">
+                                    <div className="panel output-panel glass-card-premium">
                                         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                             <h3 style={{ margin: 0, color: '#3b82f6' }}>📄 PDF Preview</h3>
-                                            <button onClick={handleDownloadPdf} className="btn-premium" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>
+                                            <button onClick={handleDownloadPdf} className="btn-premium" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem', width: 'auto' }}>
                                                 ⬇️ Download PDF
                                             </button>
                                         </div>
