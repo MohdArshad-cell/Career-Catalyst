@@ -73,7 +73,7 @@ const BulletRewriterPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tool-page-container">
+            <div className="tool-page-container" style={{ maxWidth: '900px' }}>
                 
                 <div className="tool-header">
                     <div className="badge-neutral">
