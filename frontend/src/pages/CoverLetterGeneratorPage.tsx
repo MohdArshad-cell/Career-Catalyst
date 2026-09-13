@@ -8,7 +8,8 @@ import PdfUploadButton from '../components/PdfUploadButton';
 import AiLoadingState from '../components/AiLoadingState';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
-import './ToolPages.css'; // Reusing the magical CSS from Tailor page
+import { Mail, FileText, Target } from 'lucide-react';
+import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
 
@@ -164,24 +165,26 @@ const CoverLetterGeneratorPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ borderColor: '#8b5cf6', color: '#8b5cf6', background: 'rgba(139, 92, 246, 0.1)' }}>
-                        <span className="sparkle">✉️</span> Pitch Perfect
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Mail size={16} /> Pitch Perfect
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>AI Cover Letter Generator</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Hook recruiters instantly. Generate a "No-BS", highly targeted cover letter in seconds.</p>
+                    <h1 className="tool-header-title">AI Cover Letter Generator</h1>
+                    <p className="tool-header-subtitle">Hook recruiters instantly. Generate a "No-BS", highly targeted cover letter in seconds.</p>
                 </div>
 
-                <div className="tailor-input-grid">
-                    <div className="panel glass-card relative-panel">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0 }}>Your Resume (Text, JSON, or PDF)</h2>
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel relative-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
+                            </h2>
                             <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
                         </div>
                         <textarea
-                            className={`drop-zone premium-textarea ${isDragging ? 'drag-active' : ''}`}
+                            className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
                             value={resumeText}
                             onChange={(e) => setResumeText(e.target.value)}
                             onDragOver={handleDragOver}
@@ -191,8 +194,12 @@ const CoverLetterGeneratorPage: React.FC = () => {
                             disabled={isLoading}
                         />
                     </div>
-                    <div className="panel glass-card">
-                        <h2 className="panel-title">Target Job Description</h2>
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Job Description
+                            </h2>
+                        </div>
                         <textarea
                             className="premium-textarea"
                             value={jobDescription}
@@ -222,7 +229,7 @@ const CoverLetterGeneratorPage: React.FC = () => {
                         ) : (
                             <div className="results-wrapper">
                                 <div className="tailor-output-grid">
-                                    <div className="panel output-panel glass-card">
+                                    <div className="panel output-panel glass-panel">
                                         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                             <h3 style={{ margin: 0, color: '#8b5cf6' }}>💻 LaTeX Source</h3>
                                             <button onClick={handleDownloadLatex} className="btn-outline">
@@ -237,7 +244,7 @@ const CoverLetterGeneratorPage: React.FC = () => {
                                         />
                                     </div>
 
-                                    <div className="panel output-panel glass-card">
+                                    <div className="panel output-panel glass-panel">
                                         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                             <h3 style={{ margin: 0, color: '#3b82f6' }}>📄 PDF Preview</h3>
                                             <button onClick={handleDownloadPdf} className="btn-premium" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>

@@ -156,24 +156,21 @@ const LinkedInOptimizerPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(0, 119, 181, 0.1)', color: '#0077b5', border: '1px solid rgba(0, 119, 181, 0.2)' }}>
-                        <Linkedin size={16} style={{ display: 'inline', marginRight: '5px' }}/> Social Optimization
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Linkedin size={16} /> Social Optimization
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #0077b5, #00a0dc)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>LinkedIn Optimizer</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Transform your profile into a magnet for recruiters.</p>
+                    <h1 className="tool-header-title">LinkedIn Optimizer</h1>
+                    <p className="tool-header-subtitle">Transform your profile into a magnet for recruiters.</p>
                 </div>
 
-                <div className="tailor-input-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', alignItems: 'stretch' }}>
-                    <div className="panel glass-card" style={{ position: 'relative', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'linear-gradient(90deg, #0077b5, transparent)' }}></div>
-                        
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.3rem', color: '#e2e8f0' }}>
-                                <User size={22} color="#0077b5" />
-                                Current Profile Context
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <User size={22} color="#67e8f9" /> Current Profile Context
                             </h2>
                             <input 
                                 type="file" 
@@ -203,17 +200,13 @@ const LinkedInOptimizerPage: React.FC = () => {
                             onChange={(e) => setLinkedinContent(e.target.value)}
                             placeholder="Paste your content here..."
                             disabled={isLoading}
-                            style={{ minHeight: '300px', borderRadius: '12px', background: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(255,255,255,0.05)', padding: '1.2rem', fontSize: '0.95rem', lineHeight: '1.6' }}
                         />
                     </div>
 
-                    <div className="panel glass-card" style={{ position: 'relative', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'linear-gradient(90deg, #00a0dc, transparent)' }}></div>
-                        
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.3rem', color: '#e2e8f0' }}>
-                                <Target size={22} color="#00a0dc" />
-                                Target Role Alignment
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Role Alignment
                             </h2>
                             <div style={{ position: 'relative' }}>
                                 <select 
@@ -242,7 +235,6 @@ const LinkedInOptimizerPage: React.FC = () => {
                             onChange={(e) => setJobDescription(e.target.value)}
                             placeholder="Paste Job Description here..."
                             disabled={isLoading}
-                            style={{ minHeight: '300px', borderRadius: '12px', background: 'rgba(0, 0, 0, 0.2)', border: '1px solid rgba(255,255,255,0.05)', padding: '1.2rem', fontSize: '0.95rem', lineHeight: '1.6' }}
                         />
                     </div>
                 </div>
@@ -306,7 +298,7 @@ const LinkedInOptimizerPage: React.FC = () => {
                                 <Briefcase size={24} color="var(--accent-cyan)" /> Experience Section
                             </h3>
                             
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            <div className="panel glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                 {optimizedData.experience_bullets.map((exp, idx) => (
                                     <div key={idx} style={{ padding: '1.5rem', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', position: 'relative', overflow: 'hidden' }}>
                                         <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '100%', background: 'rgba(255,255,255,0.2)' }}></div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Target, CheckCircle, XCircle, AlertTriangle, ArrowRight } from 'lucide-react';
+import { Target, CheckCircle, XCircle, AlertTriangle, ArrowRight, FileText, BarChart } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -76,33 +76,39 @@ const JobFitScorePage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '1000px', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
-                        <span className="sparkle">🎯</span> Free Analysis Tool
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <BarChart size={16} /> Analysis Engine
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #3b82f6, #60a5fa)' }}>Job Fit Calculator</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Instantly see if your resume matches a specific job description. 100% free, runs securely in your browser.</p>
+                    <h1 className="tool-header-title">Job Fit Score</h1>
+                    <p className="tool-header-subtitle">Instantly compare your resume against a job description. Know your match percentage before you apply.</p>
                 </div>
 
-                <div className="tailor-input-grid">
-                    <div className="panel glass-card relative-panel">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0 }}>Your Resume</h2>
-                            <PdfUploadButton onTextExtracted={setResumeText} disabled={isAnalyzing} />
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel relative-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> Your Resume (Text or PDF)
+                            </h2>
+                            <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} />
                         </div>
                         <textarea
                             className="premium-textarea"
                             value={resumeText}
                             onChange={(e) => setResumeText(e.target.value)}
-                            placeholder="Paste your resume text here..."
+                            placeholder="Paste your resume here or upload a PDF..."
                             disabled={isAnalyzing}
                         />
                     </div>
                     
-                    <div className="panel glass-card">
-                        <h2 className="panel-title">Target Job Description</h2>
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Job Description
+                            </h2>
+                        </div>
                         <textarea
                             className="premium-textarea"
                             value={jobDescription}
@@ -126,7 +132,7 @@ const JobFitScorePage: React.FC = () => {
 
                 {score !== null && (
                     <div className="output-section">
-                        <div className="metrics-panel glass-card text-center" style={{ marginBottom: '2rem', padding: '3rem' }}>
+                        <div className="metrics-panel glass-panel text-center" style={{ marginBottom: '2rem', padding: '3rem' }}>
                             <h2 style={{ color: 'var(--text-secondary)', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '2px', fontSize: '1rem' }}>Your Fit Score</h2>
                             <div style={{ 
                                 fontSize: '5rem', 
@@ -144,7 +150,7 @@ const JobFitScorePage: React.FC = () => {
                         </div>
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-                            <div className="panel glass-card">
+                            <div className="panel glass-panel">
                                 <h3 style={{ color: '#ef4444', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
                                     <XCircle size={20}/> Missing Keywords
                                 </h3>
@@ -161,7 +167,7 @@ const JobFitScorePage: React.FC = () => {
                                 )}
                             </div>
 
-                            <div className="panel glass-card">
+                            <div className="panel glass-panel">
                                 <h3 style={{ color: '#22c55e', display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem' }}>
                                     <CheckCircle size={20}/> Matched Keywords
                                 </h3>
@@ -180,7 +186,7 @@ const JobFitScorePage: React.FC = () => {
                         </div>
 
                         {/* Upsell CTA */}
-                        <div className="glass-card text-center" style={{ marginTop: '3rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(0,0,0,0))', borderLeft: '4px solid #3b82f6' }}>
+                        <div className="glass-panel text-center" style={{ marginTop: '3rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(59,130,246,0.1), rgba(0,0,0,0))', borderLeft: '4px solid #3b82f6' }}>
                             <h3 style={{ margin: '0 0 1rem 0', color: 'white' }}>Fix your score instantly with AI</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Our Premium AI Tailor will rewrite your resume to naturally include these missing keywords and guarantee a 90%+ ATS score.</p>
                             <button className="btn-premium" onClick={() => navigate('/ai-tailor')} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
