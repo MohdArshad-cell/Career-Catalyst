@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Linkedin, Copy, CheckCircle, Upload, ChevronDown, Sparkles, FileText, Target, Briefcase, User, Lightbulb } from 'lucide-react';
+import { Linkedin, Copy, CheckCircle, Upload, ChevronDown, Sparkles, FileText, Target, Briefcase, User, Lightbulb, Compass, Users, Image, MessageCircle } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -17,10 +17,19 @@ interface ExperienceBullet {
   bullets: string[];
 }
 
+interface TrajectoryAnalysis {
+  current_perception: string;
+  optimized_positioning: string;
+}
+
 interface LinkedInData {
+  trajectory_analysis: TrajectoryAnalysis;
   headline: string;
   about_section: string;
   experience_bullets: ExperienceBullet[];
+  content_ideas: string[];
+  networking_targets: string[];
+  banner_prompt: string;
 }
 
 const LinkedInOptimizerPage: React.FC = () => {
@@ -28,7 +37,6 @@ const LinkedInOptimizerPage: React.FC = () => {
     const { showToast } = useToast();
 
     const [linkedinContent, setLinkedinContent] = useState('');
-    const [jobDescription, setJobDescription] = useState('');
     const [tone, setTone] = useState('Professional');
     const [optimizedData, setOptimizedData] = useState<LinkedInData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -79,8 +87,8 @@ const LinkedInOptimizerPage: React.FC = () => {
     };
 
     const handleGenerate = async () => {
-        if (!linkedinContent.trim() || !jobDescription.trim()) {
-            showToast('Please provide both your current LinkedIn content and a target JD.', 'error');
+        if (!linkedinContent.trim()) {
+            showToast('Please provide your current LinkedIn profile content.', 'error');
             return;
         }
         
@@ -100,7 +108,6 @@ const LinkedInOptimizerPage: React.FC = () => {
 
             const payload = { 
                 linkedin_content: linkedinContent,
-                job_description: jobDescription,
                 tone: tone
             };
             
@@ -206,7 +213,7 @@ const LinkedInOptimizerPage: React.FC = () => {
                     <div className="panel glass-panel">
                         <div className="panel-header">
                             <h2 className="panel-title">
-                                <Target size={22} color="#67e8f9" /> Target Role Alignment
+                                <Target size={22} color="#67e8f9" /> Career Trajectory
                             </h2>
                             <div style={{ position: 'relative' }}>
                                 <select 
@@ -225,17 +232,15 @@ const LinkedInOptimizerPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', marginTop: '-0.5rem' }}>
-                            Paste the target Job Description to align your profile keywords and focus.
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', marginTop: '-0.5rem', lineHeight: '1.5' }}>
+                            We no longer require a Job Description! The AI will act as a Career Strategist, inferring your optimal trajectory from your current profile and upgrading your positioning automatically.
                         </p>
-
-                        <textarea
-                            className="premium-textarea"
-                            value={jobDescription}
-                            onChange={(e) => setJobDescription(e.target.value)}
-                            placeholder="Paste Job Description here..."
-                            disabled={isLoading}
-                        />
+                        
+                        <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '12px', padding: '2rem', border: '1px dashed rgba(255,255,255,0.1)', textAlign: 'center', marginTop: '1rem', height: '100%', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
+                            <Compass size={40} color="#67e8f9" style={{ marginBottom: '1rem', opacity: 0.8 }} />
+                            <h4 style={{ color: '#fff', margin: '0 0 0.5rem 0' }}>AI Strategist Ready</h4>
+                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>Click the button below to analyze and reposition your brand.</p>
+                        </div>
                     </div>
                 </div>
 
@@ -243,7 +248,7 @@ const LinkedInOptimizerPage: React.FC = () => {
                     <button 
                         className="btn-premium pulse-glow massive-btn" 
                         onClick={handleGenerate}
-                        disabled={isLoading || !linkedinContent.trim() || !jobDescription.trim()}
+                        disabled={isLoading || !linkedinContent.trim()}
                         style={{ padding: '1.2rem 3rem', fontSize: '1.2rem', borderRadius: '50px', background: 'linear-gradient(45deg, #0077b5, #00a0dc)' }}
                     >
                         {isLoading ? 'Analyzing Profile...' : 'Optimize Profile ⚡'}
@@ -255,11 +260,67 @@ const LinkedInOptimizerPage: React.FC = () => {
                         <div className="text-center" style={{ marginBottom: '3rem' }}>
                             <h2 style={{ fontSize: '2.5rem', color: '#fff', marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
                                 <Sparkles color="#00a0dc" size={32} />
-                                Your New Profile is Ready
+                                Your Elite Profile is Ready
                             </h2>
                             <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>
-                                Copy and paste these optimized sections directly into LinkedIn.
+                                A complete repositioning of your personal brand.
                             </p>
+                        </div>
+
+                        {/* STRATEGY DASHBOARD */}
+                        <div className="panel glass-card" style={{ padding: '2rem', marginBottom: '2.5rem', borderRadius: '16px', border: '1px solid rgba(103, 232, 249, 0.2)', background: 'linear-gradient(145deg, rgba(20, 20, 30, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%)' }}>
+                            <h3 style={{ color: '#67e8f9', margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.4rem' }}>
+                                <Compass size={24} /> Career Trajectory Analysis
+                            </h3>
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+                                <div style={{ background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '1.5rem', borderRadius: '12px' }}>
+                                    <div style={{ color: '#fca5a5', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem', fontWeight: 'bold' }}>Current Perception</div>
+                                    <div style={{ color: '#e2e8f0', lineHeight: '1.6' }}>{optimizedData.trajectory_analysis.current_perception}</div>
+                                </div>
+                                <div style={{ background: 'rgba(16, 185, 129, 0.05)', border: '1px solid rgba(16, 185, 129, 0.2)', padding: '1.5rem', borderRadius: '12px' }}>
+                                    <div style={{ color: '#6ee7b7', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '0.5rem', fontWeight: 'bold' }}>Optimized Positioning</div>
+                                    <div style={{ color: '#e2e8f0', lineHeight: '1.6' }}>{optimizedData.trajectory_analysis.optimized_positioning}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
+                            {/* Networking Strategy */}
+                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #f59e0b', background: 'rgba(20,20,30,0.8)' }}>
+                                <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                                    <Users size={18} color="#f59e0b"/> Target Connections
+                                </h4>
+                                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#fcd34d', lineHeight: '1.6' }}>
+                                    {optimizedData.networking_targets.map((target, idx) => (
+                                        <li key={idx} style={{ marginBottom: '0.5rem' }}>{target}</li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* Creator Mode Ideas */}
+                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #8b5cf6', background: 'rgba(20,20,30,0.8)' }}>
+                                <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                                    <MessageCircle size={18} color="#8b5cf6"/> Post Ideas (Creator Mode)
+                                </h4>
+                                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#c4b5fd', lineHeight: '1.6' }}>
+                                    {optimizedData.content_ideas.map((idea, idx) => (
+                                        <li key={idx} style={{ marginBottom: '0.5rem' }}>{idea}</li>
+                                    ))}
+                                </ul>
+                            </div>
+
+                            {/* Banner Prompt */}
+                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #ec4899', background: 'rgba(20,20,30,0.8)' }}>
+                                <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem', justifyContent: 'space-between' }}>
+                                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><Image size={18} color="#ec4899"/> Banner Prompt</span>
+                                    <button className="btn-outline" onClick={() => handleCopy(optimizedData.banner_prompt, 'banner')} style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem' }}>
+                                        {copiedStates['banner'] ? 'Copied' : 'Copy'}
+                                    </button>
+                                </h4>
+                                <p style={{ margin: 0, color: '#fbcfe8', lineHeight: '1.5', fontSize: '0.9rem' }}>
+                                    Use in DALL-E or Midjourney: <br/><br/> "{optimizedData.banner_prompt}"
+                                </p>
+                            </div>
                         </div>
 
                         {/* HEADLINE CARD */}

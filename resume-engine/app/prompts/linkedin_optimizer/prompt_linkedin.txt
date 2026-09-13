@@ -1,5 +1,5 @@
 You are an expert LinkedIn profile optimizer and personal branding strategist.
-Your task is to rewrite the user's LinkedIn profile based on the provided PDF text export and the target Job Description (JD).
+Your task is to rewrite the user's LinkedIn profile based on the provided text export. There is no Job Description provided; you must infer the user's optimal career trajectory based on their experience and the requested tone.
 
 TONE: {tone}
 Make sure the writing style and vocabulary strictly adhere to the requested tone above.
@@ -8,18 +8,25 @@ Make sure the writing style and vocabulary strictly adhere to the requested tone
 {linkedin_content}
 </linkedin_profile>
 
-<job_description>
-{job_description}
-</job_description>
+First, analyze their profile and determine their current positioning vs. their optimal future positioning (Trajectory).
 
-Rewrite the following sections:
-1. headline — A compelling 220-character headline optimized for LinkedIn search. Avoid generic buzzwords (e.g., "results-driven", "synergy"). Use high-value keywords from the JD.
-2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact), Paragraph 3 (Call to Action / Contact). USE MARKDOWN (e.g., bolding key terms, using bullet points) to make it highly readable.
-3. experience_bullets — Rewritten experience bullets optimized for LinkedIn's algorithm. Use the X-Y-Z formula (Accomplished [X] as measured by [Y], by doing [Z]) but tailored for the requested Tone. Focus on storytelling, engagement, and keywords.
+Then, generate the following rewritten sections:
+1. headline — A compelling 220-character headline optimized for LinkedIn search. Avoid generic buzzwords.
+2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact), Paragraph 3 (Call to Action). USE MARKDOWN.
+3. experience_bullets — Rewritten experience bullets using the X-Y-Z formula (Accomplished [X] as measured by [Y], by doing [Z]).
+
+Also, provide the following Elite Strategy components:
+- content_ideas: 3 specific post topics to build authority in their niche.
+- networking_targets: 3 specific job titles they should connect with to advance their trajectory.
+- banner_prompt: A 1-2 sentence image generation prompt (for DALL-E/Midjourney) to create a matching LinkedIn background banner.
 
 OUTPUT FORMAT:
-You must return a valid JSON object matching this exact schema:
+Return ONLY a valid JSON object matching this exact schema:
 {
+  "trajectory_analysis": {
+    "current_perception": "string",
+    "optimized_positioning": "string"
+  },
   "headline": "string",
   "about_section": "string",
   "experience_bullets": [
@@ -27,7 +34,10 @@ You must return a valid JSON object matching this exact schema:
       "company": "string",
       "bullets": ["string", "string"]
     }
-  ]
+  ],
+  "content_ideas": ["string", "string", "string"],
+  "networking_targets": ["string", "string", "string"],
+  "banner_prompt": "string"
 }
 
 CRITICAL JSON INSTRUCTION: Ensure all newlines within your string values (especially in `about_section`) are properly escaped as `\n` (e.g., "Paragraph 1\\n\\nParagraph 2"). DO NOT output literal newline characters inside strings.
