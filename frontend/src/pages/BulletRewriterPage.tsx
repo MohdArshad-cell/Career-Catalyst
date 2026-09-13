@@ -73,7 +73,7 @@ const BulletRewriterPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tool-page-container" style={{ maxWidth: '900px' }}>
+            <div className="tool-page-container">
                 
                 <div className="tool-header">
                     <div className="badge-neutral">
@@ -93,7 +93,6 @@ const BulletRewriterPage: React.FC = () => {
                         onChange={(e) => setBulletText(e.target.value)}
                         placeholder="e.g., 'Responsible for managing social media accounts and increasing followers.'"
                         disabled={isLoading}
-                        style={{ minHeight: '120px' }}
                     />
                     
                     <h2 className="panel-title" style={{ marginTop: '1.5rem', fontSize: '1rem', color: 'var(--text-secondary)' }}>
