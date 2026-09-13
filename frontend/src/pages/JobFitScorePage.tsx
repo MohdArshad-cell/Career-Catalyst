@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
 import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 const JobFitScorePage: React.FC = () => {
     const navigate = useNavigate();

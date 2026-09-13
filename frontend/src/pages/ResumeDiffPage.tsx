@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
 import { useToast } from '../components/Toast';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 const ResumeDiffPage: React.FC = () => {
     const navigate = useNavigate();

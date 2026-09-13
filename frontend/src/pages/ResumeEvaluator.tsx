@@ -8,7 +8,7 @@ import PdfUploadButton from '../components/PdfUploadButton';
 import AiLoadingState from '../components/AiLoadingState';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 

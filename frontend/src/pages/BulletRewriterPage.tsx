@@ -6,7 +6,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
 import { useToast } from '../components/Toast';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
@@ -73,18 +73,18 @@ const BulletRewriterPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '900px', margin: '0 auto' }}>
+            <div className="tool-page-container" style={{ maxWidth: '900px' }}>
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(168, 85, 247, 0.1)', color: '#c084fc', border: '1px solid rgba(168, 85, 247, 0.2)' }}>
+                <div className="tool-header">
+                    <div className="hero-badge badge-purple">
                         <span className="sparkle">✨</span> Free Tool
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>AI Bullet Rewriter</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Turn weak, generic duties into powerful, metric-driven achievements instantly.</p>
+                    <h1 className="animated-gradient-text gradient-text-purple tool-header-title">AI Bullet Rewriter</h1>
+                    <p className="tool-header-subtitle">Turn weak, generic duties into powerful, metric-driven achievements instantly.</p>
                 </div>
 
-                <div className="panel glass-card" style={{ marginBottom: '2rem' }}>
-                    <h2 className="panel-title" style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div className="panel glass-panel" style={{ marginBottom: '2rem' }}>
+                    <h2 className="panel-title">
                         <Edit3 size={20}/> Paste a Bullet Point
                     </h2>
                     <textarea
@@ -110,12 +110,11 @@ const BulletRewriterPage: React.FC = () => {
                     />
                 </div>
 
-                <div className="action-row text-center" style={{ margin: '2rem 0' }}>
+                <div className="action-row" style={{ margin: '2rem 0' }}>
                     <button 
-                        className="btn-premium pulse-glow massive-btn" 
+                        className="btn-premium pulse-glow massive-btn-purple" 
                         onClick={handleRewrite}
                         disabled={isLoading || !bulletText.trim()}
-                        style={{ padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '50px' }}
                     >
                         {isLoading ? 'Upgrading...' : 'Rewrite Bullet ⚡'}
                     </button>

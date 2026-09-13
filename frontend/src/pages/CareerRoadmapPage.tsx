@@ -8,7 +8,7 @@ import ParticleBackground from '../components/ParticleBackground';
 import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 

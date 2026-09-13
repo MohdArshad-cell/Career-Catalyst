@@ -5,7 +5,7 @@ import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
 import { useToast } from '../components/Toast';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 const UsageHistoryPage: React.FC = () => {
     const { showToast } = useToast();

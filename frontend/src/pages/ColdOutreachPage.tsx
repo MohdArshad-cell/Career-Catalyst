@@ -8,7 +8,7 @@ import ParticleBackground from '../components/ParticleBackground';
 import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
-import './AiTailorPage.css';
+import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
@@ -122,21 +122,21 @@ const ColdOutreachPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(234, 88, 12, 0.1)', color: '#ea580c', border: '1px solid rgba(234, 88, 12, 0.2)' }}>
+                <div className="tool-header">
+                    <div className="hero-badge badge-orange">
                         <Mail size={16} style={{ display: 'inline', marginRight: '5px' }}/> Networking
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #f97316, #ea580c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>Cold Outreach AI</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Generate highly-converting LinkedIn notes and cold emails to get referrals.</p>
+                    <h1 className="animated-gradient-text gradient-text-orange tool-header-title">Cold Outreach AI</h1>
+                    <p className="tool-header-subtitle">Generate highly-converting LinkedIn notes and cold emails to get referrals.</p>
                 </div>
 
-                <div className="tailor-input-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', alignItems: 'stretch' }}>
-                    <div className="panel glass-card" style={{ position: 'relative', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'linear-gradient(90deg, #f97316, transparent)' }}></div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.3rem', color: '#e2e8f0' }}>
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel">
+                        <div className="panel-accent-orange"></div>
+                        <div className="panel-header">
+                            <h2 className="panel-title">
                                 <FileText size={22} color="#f97316" /> Your Resume
                             </h2>
                             <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
@@ -147,22 +147,21 @@ const ColdOutreachPage: React.FC = () => {
                             onChange={(e) => setResumeText(e.target.value)}
                             placeholder="Paste your resume or upload a PDF..."
                             disabled={isLoading}
-                            style={{ minHeight: '200px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '1rem', color: '#e2e8f0', fontSize: '0.95rem', lineHeight: '1.6', width: '100%', boxSizing: 'border-box' }}
                         />
                     </div>
-                    <div className="panel glass-card" style={{ position: 'relative', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'linear-gradient(90deg, #ea580c, transparent)' }}></div>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.3rem', color: '#e2e8f0' }}>
+                    <div className="panel glass-panel">
+                        <div className="panel-accent-orange"></div>
+                        <div className="panel-header">
+                            <h2 className="panel-title">
                                 <Target size={22} color="#ea580c" /> Target Role
                             </h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Settings2 size={16} color="var(--text-secondary)" />
                                 <select 
+                                    className="premium-select"
                                     value={tone} 
                                     onChange={(e) => setTone(e.target.value)}
                                     disabled={isLoading}
-                                    style={{ background: 'rgba(0,0,0,0.3)', color: 'var(--text-primary)', border: '1px solid rgba(255,255,255,0.1)', padding: '0.3rem 0.6rem', borderRadius: '6px', fontSize: '0.85rem', outline: 'none' }}
                                 >
                                     <option value="Professional">Professional</option>
                                     <option value="Enthusiastic & Bold">Enthusiastic & Bold</option>
@@ -177,17 +176,15 @@ const ColdOutreachPage: React.FC = () => {
                             onChange={(e) => setJobDescription(e.target.value)}
                             placeholder="Paste the target JD or just the company name and role you are applying to..."
                             disabled={isLoading}
-                            style={{ minHeight: '200px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '1rem', color: '#e2e8f0', fontSize: '0.95rem', lineHeight: '1.6', width: '100%', boxSizing: 'border-box' }}
                         />
                     </div>
                 </div>
 
-                <div className="action-row text-center" style={{ margin: '3rem 0' }}>
+                <div className="action-row">
                     <button 
-                        className="btn-premium pulse-glow massive-btn" 
+                        className="btn-premium pulse-glow massive-btn-orange" 
                         onClick={handleGenerate}
                         disabled={isLoading || !resumeText.trim() || !jobDescription.trim()}
-                        style={{ padding: '1.2rem 3rem', fontSize: '1.2rem', borderRadius: '50px', background: 'linear-gradient(45deg, #f97316, #ea580c)' }}
                     >
                         {isLoading ? 'Crafting Outreach...' : 'Generate Messages 🚀'}
                     </button>

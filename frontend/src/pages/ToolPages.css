@@ -270,3 +270,198 @@
         grid-template-columns: 1fr;
     }
 }
+/* === UNIFIED TOOL PAGES UTILITIES === */
+.tool-page-container {
+    padding-top: 100px;
+    padding-bottom: 3rem;
+    max-width: 96%;
+    margin: 0 auto;
+}
+
+.tool-header {
+    margin-bottom: 3rem;
+    text-align: center;
+}
+
+.tool-header-title {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+.tool-header-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+.badge-orange {
+    background: rgba(234, 88, 12, 0.1);
+    color: #ea580c;
+    border: 1px solid rgba(234, 88, 12, 0.2);
+}
+
+.badge-purple {
+    background: rgba(168, 85, 247, 0.1);
+    color: #c084fc;
+    border: 1px solid rgba(168, 85, 247, 0.2);
+}
+
+.gradient-text-orange {
+    background: linear-gradient(90deg, #f97316, #ea580c);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-text-purple {
+    background: linear-gradient(90deg, #c084fc, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.glass-panel {
+    position: relative;
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.panel-accent-orange {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #f97316, transparent);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.panel-accent-cyan {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: linear-gradient(90deg, #00F6FF, transparent);
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.panel-title {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.3rem;
+    color: #e2e8f0;
+}
+
+.premium-textarea {
+    min-height: 200px;
+    background-color: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 8px;
+    padding: 1rem;
+    color: #e2e8f0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    width: 100%;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.premium-textarea:focus {
+    outline: none;
+    border-color: var(--accent-cyan);
+    box-shadow: 0 0 0 3px rgba(0, 246, 255, 0.15);
+    background-color: rgba(10, 15, 30, 0.8);
+}
+
+.premium-select {
+    background: rgba(0,0,0,0.3);
+    color: var(--text-primary);
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.premium-select:focus {
+    border-color: var(--accent-cyan);
+}
+
+.action-row {
+    margin: 3rem 0;
+    text-align: center;
+}
+
+.massive-btn-orange {
+    padding: 1.2rem 3rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #f97316, #ea580c);
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+}
+
+.massive-btn-orange:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(234, 88, 12, 0.5);
+}
+
+.massive-btn-orange:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+.tool-input-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 2rem;
+    align-items: stretch;
+}
+
+
+.massive-btn-purple {
+    padding: 1.2rem 3rem;
+    font-size: 1.2rem;
+    border-radius: 50px;
+    background: linear-gradient(45deg, #c084fc, #a855f7);
+    border: none;
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+}
+
+.massive-btn-purple:hover:not(:disabled) {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(168, 85, 247, 0.5);
+}
+
+.massive-btn-purple:disabled {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
