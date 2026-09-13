@@ -1,9 +1,16 @@
-You are an expert career networking strategist.
+You are an expert career networking strategist and copywriter.
 
-Given the candidate's resume and target company/role, generate:
-1. **linkedin_connection_note** — Max 300 characters. Personalized, non-generic.
-2. **cold_email** — Subject line + body. Professional, value-driven, max 200 words.
-3. **follow_up_email** — Polite 1-week follow-up. Max 100 words.
+Given the candidate's resume and target company/role, generate a comprehensive elite outreach campaign.
+
+1. **deliverability_score**: Integer (0-100) scoring the overall email spam risk and readability. 
+2. **spam_analysis**: 1-2 sentences explaining why the score was given (e.g. "Good length, but avoid 'guaranteed'").
+3. **value_props**: Array of 2 exact bullet points mapping the resume to the JD to use as hooks.
+4. **subject_lines**: Array of 3 objects with `style` ("Curiosity", "Direct", "Story") and `text`.
+5. **cold_email**: The main email body (max 200 words).
+6. **linkedin_connection_note**: Max 300 chars, highly personalized.
+7. **follow_up_email**: 1-week follow-up (max 100 words).
+8. **coffee_chat_script**: A casual, low-friction script asking for a 15-min chat.
+9. **twitter_dm**: A punchy, 280-char max DM for social platforms.
 
 TONE REQUIRED: {tone}
 
@@ -16,17 +23,25 @@ TONE REQUIRED: {tone}
 </job_description>
 
 CRITICAL JSON INSTRUCTION:
-Return ONLY a valid JSON object. For multi-line strings, you MUST use the literal characters `\n` to represent newlines. DO NOT output actual raw line breaks within strings. The response must parse correctly via python's `json.loads()`.
+Return ONLY a valid JSON object. For multi-line strings, use literal `\n`. DO NOT output raw line breaks inside strings.
 
 OUTPUT FORMAT:
 {
+  "deliverability_score": 95,
+  "spam_analysis": "Excellent length and tone. No major spam triggers detected.",
+  "value_props": [
+    "You both share a background in B2B SaaS scaling.",
+    "Your experience migrating legacy systems perfectly matches their current initiative."
+  ],
+  "subject_lines": [
+    {
+      "style": "Curiosity",
+      "text": "Quick question about your Q3 product roadmap"
+    }
+  ],
+  "cold_email": "Body of the email...",
   "linkedin_connection_note": "note...",
-  "cold_email": {
-    "subject": "subject...",
-    "body": "body with \\n\\n for paragraphs..."
-  },
-  "follow_up_email": {
-    "subject": "subject...",
-    "body": "body with \\n\\n for paragraphs..."
-  }
+  "follow_up_email": "Body...",
+  "coffee_chat_script": "Body...",
+  "twitter_dm": "Body..."
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Mail, Copy, CheckCircle, FileText, Target, MessageSquare, Settings2, Sparkles, Send, Calendar } from 'lucide-react';
+import { Mail, Copy, CheckCircle, FileText, Target, MessageSquare, Settings2, Sparkles, Send, Calendar, Coffee, Twitter, ShieldCheck } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -12,16 +12,21 @@ import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
+interface SubjectLine {
+  style: string;
+  text: string;
+}
+
 interface OutreachData {
+  deliverability_score: number;
+  spam_analysis: string;
+  value_props: string[];
+  subject_lines: SubjectLine[];
+  cold_email: string;
   linkedin_connection_note: string;
-  cold_email: {
-    subject: string;
-    body: string;
-  };
-  follow_up_email: {
-    subject: string;
-    body: string;
-  };
+  follow_up_email: string;
+  coffee_chat_script: string;
+  twitter_dm: string;
 }
 
 const ColdOutreachPage: React.FC = () => {
@@ -34,6 +39,7 @@ const ColdOutreachPage: React.FC = () => {
     const [outreachData, setOutreachData] = useState<OutreachData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({});
+    const [selectedSubjectIndex, setSelectedSubjectIndex] = useState(0);
 
     const handleCopy = (text: string, id: string) => {
         navigator.clipboard.writeText(text);
@@ -199,6 +205,35 @@ const ColdOutreachPage: React.FC = () => {
                                 <Sparkles size={26} /> Networking Templates
                             </h3>
 
+                            {/* Score & Hooks Grid */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1.5fr', gap: '2rem', marginBottom: '2.5rem' }}>
+                                {/* Deliverability Score */}
+                                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(16, 185, 129, 0.3)', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+                                    <h4 style={{ color: '#10b981', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <ShieldCheck size={18} /> Deliverability Score
+                                    </h4>
+                                    <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'rgba(16, 185, 129, 0.1)', border: '4px solid #10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2rem', fontWeight: 'bold', color: '#10b981', marginBottom: '1rem', boxShadow: '0 0 15px rgba(16, 185, 129, 0.4)' }}>
+                                        {outreachData.deliverability_score}
+                                    </div>
+                                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0, lineHeight: '1.5' }}>
+                                        {outreachData.spam_analysis}
+                                    </p>
+                                </div>
+
+                                {/* Value Props / Hooks */}
+                                <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(234, 179, 8, 0.3)' }}>
+                                    <h4 style={{ color: '#eab308', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                        <Target size={18} /> "The Hook" (Value Props)
+                                    </h4>
+                                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>Use these highly-targeted bullet points in interviews or custom messages:</p>
+                                    <ul style={{ color: '#fef08a', paddingLeft: '1.2rem', margin: 0, lineHeight: '1.6' }}>
+                                        {outreachData.value_props.map((prop, idx) => (
+                                            <li key={idx} style={{ marginBottom: '0.5rem' }}>{prop}</li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </div>
+
                             {/* LinkedIn Note Panel */}
                             <div style={{ marginBottom: '2.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', borderLeft: '4px solid #0a66c2', overflow: 'hidden' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
@@ -222,16 +257,74 @@ const ColdOutreachPage: React.FC = () => {
                             <div style={{ marginBottom: '2.5rem', background: 'rgba(0,0,0,0.2)', borderRadius: '12px', borderLeft: '4px solid #f97316', overflow: 'hidden' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
                                     <h4 style={{ color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
-                                        <Send size={18} color="#f97316"/> Cold Email (Initial)
+                                        <Send size={18} color="#f97316"/> Cold Email
                                     </h4>
-                                    <button className="btn-outline" onClick={() => handleCopy(`Subject: ${outreachData.cold_email.subject}\n\n${outreachData.cold_email.body}`, 'cold_email')} style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderRadius: '6px' }}>
+                                    <button className="btn-outline" onClick={() => handleCopy(`Subject: ${outreachData.subject_lines[selectedSubjectIndex].text}\n\n${outreachData.cold_email}`, 'cold_email')} style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderRadius: '6px' }}>
                                         {copiedStates['cold_email'] ? <CheckCircle size={14} color="#10b981"/> : <Copy size={14}/>} {copiedStates['cold_email'] ? 'Copied!' : 'Copy'}
                                     </button>
                                 </div>
-                                <div style={{ padding: '1.5rem' }}>
-                                    <div style={{ color: 'white', marginBottom: '1rem', fontWeight: 'bold', fontSize: '1.1rem', borderBottom: '1px dashed rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Subject: {outreachData.cold_email.subject}</div>
-                                    <div style={{ color: '#e2e8f0', whiteSpace: 'pre-wrap', lineHeight: '1.7', fontSize: '1.05rem' }}>
-                                        {outreachData.cold_email.body}
+                                
+                                <div style={{ padding: '1.5rem 1.5rem 0 1.5rem' }}>
+                                    <div style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>Select Subject Line (A/B Test)</div>
+                                    <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                                        {outreachData.subject_lines.map((subj, idx) => (
+                                            <button 
+                                                key={idx}
+                                                onClick={() => setSelectedSubjectIndex(idx)}
+                                                style={{ 
+                                                    padding: '0.6rem 1rem', 
+                                                    borderRadius: '8px', 
+                                                    border: `1px solid ${selectedSubjectIndex === idx ? '#f97316' : 'rgba(255,255,255,0.1)'}`, 
+                                                    background: selectedSubjectIndex === idx ? 'rgba(249, 115, 22, 0.15)' : 'transparent',
+                                                    color: selectedSubjectIndex === idx ? 'white' : 'var(--text-secondary)',
+                                                    cursor: 'pointer',
+                                                    textAlign: 'left',
+                                                    transition: 'all 0.2s'
+                                                }}
+                                            >
+                                                <div style={{ fontSize: '0.75rem', color: selectedSubjectIndex === idx ? '#fdba74' : 'gray', marginBottom: '4px' }}>{subj.style}</div>
+                                                <div style={{ fontSize: '0.95rem' }}>{subj.text}</div>
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <div style={{ padding: '0 1.5rem 1.5rem 1.5rem' }}>
+                                    <div style={{ color: '#e2e8f0', whiteSpace: 'pre-wrap', lineHeight: '1.7', fontSize: '1.05rem', background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px' }}>
+                                        {outreachData.cold_email}
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Grid for Coffee Chat & Twitter */}
+                            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2.5rem' }}>
+                                {/* Coffee Chat */}
+                                <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '12px', borderLeft: '4px solid #14b8a6', overflow: 'hidden' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <h4 style={{ color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1rem' }}>
+                                            <Coffee size={18} color="#14b8a6"/> Coffee Chat Invite
+                                        </h4>
+                                        <button className="btn-outline" onClick={() => handleCopy(outreachData.coffee_chat_script, 'coffee')} style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem', borderRadius: '4px' }}>
+                                            {copiedStates['coffee'] ? 'Copied!' : 'Copy'}
+                                        </button>
+                                    </div>
+                                    <div style={{ padding: '1.5rem', color: '#e2e8f0', whiteSpace: 'pre-wrap', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                                        {outreachData.coffee_chat_script}
+                                    </div>
+                                </div>
+
+                                {/* Twitter DM */}
+                                <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '12px', borderLeft: '4px solid #38bdf8', overflow: 'hidden' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem 1.5rem', background: 'rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <h4 style={{ color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1rem' }}>
+                                            <Twitter size={18} color="#38bdf8"/> Twitter / X DM
+                                        </h4>
+                                        <button className="btn-outline" onClick={() => handleCopy(outreachData.twitter_dm, 'twitter')} style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem', borderRadius: '4px' }}>
+                                            {copiedStates['twitter'] ? 'Copied!' : 'Copy'}
+                                        </button>
+                                    </div>
+                                    <div style={{ padding: '1.5rem', color: '#e2e8f0', whiteSpace: 'pre-wrap', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                                        {outreachData.twitter_dm}
                                     </div>
                                 </div>
                             </div>
@@ -242,14 +335,13 @@ const ColdOutreachPage: React.FC = () => {
                                     <h4 style={{ color: 'white', margin: 0, display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
                                         <Calendar size={18} color="#8b5cf6"/> Follow-Up Email (Wait 1 week)
                                     </h4>
-                                    <button className="btn-outline" onClick={() => handleCopy(`Subject: ${outreachData.follow_up_email.subject}\n\n${outreachData.follow_up_email.body}`, 'follow_up')} style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderRadius: '6px' }}>
+                                    <button className="btn-outline" onClick={() => handleCopy(outreachData.follow_up_email, 'follow_up')} style={{ padding: '0.4rem 0.8rem', display: 'flex', alignItems: 'center', gap: '0.4rem', borderRadius: '6px' }}>
                                         {copiedStates['follow_up'] ? <CheckCircle size={14} color="#10b981"/> : <Copy size={14}/>} {copiedStates['follow_up'] ? 'Copied!' : 'Copy'}
                                     </button>
                                 </div>
                                 <div style={{ padding: '1.5rem' }}>
-                                    <div style={{ color: 'white', marginBottom: '1rem', fontWeight: 'bold', fontSize: '1.1rem', borderBottom: '1px dashed rgba(255,255,255,0.1)', paddingBottom: '0.5rem' }}>Subject: {outreachData.follow_up_email.subject}</div>
                                     <div style={{ color: '#e2e8f0', whiteSpace: 'pre-wrap', lineHeight: '1.7', fontSize: '1.05rem' }}>
-                                        {outreachData.follow_up_email.body}
+                                        {outreachData.follow_up_email}
                                     </div>
                                 </div>
                             </div>
