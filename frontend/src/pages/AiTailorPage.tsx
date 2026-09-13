@@ -258,25 +258,6 @@ const AiTailorPage: React.FC = () => {
                     </div>
                     <h1 className="tool-header-title">Resume Tailor</h1>
                     <p className="tool-header-subtitle">Instantly align your resume with any job description. Precision matters.</p>
-                    
-                    <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <label style={{ marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            Resume Template
-                        </label>
-                        <select 
-                            className="premium-select" 
-                            style={{ padding: '0.6rem 1rem', width: '280px', cursor: 'pointer', fontSize: '1rem' }}
-                            value={templateName}
-                            onChange={(e) => setTemplateName(e.target.value)}
-                            disabled={isLoading}
-                        >
-                            <option value="modern_line" style={{ color: 'black' }}>Modern Line (Default)</option>
-                            <option value="classic" style={{ color: 'black' }}>Classic</option>
-                            <option value="professional" style={{ color: 'black' }}>Professional</option>
-                            <option value="elegant" style={{ color: 'black' }}>Elegant</option>
-                            <option value="one_column" style={{ color: 'black' }}>One Column</option>
-                        </select>
-                    </div>
                 </div>
 
                 <div className="tool-input-grid">
@@ -300,9 +281,27 @@ const AiTailorPage: React.FC = () => {
                     </div>
                     <div className="panel glass-panel">
                         <div className="panel-header">
-                            <h2 className="panel-title">
+                            <h2 className="panel-title" style={{ marginBottom: 0 }}>
                                 <Target size={22} color="#67e8f9" /> Target Job Description
                             </h2>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                <label style={{ color: 'var(--text-secondary)', fontSize: '0.85rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                                    Template:
+                                </label>
+                                <select 
+                                    className="premium-select" 
+                                    style={{ padding: '0.4rem 0.8rem', cursor: 'pointer', fontSize: '0.9rem', width: '150px' }}
+                                    value={templateName}
+                                    onChange={(e) => setTemplateName(e.target.value)}
+                                    disabled={isLoading}
+                                >
+                                    <option value="modern_line" style={{ color: 'black' }}>Modern Line</option>
+                                    <option value="classic" style={{ color: 'black' }}>Classic</option>
+                                    <option value="professional" style={{ color: 'black' }}>Professional</option>
+                                    <option value="elegant" style={{ color: 'black' }}>Elegant</option>
+                                    <option value="one_column" style={{ color: 'black' }}>One Column</option>
+                                </select>
+                            </div>
                         </div>
                         <textarea
                             className="premium-textarea"
