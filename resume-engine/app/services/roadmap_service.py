@@ -3,11 +3,21 @@ from app.services.llm_client import call_llm, parse_ai_json, load_prompt
 from pydantic import BaseModel
 from typing import List
 
+class Blindspot(BaseModel):
+    risk: str
+    mitigation: str
+
 class Competency(BaseModel):
     skill: str
     current_level: str
     required_level: str
     gap_analysis: str
+
+class PortfolioProject(BaseModel):
+    name: str
+    description: str
+    tech_stack: List[str]
+    business_value: str
 
 class Milestone(BaseModel):
     timeframe: str
@@ -22,7 +32,9 @@ class Resource(BaseModel):
 
 class RoadmapResponse(BaseModel):
     current_assessment: str
+    blindspots: List[Blindspot]
     competency_matrix: List[Competency]
+    portfolio_projects: List[PortfolioProject]
     milestones: List[Milestone]
     recommended_resources: List[Resource]
 

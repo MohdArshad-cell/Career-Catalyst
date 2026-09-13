@@ -565,3 +565,35 @@
     box-shadow: none;
 }
 
+/* === PRINT STYLES FOR PDF EXPORT === */
+@media print {
+    body {
+        background: #0b1120 !important; /* Keep dark theme */
+        color: #fff !important;
+    }
+    nav, footer, .tool-header, .tailor-input-grid, .action-row, button, #tsparticles {
+        display: none !important;
+    }
+    .page-container {
+        padding: 0 !important;
+        margin: 0 !important;
+    }
+    .output-section {
+        margin: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
+    }
+    .glass-panel {
+        break-inside: avoid;
+        border: 1px solid rgba(255,255,255,0.2) !important;
+        box-shadow: none !important;
+        background: #1e293b !important;
+        color: #fff !important;
+    }
+    /* Force background colors to print in Chrome/Edge */
+    * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+    }
+}
+

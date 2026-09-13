@@ -18,12 +18,26 @@ Return ONLY a valid JSON object. For multi-line strings, you MUST use the litera
 OUTPUT FORMAT:
 {
   "current_assessment": "Brutally honest 2-3 sentence summary of where they stand vs their goal. Be specific about major weaknesses.",
+  "blindspots": [
+    {
+      "risk": "Lacking stakeholder management experience.",
+      "mitigation": "Lead a cross-functional initiative in your current role and document the business impact."
+    }
+  ],
   "competency_matrix": [
     {
       "skill": "AWS / Cloud Infrastructure",
       "current_level": "Beginner",
       "required_level": "Advanced",
       "gap_analysis": "Needs hands-on experience with Terraform and EKS."
+    }
+  ],
+  "portfolio_projects": [
+    {
+      "name": "Multi-Tenant SaaS Dashboard",
+      "description": "Build a React/Node.js dashboard to prove your full-stack capabilities.",
+      "tech_stack": ["React", "Node.js", "PostgreSQL", "TailwindCSS"],
+      "business_value": "Demonstrates ability to handle complex state and user authentication."
     }
   ],
   "milestones": [

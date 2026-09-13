@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Map, Target, BookOpen, Clock, Settings2, FileText, CheckCircle, BrainCircuit, Download } from 'lucide-react';
+import { Map, Target, BookOpen, Clock, Settings2, FileText, CheckCircle, BrainCircuit, Download, AlertTriangle, Code, Trophy, Sparkles } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -13,6 +13,18 @@ import { saveAs } from 'file-saver';
 import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+
+interface Blindspot {
+  risk: string;
+  mitigation: string;
+}
+
+interface PortfolioProject {
+  name: string;
+  description: string;
+  tech_stack: string[];
+  business_value: string;
+}
 
 interface Milestone {
   timeframe: string;
@@ -29,7 +41,9 @@ interface Resource {
 
 interface RoadmapData {
   current_assessment: string;
+  blindspots: Blindspot[];
   competency_matrix: Competency[];
+  portfolio_projects: PortfolioProject[];
   milestones: Milestone[];
   recommended_resources: Resource[];
 }
@@ -47,6 +61,17 @@ const CareerRoadmapPage: React.FC = () => {
 
     const toggleCheck = (id: string) => {
         setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
+    };
+
+    const calculateProgress = () => {
+        if (!roadmapData || !roadmapData.milestones) return 0;
+        let total = 0;
+        roadmapData.milestones.forEach(ms => {
+            if (ms.action_items) total += ms.action_items.length;
+        });
+        if (total === 0) return 0;
+        const completed = Object.values(checkedItems).filter(Boolean).length;
+        return Math.round((completed / total) * 100);
     };
 
     const handleGenerate = async () => {
@@ -127,6 +152,21 @@ const CareerRoadmapPage: React.FC = () => {
         let md = `# Career Roadmap\n\n`;
         md += `## Current Assessment vs Goal\n${roadmapData.current_assessment}\n\n`;
         
+        if (roadmapData.blindspots) {
+            md += `## The Reality Check (Blindspots)\n`;
+            roadmapData.blindspots.forEach(bs => {
+                md += `- **Risk**: ${bs.risk}\n  **Mitigation**: ${bs.mitigation}\n`;
+            });
+            md += `\n`;
+        }
+
+        if (roadmapData.portfolio_projects) {
+            md += `## Proof of Competence (Projects)\n`;
+            roadmapData.portfolio_projects.forEach(proj => {
+                md += `### ${proj.name}\n- **Description**: ${proj.description}\n- **Tech Stack**: ${proj.tech_stack.join(', ')}\n- **Business Value**: ${proj.business_value}\n\n`;
+            });
+        }
+
         md += `## Competency Analysis\n`;
         roadmapData.competency_matrix?.forEach(comp => {
             md += `- **${comp.skill}**: Current (${comp.current_level}) -> Required (${comp.required_level})\n  *Gap*: ${comp.gap_analysis}\n`;
@@ -235,14 +275,34 @@ const CareerRoadmapPage: React.FC = () => {
                 {roadmapData && (
                     <div className="output-section" style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         
-                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-                            <button 
-                                onClick={handleDownloadMarkdown}
-                                className="btn-outline pulse-glow"
-                                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', borderRadius: '50px', border: '1px solid #3b82f6', color: '#93c5fd', background: 'rgba(59, 130, 246, 0.1)', cursor: 'pointer' }}
-                            >
-                                <Download size={18} /> Download Roadmap
-                            </button>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', background: 'rgba(0,0,0,0.4)', padding: '1.5rem', borderRadius: '12px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                            <div style={{ flexGrow: 1, marginRight: '2rem' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                                    <span style={{ color: 'white', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                        <Sparkles size={18} color="#eab308" /> Execution Progress
+                                    </span>
+                                    <span style={{ color: '#eab308', fontWeight: 'bold' }}>{calculateProgress()}%</span>
+                                </div>
+                                <div style={{ width: '100%', height: '8px', background: 'rgba(255,255,255,0.1)', borderRadius: '10px', overflow: 'hidden' }}>
+                                    <div style={{ width: `${calculateProgress()}%`, height: '100%', background: 'linear-gradient(90deg, #eab308, #f59e0b)', transition: 'width 0.4s ease-out', boxShadow: '0 0 10px rgba(234, 179, 8, 0.5)' }}></div>
+                                </div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '10px' }}>
+                                <button 
+                                    onClick={() => window.print()}
+                                    className="btn-outline pulse-glow"
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', borderRadius: '50px', border: '1px solid #a855f7', color: '#d8b4fe', background: 'rgba(168, 85, 247, 0.1)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                                >
+                                    <FileText size={18} /> Download PDF
+                                </button>
+                                <button 
+                                    onClick={handleDownloadMarkdown}
+                                    className="btn-outline pulse-glow"
+                                    style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', borderRadius: '50px', border: '1px solid #3b82f6', color: '#93c5fd', background: 'rgba(59, 130, 246, 0.1)', cursor: 'pointer', whiteSpace: 'nowrap' }}
+                                >
+                                    <Download size={18} /> Export Markdown
+                                </button>
+                            </div>
                         </div>
 
                         <div className="panel glass-panel" style={{ position: 'relative', marginBottom: '2rem', padding: '2rem', borderLeft: '4px solid #22c55e' }}>
@@ -253,6 +313,54 @@ const CareerRoadmapPage: React.FC = () => {
                                 {roadmapData.current_assessment}
                             </p>
                         </div>
+
+                        {roadmapData.blindspots && roadmapData.blindspots.length > 0 && (
+                            <div className="panel glass-panel" style={{ position: 'relative', marginBottom: '2rem', padding: '2rem', borderLeft: '4px solid #ef4444', background: 'linear-gradient(to right, rgba(239, 68, 68, 0.05), transparent)' }}>
+                                <h3 style={{ color: '#ef4444', margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <AlertTriangle size={24}/> The Reality Check (Risk Analysis)
+                                </h3>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                                    {roadmapData.blindspots.map((bs, idx) => (
+                                        <div key={idx} style={{ background: 'rgba(0,0,0,0.3)', padding: '1.2rem', borderRadius: '8px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
+                                            <div style={{ color: '#fca5a5', fontWeight: 'bold', marginBottom: '0.5rem' }}>Risk: {bs.risk}</div>
+                                            <div style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>🎯 Mitigation: {bs.mitigation}</div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                        {roadmapData.portfolio_projects && roadmapData.portfolio_projects.length > 0 && (
+                            <div className="panel glass-panel" style={{ position: 'relative', marginBottom: '2rem', padding: '2rem', borderLeft: '4px solid #a855f7' }}>
+                                <h3 style={{ color: '#a855f7', margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                                    <Trophy size={24}/> Proof of Competence (Projects)
+                                </h3>
+                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                                    {roadmapData.portfolio_projects.map((proj, idx) => (
+                                        <div key={idx} style={{ background: 'rgba(0,0,0,0.3)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(168, 85, 247, 0.2)' }}>
+                                            <h4 style={{ color: 'white', margin: '0 0 0.5rem 0', fontSize: '1.1rem' }}>{proj.name}</h4>
+                                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>{proj.description}</p>
+                                            
+                                            <div style={{ marginBottom: '1rem' }}>
+                                                <div style={{ color: '#d8b4fe', fontSize: '0.8rem', textTransform: 'uppercase', marginBottom: '0.3rem', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                    <Code size={14} /> Tech Stack
+                                                </div>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                                    {proj.tech_stack.map((tech, tIdx) => (
+                                                        <span key={tIdx} style={{ background: 'rgba(168,85,247,0.15)', color: '#e9d5ff', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>
+                                                            {tech}
+                                                        </span>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            <div style={{ color: '#e9d5ff', fontSize: '0.9rem', fontStyle: 'italic', borderLeft: '2px solid rgba(168, 85, 247, 0.5)', paddingLeft: '0.5rem' }}>
+                                                "{proj.business_value}"
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
                             
@@ -291,15 +399,20 @@ const CareerRoadmapPage: React.FC = () => {
                             </h3>
                             
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                                {roadmapData.milestones?.map((ms, idx) => (
-                                    <div key={idx} style={{ display: 'flex', gap: '2rem' }}>
-                                        <div style={{ width: '120px', flexShrink: 0, textAlign: 'right', color: '#22c55e', fontWeight: 'bold', fontSize: '1.1rem', paddingTop: '0.2rem' }}>
-                                            {ms.timeframe}
-                                        </div>
-                                        <div style={{ width: '2px', background: 'rgba(34,197,94,0.3)', position: 'relative' }}>
-                                            <div style={{ position: 'absolute', top: '0.5rem', left: '-5px', width: '12px', height: '12px', borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 10px #22c55e' }}></div>
-                                        </div>
-                                        <div style={{ flexGrow: 1, background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+                                {roadmapData.milestones?.map((ms, idx) => {
+                                    const isComplete = ms.action_items && ms.action_items.length > 0 && ms.action_items.every((_, aIdx) => checkedItems[`${idx}-${aIdx}`]);
+                                    const lineColor = isComplete ? '#22c55e' : 'rgba(255,255,255,0.1)';
+                                    const dotColor = isComplete ? '#22c55e' : '#64748b';
+                                    
+                                    return (
+                                        <div key={idx} style={{ display: 'flex', gap: '2rem' }}>
+                                            <div style={{ width: '120px', flexShrink: 0, textAlign: 'right', color: isComplete ? '#22c55e' : 'white', fontWeight: 'bold', fontSize: '1.1rem', paddingTop: '0.2rem', transition: 'color 0.3s' }}>
+                                                {ms.timeframe}
+                                            </div>
+                                            <div style={{ width: '2px', background: lineColor, position: 'relative', transition: 'background 0.3s' }}>
+                                                <div style={{ position: 'absolute', top: '0.5rem', left: '-5px', width: '12px', height: '12px', borderRadius: '50%', background: dotColor, boxShadow: isComplete ? '0 0 10px #22c55e' : 'none', transition: 'all 0.3s' }}></div>
+                                            </div>
+                                            <div style={{ flexGrow: 1, background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: `1px solid ${isComplete ? 'rgba(34,197,94,0.3)' : 'rgba(255,255,255,0.05)'}`, transition: 'border 0.3s' }}>
                                             <h4 style={{ color: 'white', margin: '0 0 1rem 0', fontSize: '1.2rem' }}>{ms.focus}</h4>
                                             
                                             <h5 style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Action Items</h5>
@@ -335,7 +448,8 @@ const CareerRoadmapPage: React.FC = () => {
                                             )}
                                         </div>
                                     </div>
-                                ))}
+                                );
+                                })}
                             </div>
                         </div>
 
