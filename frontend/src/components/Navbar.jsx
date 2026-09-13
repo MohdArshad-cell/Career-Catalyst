@@ -6,16 +6,22 @@ const Navbar = () => {
     const navigate = useNavigate();
     const [user, setUser] = useState(null);
     const [tokens, setTokens] = useState(null);
-    const [isAdmin, setIsAdmin] = useState(false); // ✅ Added Admin State
+    const [isAdmin, setIsAdmin] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+
         supabase.auth.getSession().then(({ data: { session } }) => {
             const currentUser = session?.user ?? null;
             setUser(currentUser);
             if (currentUser) {
                 fetchTokenBalance(currentUser.id);
-                checkUserRole(currentUser.id); // ✅ Check role on load
+                checkUserRole(currentUser.id);
             }
         });
 
@@ -24,20 +30,21 @@ const Navbar = () => {
             setUser(currentUser);
             if (currentUser) {
                 fetchTokenBalance(currentUser.id);
-                checkUserRole(currentUser.id); // ✅ Check role on auth change
+                checkUserRole(currentUser.id);
             } else {
                 setTokens(null);
-                setIsAdmin(false); // ✅ Reset on logout
+                setIsAdmin(false);
             }
         });
 
-        return () => subscription.unsubscribe();
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+            subscription.unsubscribe();
+        };
     }, []);
 
-    // ✅ Added function to check if user has 'admin' role in database
     const checkUserRole = async (userId) => {
         try {
-            // Note: Ensure you have a 'profiles' or 'users' table with a 'role' column
             const { data, error } = await supabase
                 .from('profiles') 
                 .select('role')
@@ -45,11 +52,8 @@ const Navbar = () => {
                 .single();
                 
             if (error) throw error;
-            if (data && data.role === 'admin') {
-                setIsAdmin(true);
-            } else {
-                setIsAdmin(false);
-            }
+            if (data && data.role === 'admin') setIsAdmin(true);
+            else setIsAdmin(false);
         } catch (err) {
             console.error("Error fetching user role:", err.message);
             setIsAdmin(false);
@@ -77,116 +81,89 @@ const Navbar = () => {
         navigate('/'); 
     };
 
-    const closeMenu = () => setIsMobileMenuOpen(false);
-
     return (
-        <nav className="navbar">
-            <div className="container nav-container">
-                <Link to="/" className="nav-logo" onClick={closeMenu}>
-                    Career<span>Catalyst</span>
-                </Link>
-                
-                <button 
-                    className="mobile-menu-btn"
-                    onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                >
-                    {isMobileMenuOpen ? '✖' : '☰'}
-                </button>
-                
-                <div className={`nav-links ${isMobileMenuOpen ? 'active' : ''}`}>
-                    <Link to="/features" onClick={closeMenu}>Features</Link>
+        <header className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'py-4' : 'py-6'}`}>
+            <nav className="max-w-7xl mx-auto px-6">
+                <div className="flex items-center justify-between">
                     
-                    <div className="nav-dropdown">
-                        <button className="nav-dropdown-btn">
-                            Free Tools <span>▼</span>
-                        </button>
-                        <div className="nav-dropdown-content">
-                            <Link to="/bullet-rewriter" onClick={closeMenu}>✨ Bullet Rewriter</Link>
-                            <Link to="/job-fit" onClick={closeMenu}>🎯 Job Fit Score</Link>
-                            <Link to="/resignation-letter" onClick={closeMenu}>✉️ Resignation Letter</Link>
-                            <Link to="/resume-diff" onClick={closeMenu}>🔍 Resume Diff Tool</Link>
+                    {/* Left: Logo */}
+                    <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+                        <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center font-bold text-black shadow-[0_0_15px_rgba(34,211,238,0.5)]">
+                            CC
                         </div>
-                    </div>
-                    
-                    <Link to="/pricing" style={{ color: 'var(--accent-cyan)', fontWeight: '600' }} onClick={closeMenu}>
-                        Pricing
+                        <span className="text-white font-bold tracking-widest text-sm hidden sm:block">
+                            CAREER <span className="opacity-70">CATALYST</span>
+                        </span>
                     </Link>
 
-                    {user ? (
-                        <div className="nav-action-group">
-                            <button 
-                                onClick={() => { navigate('/pricing'); closeMenu(); }} 
-                                className="token-pill"
-                                title="Click to buy more tokens"
-                                style={{
-                                    display: 'flex', alignItems: 'center', gap: '6px', justifyContent: 'center',
-                                    background: tokens !== null && tokens <= 1 
-                                        ? 'rgba(239, 68, 68, 0.15)' 
-                                        : tokens !== null && tokens <= 5 
-                                            ? 'rgba(245, 158, 11, 0.15)' 
-                                            : 'rgba(0, 229, 255, 0.1)',
-                                    border: `1px solid ${tokens !== null && tokens <= 1 
-                                        ? 'rgba(239, 68, 68, 0.4)' 
-                                        : tokens !== null && tokens <= 5 
-                                            ? 'rgba(245, 158, 11, 0.4)' 
-                                            : 'rgba(0, 229, 255, 0.3)'}`,
-                                    padding: '0.4rem 1rem',
-                                    borderRadius: '50px',
-                                    color: tokens !== null && tokens <= 1 
-                                        ? '#ef4444' 
-                                        : tokens !== null && tokens <= 5 
-                                            ? '#f59e0b' 
-                                            : 'var(--accent-cyan)',
-                                    fontSize: '0.9rem',
-                                    fontWeight: 'bold',
-                                    cursor: 'pointer',
-                                    whiteSpace: 'nowrap',
-                                    transition: 'all 0.3s ease',
-                                    animation: tokens !== null && tokens <= 1 ? 'pulse 2s infinite' : 'none'
-                                }}
-                                onMouseEnter={(e) => { e.currentTarget.style.transform = 'scale(1.05)'; }}
-                                onMouseLeave={(e) => { e.currentTarget.style.transform = 'scale(1)'; }}
-                            >
-                                <span style={{ fontSize: '1rem' }}>{tokens !== null && tokens <= 1 ? '🔴' : tokens !== null && tokens <= 5 ? '🟡' : '💎'}</span>
-                                {tokens !== null ? `${tokens} Tokens` : '...'}
-                            </button>
+                    {/* Middle: Pill Navigation (Desktop Only) */}
+                    <div className="hidden lg:flex items-center gap-8 px-8 py-3 bg-[#111118]/80 backdrop-blur-xl border border-white/5 rounded-full shadow-2xl">
+                        {user ? (
+                            <>
+                                <Link to="/features" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">FEATURES</Link>
+                                <Link to="/ai-tools" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">DASHBOARD</Link>
+                                <Link to="/pricing" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">PRICING</Link>
+                                {isAdmin && <Link to="/admin" className="text-xs text-amber-400 hover:text-amber-300 font-mono tracking-widest transition-colors">ADMIN</Link>}
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/services" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">SERVICES</Link>
+                                <Link to="/pricing" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">PRICING</Link>
+                                <Link to="/about" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">ABOUT US</Link>
+                                <Link to="/faq" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">FAQ</Link>
+                                <Link to="/blog" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">BLOG</Link>
+                            </>
+                        )}
+                    </div>
 
-                            <button 
-                                onClick={() => { navigate('/ai-tools'); closeMenu(); }} 
-                                className="nav-cta-premium" 
-                                style={{ whiteSpace: 'nowrap', background: 'linear-gradient(135deg, #8b5cf6, #3b82f6)', boxShadow: '0 4px 15px rgba(139, 92, 246, 0.4)' }}
-                            >
-                                Dashboard
-                            </button>
-
-                            {/* USER PROFILE DROPDOWN */}
-                            <div className="nav-dropdown">
-                                <button className="nav-dropdown-btn profile-btn">
-                                    <span style={{ fontSize: '1.2rem' }}>👤</span> Account <span className="dropdown-arrow">▼</span>
-                                </button>
-                                <div className="nav-dropdown-content profile-dropdown-content">
-                                    {isAdmin && (
-                                        <Link to="/admin" onClick={closeMenu}>🛡️ Admin View</Link>
-                                    )}
-                                    <Link to="/referrals" onClick={closeMenu}>🎁 Refer & Earn</Link>
-                                    <Link to="/history" onClick={closeMenu}>🕒 History</Link>
-                                    <div className="dropdown-divider"></div>
-                                    <button onClick={handleLogout} className="dropdown-logout-btn">
-                                        🚪 Logout
-                                    </button>
+                    {/* Right: Actions */}
+                    <div className="flex items-center gap-4">
+                        {user ? (
+                            <>
+                                <div className="hidden sm:flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full text-sm font-bold shadow-inner">
+                                    <span className="text-xl">{tokens !== null && tokens <= 1 ? '🔴' : tokens !== null && tokens <= 5 ? '🟡' : '💎'}</span>
+                                    <span className={tokens <= 5 ? 'text-amber-400' : 'text-cyan-400'}>{tokens !== null ? `${tokens} Tokens` : '...'}</span>
                                 </div>
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="nav-action-group">
-                            <button onClick={() => { navigate('/login'); closeMenu(); }} className="nav-cta-premium w-100">
-                                Launch App
-                            </button>
-                        </div>
-                    )}
+                                <button onClick={handleLogout} className="px-5 py-2.5 rounded-full text-xs font-bold tracking-widest uppercase border border-red-500/30 text-red-400 hover:bg-red-500/10 transition-colors">
+                                    Logout
+                                </button>
+                            </>
+                        ) : (
+                            <Link to="/login" className="hidden sm:inline-block px-6 py-3 rounded-full text-xs font-bold tracking-widest uppercase bg-[#1e1b4b] text-indigo-300 border border-indigo-500/30 shadow-[0_0_20px_rgba(79,70,229,0.2)] hover:bg-[#312e81] hover:text-white hover:shadow-[0_0_30px_rgba(79,70,229,0.5)] transition-all">
+                                FREE RESUME AUDIT
+                            </Link>
+                        )}
+                        
+                        {/* Mobile Menu Toggle */}
+                        <button 
+                            className="lg:hidden p-2 text-white"
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        >
+                            {isMobileMenuOpen ? '✖' : '☰'}
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </nav>
+
+                {/* Mobile Dropdown */}
+                {isMobileMenuOpen && (
+                    <div className="lg:hidden absolute top-20 left-4 right-4 bg-[#111118]/95 backdrop-blur-2xl border border-white/10 rounded-2xl p-6 flex flex-col gap-4 shadow-2xl">
+                        {user ? (
+                            <>
+                                <Link to="/ai-tools" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">DASHBOARD</Link>
+                                <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">PRICING</Link>
+                                <button onClick={handleLogout} className="text-red-400 text-left font-mono tracking-widest">LOGOUT</button>
+                            </>
+                        ) : (
+                            <>
+                                <Link to="/services" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest">SERVICES</Link>
+                                <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest">PRICING</Link>
+                                <Link to="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-indigo-400 font-mono tracking-widest mt-4">FREE RESUME AUDIT</Link>
+                            </>
+                        )}
+                    </div>
+                )}
+            </nav>
+        </header>
     );
 };
 

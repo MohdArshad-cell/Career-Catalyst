@@ -10,6 +10,7 @@ import '../App.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { supabase } from '../supabaseClient';
+import { Hero } from '../components/Hero/Hero';
 
 /* ─────────────── DATA ─────────────── */
 
@@ -200,65 +201,7 @@ const HomePage = () => {
             <Navbar />
 
             {/* ────────── 1. HERO ────────── */}
-            <section className="hero-section" id="hero">
-                <div className="hero-inner elite-hero-grid">
-                    <div className="hero-text-col">
-                        <div className="elite-pill">
-                            <span className="sparkle">🎯</span> TARGETED FOR AMBITIOUS PROFESSIONALS
-                        </div>
-
-                        <h1 className="hero-title elite-huge-title">
-                            Turn Ghosted Applications<br/>into <span className="gradient-text">Career Catalyst.</span>
-                        </h1>
-
-                        <p className="hero-subtitle elite-subtitle">
-                            We re-engineer your digital footprint so recruiters chase you, not the other way around. Dominate the global job market.
-                        </p>
-
-                        <div className="hero-cta-group" style={{ marginBottom: '2rem' }}>
-                            <button onClick={launchTools} className="btn-hero-primary glow-effect" id="hero-cta">
-                                {user ? 'Go to Dashboard →' : 'Launch AI Tools →'}
-                            </button>
-                        </div>
-                    </div>
-
-                    <div className="hero-visual-col">
-                        <div className="tilt-container">
-                            <div className="floating-badge badge-top-left">
-                                <div className="badge-icon green">📄</div>
-                                <div className="badge-text">
-                                    <span className="tiny">ATS MATCH</span>
-                                    <strong>99/100</strong>
-                                </div>
-                            </div>
-                            
-                            <div className="main-3d-card">
-                                <div className="card-header">
-                                    <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
-                                    <span className="terminal-title">bash - 80x24</span>
-                                </div>
-                                <div className="card-body terminal-body">
-                                    <p>{'>'} Initializing ATS optimization...</p>
-                                    <p>{'>'} Injecting keywords: React, Node...</p>
-                                    <p>{'>'} Re-formatting to LaTeX standard...</p>
-                                    <p>{'>'} Deploying Next.js portfolio...</p>
-                                    <p className="success-text">{'>'} Status: Hired at Top Companies!_</p>
-                                </div>
-                            </div>
-
-                            <div className="floating-badge badge-bottom-right">
-                                <div className="badge-icon purple">📈</div>
-                                <div className="badge-text">
-                                    <span className="tiny">VISIBILITY</span>
-                                    <strong>+420%</strong>
-                                </div>
-                            </div>
-                            <div className="floating-company company-netflix">NETFLIX</div>
-                            <div className="floating-company company-stripe">STRIPE</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <Hero />
 
             {/* ────────── 2. ELITE MARQUEE ────────── */}
             <section className="elite-marquee-section">
