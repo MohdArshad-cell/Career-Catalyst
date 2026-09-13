@@ -185,7 +185,7 @@ const AtsEvaluatorPage: React.FC = () => {
                 </div>
 
                 <div className="tool-input-grid">
-                    <div className="panel glass-card-premium-premium relative-panel">
+                    <div className="panel glass-card-premium relative-panel">
                         <div className="panel-header">
                             <h2 className="panel-title">
                                 <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
@@ -203,7 +203,7 @@ const AtsEvaluatorPage: React.FC = () => {
                             disabled={isLoading}
                         />
                     </div>
-                    <div className="panel glass-card-premium-premium">
+                    <div className="panel glass-card-premium">
                         <div className="panel-header">
                             <h2 className="panel-title">
                                 <Target size={22} color="#67e8f9" /> Target Job Description
