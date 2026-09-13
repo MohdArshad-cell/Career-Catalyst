@@ -119,23 +119,22 @@ const CareerRoadmapPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(34, 197, 94, 0.1)', color: '#22c55e', border: '1px solid rgba(34, 197, 94, 0.2)' }}>
-                        <Map size={16} style={{ display: 'inline', marginRight: '5px' }}/> Career Planning
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Map size={16} /> Career Planning
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #22c55e, #16a34a)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', display: 'inline-block' }}>Career Roadmap AI</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Map out your exact steps to promotion or pivot.</p>
+                    <h1 className="tool-header-title">Career Roadmap AI</h1>
+                    <p className="tool-header-subtitle">Map out your exact steps to promotion or pivot.</p>
                 </div>
 
-                <div className="tailor-input-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', alignItems: 'stretch' }}>
+                <div className="tool-input-grid">
                     {/* Resume Panel */}
-                    <div className="panel glass-card" style={{ position: 'relative', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'linear-gradient(90deg, #22c55e, transparent)' }}></div>
+                    <div className="panel glass-panel">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.3rem', color: '#e2e8f0' }}>
-                                <FileText size={22} color="#22c55e" /> Your Resume
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> Your Resume
                             </h2>
                             <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
                         </div>
@@ -145,16 +144,14 @@ const CareerRoadmapPage: React.FC = () => {
                             onChange={(e) => setResumeText(e.target.value)}
                             placeholder="Paste your resume or upload a PDF..."
                             disabled={isLoading}
-                            style={{ minHeight: '200px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '1rem', color: '#e2e8f0', fontSize: '0.95rem', lineHeight: '1.6', width: '100%', boxSizing: 'border-box' }}
                         />
                     </div>
                     
                     {/* Target Goal Panel */}
-                    <div className="panel glass-card" style={{ position: 'relative', padding: '2rem', borderRadius: '16px', border: '1px solid rgba(255, 255, 255, 0.08)', background: 'linear-gradient(145deg, rgba(15, 23, 42, 0.6) 0%, rgba(30, 41, 59, 0.4) 100%)', boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)' }}>
-                        <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '4px', background: 'linear-gradient(90deg, #16a34a, transparent)' }}></div>
+                    <div className="panel glass-panel">
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0, display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.3rem', color: '#e2e8f0' }}>
-                                <Target size={22} color="#16a34a" /> Target Goal
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Goal
                             </h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Settings2 size={16} color="var(--text-secondary)" />
@@ -177,7 +174,6 @@ const CareerRoadmapPage: React.FC = () => {
                             onChange={(e) => setTargetGoal(e.target.value)}
                             placeholder="E.g., Transition from Frontend Developer to Full Stack Engineer, or getting promoted to Senior PM."
                             disabled={isLoading}
-                            style={{ minHeight: '200px', backgroundColor: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', padding: '1rem', color: '#e2e8f0', fontSize: '0.95rem', lineHeight: '1.6', width: '100%', boxSizing: 'border-box' }}
                         />
                     </div>
                 </div>
@@ -196,7 +192,7 @@ const CareerRoadmapPage: React.FC = () => {
                 {roadmapData && (
                     <div className="output-section" style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         
-                        <div className="metrics-panel glass-card" style={{ marginBottom: '2rem', padding: '2rem', borderLeft: '4px solid #22c55e' }}>
+                        <div className="panel glass-panel" style={{ position: 'relative', marginBottom: '2rem', padding: '2rem', borderLeft: '4px solid #22c55e' }}>
                             <h3 style={{ color: '#22c55e', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <Target size={24}/> Current Assessment vs Goal
                             </h3>
@@ -208,7 +204,7 @@ const CareerRoadmapPage: React.FC = () => {
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
                             
                             {/* Skills Gap */}
-                            <div className="panel glass-card">
+                            <div className="panel glass-panel">
                                 <h3 style={{ color: '#ef4444', margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <AlertTriangle size={20}/> Missing Skills & Gaps
                                 </h3>
@@ -222,7 +218,7 @@ const CareerRoadmapPage: React.FC = () => {
                             </div>
 
                             {/* Resources */}
-                            <div className="panel glass-card">
+                            <div className="panel glass-panel">
                                 <h3 style={{ color: '#3b82f6', margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                     <BookOpen size={20}/> Recommended Action Plan
                                 </h3>
@@ -242,7 +238,7 @@ const CareerRoadmapPage: React.FC = () => {
                         </div>
 
                         {/* Timeline */}
-                        <div className="panel glass-card">
+                        <div className="panel glass-panel">
                             <h3 style={{ color: '#22c55e', margin: '0 0 2rem 0', display: 'flex', alignItems: 'center', gap: '10px', borderBottom: '1px solid rgba(34,197,94,0.2)', paddingBottom: '1rem' }}>
                                 <Clock size={24}/> Execution Timeline
                             </h3>

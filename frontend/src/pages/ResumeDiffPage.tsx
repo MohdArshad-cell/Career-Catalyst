@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SplitSquareHorizontal, CheckCircle, ArrowRight } from 'lucide-react';
+import { SplitSquareHorizontal, CheckCircle, ArrowRight, FileText, Search } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -76,19 +76,23 @@ const ResumeDiffPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '1200px', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#10b981', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
-                        <span className="sparkle">🔍</span> Free Tool
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Search size={16} /> Free Tool
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #10b981, #34d399)' }}>Resume Diff Checker</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Compare your original resume against a tailored version to see exactly what changed.</p>
+                    <h1 className="tool-header-title">Resume Diff Checker</h1>
+                    <p className="tool-header-subtitle">Compare your original resume against a tailored version to see exactly what changed.</p>
                 </div>
 
-                <div className="tailor-input-grid">
-                    <div className="panel glass-card">
-                        <h2 className="panel-title">Original Resume</h2>
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> Original Resume
+                            </h2>
+                        </div>
                         <textarea
                             className="premium-textarea"
                             value={originalText}
@@ -98,13 +102,17 @@ const ResumeDiffPage: React.FC = () => {
                         />
                     </div>
                     
-                    <div className="panel glass-card">
-                        <h2 className="panel-title">New / Tailored Resume</h2>
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> New / Tailored Resume
+                            </h2>
+                        </div>
                         <textarea
                             className="premium-textarea"
                             value={newText}
                             onChange={(e) => setNewText(e.target.value)}
-                            placeholder="Paste the modified resume text..."
+                            placeholder="Paste the new resume text..."
                             disabled={isAnalyzing}
                         />
                     </div>
@@ -138,7 +146,7 @@ const ResumeDiffPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <div className="panel glass-card" style={{ padding: '2rem' }}>
+                        <div className="panel glass-panel" style={{ padding: '2rem' }}>
                             <h3 style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1.5rem', color: 'white' }}>
                                 <SplitSquareHorizontal size={20}/> Diff Viewer
                             </h3>
@@ -156,8 +164,7 @@ const ResumeDiffPage: React.FC = () => {
                             </div>
                         </div>
 
-                        {/* Upsell CTA */}
-                        <div className="glass-card text-center" style={{ marginTop: '3rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(0,0,0,0))', borderLeft: '4px solid #10b981' }}>
+                        <div className="glass-panel text-center" style={{ marginTop: '3rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(16,185,129,0.1), rgba(0,0,0,0))', borderLeft: '4px solid #10b981' }}>
                             <h3 style={{ margin: '0 0 1rem 0', color: 'white' }}>Tired of manual tailoring?</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Let our Premium AI Tailor rewrite your entire resume specifically for any job description in less than 30 seconds.</p>
                             <button className="btn-premium" onClick={() => navigate('/ai-tailor')} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
