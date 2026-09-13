@@ -258,6 +258,25 @@ const AiTailorPage: React.FC = () => {
                     </div>
                     <h1 className="tool-header-title">Resume Tailor</h1>
                     <p className="tool-header-subtitle">Instantly align your resume with any job description. Precision matters.</p>
+                    
+                    <div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <label style={{ marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
+                            Resume Template
+                        </label>
+                        <select 
+                            className="premium-select" 
+                            style={{ padding: '0.6rem 1rem', width: '280px', cursor: 'pointer', fontSize: '1rem' }}
+                            value={templateName}
+                            onChange={(e) => setTemplateName(e.target.value)}
+                            disabled={isLoading}
+                        >
+                            <option value="modern_line" style={{ color: 'black' }}>Modern Line (Default)</option>
+                            <option value="classic" style={{ color: 'black' }}>Classic</option>
+                            <option value="professional" style={{ color: 'black' }}>Professional</option>
+                            <option value="elegant" style={{ color: 'black' }}>Elegant</option>
+                            <option value="one_column" style={{ color: 'black' }}>One Column</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div className="tool-input-grid">
@@ -296,25 +315,6 @@ const AiTailorPage: React.FC = () => {
                 </div>
 
                 <div className="action-row text-center" style={{ margin: '3rem 0' }}>
-                    <div style={{ marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                        <label style={{ marginBottom: '0.5rem', color: 'var(--text-secondary)', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '1px' }}>
-                            Resume Template
-                        </label>
-                        <select 
-                            className="input-premium" 
-                            style={{ padding: '0.8rem', width: '300px', cursor: 'pointer' }}
-                            value={templateName}
-                            onChange={(e) => setTemplateName(e.target.value)}
-                            disabled={isLoading}
-                        >
-                            <option value="modern_line" style={{ color: 'black' }}>Modern Line (Default)</option>
-                            <option value="classic" style={{ color: 'black' }}>Classic</option>
-                            <option value="professional" style={{ color: 'black' }}>Professional</option>
-                            <option value="elegant" style={{ color: 'black' }}>Elegant</option>
-                            <option value="one_column" style={{ color: 'black' }}>One Column</option>
-                        </select>
-                    </div>
-
                     <button 
                         className="btn-premium pulse-glow massive-btn" 
                         onClick={handleTailorResume} 
