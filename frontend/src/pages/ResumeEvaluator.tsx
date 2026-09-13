@@ -185,7 +185,7 @@ const AtsEvaluatorPage: React.FC = () => {
                 </div>
 
                 <div className="tool-input-grid">
-                    <div className="panel glass-panel relative-panel">
+                    <div className="panel glass-card-premium-premium relative-panel">
                         <div className="panel-header">
                             <h2 className="panel-title">
                                 <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
@@ -203,7 +203,7 @@ const AtsEvaluatorPage: React.FC = () => {
                             disabled={isLoading}
                         />
                     </div>
-                    <div className="panel glass-panel">
+                    <div className="panel glass-card-premium-premium">
                         <div className="panel-header">
                             <h2 className="panel-title">
                                 <Target size={22} color="#67e8f9" /> Target Job Description
@@ -241,7 +241,7 @@ const AtsEvaluatorPage: React.FC = () => {
                                 <div className="tool-input-grid" style={{ marginBottom: '2rem', gridTemplateColumns: '1fr 1.5fr 1fr' }}>
 
                                     {/* ATS SCORE PANEL */}
-                                    <div className="panel glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                    <div className="panel glass-card-premium-premium" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                                         <h2 className="panel-title">ATS Score</h2>
                                         <div style={{
                                             width: '140px', height: '140px', borderRadius: '50%',
@@ -264,7 +264,7 @@ const AtsEvaluatorPage: React.FC = () => {
                                     </div>
 
                                     {/* RADAR CHART PANEL */}
-                                    <div className="panel glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                    <div className="panel glass-card-premium" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                         <h2 className="panel-title">Skill Dimensions</h2>
                                         <div style={{ width: '100%', height: '220px', marginTop: '10px' }}>
                                             <ResponsiveContainer width="100%" height="100%">
@@ -283,7 +283,7 @@ const AtsEvaluatorPage: React.FC = () => {
                                     </div>
 
                                     {/* RED FLAGS PANEL */}
-                                    <div className="panel glass-card" style={{ borderLeft: '4px solid #ef4444' }}>
+                                    <div className="panel glass-card-premium" style={{ borderLeft: '4px solid #ef4444' }}>
                                         <h2 className="panel-title" style={{ color: '#ef4444' }}>🚩 Dealbreakers</h2>
                                         {evaluationResult.red_flags.length > 0 ? (
                                             <ul style={{ color: '#fca5a5', paddingLeft: '20px', lineHeight: '1.5', fontSize: '0.95rem', margin: 0 }}>
@@ -300,7 +300,7 @@ const AtsEvaluatorPage: React.FC = () => {
                                 </div>
 
                                 {/* KEYWORDS ROW */}
-                                <div className="panel glass-panel" style={{ marginBottom: '2rem' }}>
+                                <div className="panel glass-card-premium-premium" style={{ marginBottom: '2rem' }}>
                                     <h2 className="panel-title" style={{ color: '#00e5ff' }}>🔍 Missing Keywords (Semantic Gap)</h2>
                                     <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px' }}>
                                         <div className="pills-container" style={{ justifyContent: 'flex-start', flexWrap: 'wrap', gap: '10px' }}>
@@ -318,7 +318,7 @@ const AtsEvaluatorPage: React.FC = () => {
                                 </div>
 
                                 {/* 🔥 NEW HIGH-VISIBILITY ROASTS SECTION 🔥 */}
-                                <div className="panel glass-card">
+                                <div className="panel glass-card-premium">
                                     <h2 className="panel-title" style={{ color: '#b620e0' }}>🔥 Constructive Roasts & Rewrites</h2>
                                     <p style={{ color: 'var(--text-secondary)', marginBottom: '20px' }}>Direct, brutal feedback on how a recruiter perceives your weak bullet points.</p>
 
