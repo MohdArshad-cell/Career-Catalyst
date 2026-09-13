@@ -4,16 +4,16 @@ Your objective is to extract requirements from the Target Job Description (JD) a
 EVALUATION & EXTRACTION RULES:
 1. Noun-Based Extraction FROM JOB DESCRIPTION ONLY: You MUST extract technical tools, frameworks, and hard skills REQUIRED BY THE TARGET JOB DESCRIPTION into `hard_skills_evaluation`. Extract specific methodologies (e.g., Agile) REQUIRED BY THE TARGET JOB DESCRIPTION into `soft_skills_evaluation`. DO NOT extract skills that are only in the resume but not in the JD.
    - CRITICAL: DO NOT extract generic action verbs (e.g., "Build", "Collaborate", "Design", "Participate", "Troubleshoot"). Only extract NOUNS and specific tools.
-2. Semantic Matching: For each extracted skill, evaluate if it exists in the resume. Set `is_found` to True if an exact match OR a clear semantic equivalent is present (e.g., if the JD asks for "Spring Boot", and the resume says "Spring Boot 3", that is True. If JD asks for "Google Gemini", and resume has "GenAI/LLMs" or "Gemini Pro", that is True).
-3. Red Flags: Identify critical dealbreakers (e.g., missing mandatory core technologies, severe timeline gaps).
+2. STRICT Semantic Matching: For each extracted skill, evaluate if it exists in the resume. Set `is_found` to True ONLY IF there is an undeniable, explicit match in the resume. YOU MUST BE RUTHLESS. If the JD requires "React", and the resume only says "JavaScript", that is False. Do not give the candidate the benefit of the doubt.
+3. Red Flags: Identify critical dealbreakers (e.g., missing mandatory core technologies, severe timeline gaps, lack of relevance).
 4. Constructive Roasts & Surgical Injection: Find 3 weak, generic, or unquantified bullet points in the resume. For each:
    - Quote the exact weak bullet.
    - Provide a brutally honest critique of why an enterprise recruiter would reject it (e.g., 'No metrics, completely vague, lacks technical depth').
    - Rewrite it using the XYZ formula (Accomplished X as measured by Y, by doing Z). You MUST seamlessly weave in the exact JD skills where `is_found` is False into these rewrites.
-5. Dimension Scoring: Analyze the overall quality of the resume and provide a strict score from 0 to 100 for each of the following:
-   - `metrics_score`: How well does the resume use quantifiable metrics and data? (0 = No numbers, 100 = Every bullet is quantified).
-   - `brevity_score`: How concise and readable is the resume? (0 = Walls of text/fluff, 100 = Crisp, impactful, easily scannable).
-   - `action_verbs_score`: How strong are the action verbs? (0 = Passive voice, generic verbs like "Worked on", 100 = Powerful verbs like "Spearheaded", "Architected").
+5. Dimension Scoring (BE EXTREMELY HARSH): Analyze the overall quality of the resume and provide a strict score from 0 to 100 for each of the following. Most average resumes should score between 40-60. Only the top 1% get 90+:
+   - `metrics_score`: Count the exact number of data points. Be brutal. (0 = No numbers, 50 = Some numbers, 100 = Every single bullet is quantified).
+   - `brevity_score`: Deduct points heavily for fluff, jargon, or paragraphs. (0 = Walls of text/fluff, 100 = Crisp, impactful, easily scannable).
+   - `action_verbs_score`: Deduct points heavily for weak verbs. (0 = Passive voice, generic verbs like "Worked on", "Helped", "Responsible for", 100 = Powerful verbs like "Spearheaded", "Architected").
 
 CURRENT DATE: {current_date}
 
