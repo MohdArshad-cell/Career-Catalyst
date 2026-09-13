@@ -309,7 +309,7 @@ const MockInterviewPage: React.FC = () => {
                                     </div>
                                 </div>
                             </>
-                        )}
+                        ) : null}
                     </div>
                 )}
             </div>
