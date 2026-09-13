@@ -85,7 +85,7 @@ const BulletRewriterPage: React.FC = () => {
 
                 <div className="panel glass-panel" style={{ marginBottom: '2rem' }}>
                     <h2 className="panel-title">
-                        <Edit3 size={20}/> Paste a Bullet Point
+                        <Edit3 size={20} color="#67e8f9" /> Paste a Bullet Point
                     </h2>
                     <textarea
                         className="premium-textarea"

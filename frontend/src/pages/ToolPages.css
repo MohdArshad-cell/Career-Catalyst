@@ -414,6 +414,11 @@
     font-weight: 600;
     color: #f8fafc;
     letter-spacing: 0.5px;
+    text-shadow: 0 0 10px rgba(103, 232, 249, 0.4);
+}
+
+.panel-title svg {
+    filter: drop-shadow(0 0 8px rgba(103, 232, 249, 0.6));
 }
 
 .premium-textarea {

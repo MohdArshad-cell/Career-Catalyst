@@ -137,7 +137,7 @@ const ColdOutreachPage: React.FC = () => {
 
                         <div className="panel-header">
                             <h2 className="panel-title">
-                                <FileText size={22} color="#f97316" /> Your Resume
+                                <FileText size={22} color="#67e8f9" /> Your Resume
                             </h2>
                             <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
                         </div>
@@ -154,7 +154,7 @@ const ColdOutreachPage: React.FC = () => {
 
                         <div className="panel-header">
                             <h2 className="panel-title">
-                                <Target size={22} color="#ea580c" /> Target Role
+                                <Target size={22} color="#67e8f9" /> Target Role
                             </h2>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 <Settings2 size={16} color="var(--text-secondary)" />
