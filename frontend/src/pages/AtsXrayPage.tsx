@@ -19,8 +19,10 @@ interface SuggestionDetail {
 
 interface AtsXrayData {
     overall_score: number;
+    executive_summary: string;
     key_strengths: string[];
     red_flags: string[];
+    missing_critical_sections: string[];
     suggestions: SuggestionDetail[];
 }
 
@@ -237,7 +239,7 @@ const AtsXrayPage: React.FC = () => {
                         <div className="output-section" style={{ maxWidth: '1200px', margin: '0 auto' }}>
                             <div className="dashboard-wrapper" style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '2rem', marginBottom: '2rem' }}>
                                 
-                                {/* SCORE CARD */}
+                                {/* SCORE CARD & EXEC SUMMARY */}
                                 <div className="metrics-panel glass-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', padding: '2rem' }}>
                                     <h3 style={{ margin: 0, color: 'var(--text-primary)' }}>Resume Health Score</h3>
                                     <div className="score-circle" style={{ 
@@ -248,7 +250,12 @@ const AtsXrayPage: React.FC = () => {
                                     }}>
                                         <span style={{ fontSize: '3rem', fontWeight: '800', color: '#fff' }}>{xrayData.overall_score}</span>
                                     </div>
-                                    <p style={{ color: 'var(--text-secondary)', textAlign: 'center', fontSize: '0.9rem' }}>Based on brevity, impact metrics, and action verbs.</p>
+                                    <p style={{ color: 'var(--text-secondary)', textAlign: 'center', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Based on brevity, impact metrics, and action verbs.</p>
+                                    
+                                    <div style={{ background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '3px solid #67e8f9', width: '100%' }}>
+                                        <h4 style={{ color: '#67e8f9', fontSize: '0.85rem', textTransform: 'uppercase', marginBottom: '0.5rem', marginTop: 0 }}>Executive Summary</h4>
+                                        <p style={{ color: 'var(--text-primary)', fontSize: '0.95rem', margin: 0, fontStyle: 'italic' }}>"{xrayData.executive_summary}"</p>
+                                    </div>
                                 </div>
 
                                 {/* STRENGTHS & RED FLAGS */}
@@ -278,6 +285,22 @@ const AtsXrayPage: React.FC = () => {
                                             ))}
                                             {xrayData.red_flags.length === 0 && (
                                                 <li style={{ color: '#10b981' }}>No critical red flags detected! Excellent work.</li>
+                                            )}
+                                        </ul>
+                                    </div>
+
+                                    <div style={{ paddingTop: '1.5rem', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
+                                        <h4 style={{ color: '#f59e0b', margin: '0 0 15px 0', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '1.2rem' }}>
+                                            <FileText size={20} /> Missing Sections
+                                        </h4>
+                                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                            {xrayData.missing_critical_sections.map((sec, idx) => (
+                                                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', color: 'var(--text-primary)', fontSize: '0.95rem' }}>
+                                                    <span style={{ color: '#f59e0b', marginTop: '2px' }}>⚠️</span> {sec}
+                                                </li>
+                                            ))}
+                                            {xrayData.missing_critical_sections.length === 0 && (
+                                                <li style={{ color: '#10b981' }}>All standard sections are present.</li>
                                             )}
                                         </ul>
                                     </div>

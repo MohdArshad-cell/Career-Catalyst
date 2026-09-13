@@ -15,14 +15,16 @@ from app.services.llm_client import call_llm_structured, load_prompt, get_redis_
 # 1. AI DATA EXTRACTION SCHEMA
 # ==========================================
 class SuggestionDetail(BaseModel):
-    weak_point: str = Field(..., description="The exact generic or weak bullet point from the resume.")
-    critique: str = Field(..., description="Why this point is weak (e.g., lacks metrics, passive voice, cliché).")
-    rewrite_suggestion: str = Field(..., description="An actionable, high-impact, metric-driven rewrite.")
+    weak_point: str = Field(..., description="Copy EXACTLY 1 raw bullet point from the resume that is weak. DO NOT include your thoughts, analysis, or commentary here. Just the exact original text.")
+    critique: str = Field(..., description="Explain exactly why this bullet is weak (e.g., passive voice, lacks metrics, cliché).")
+    rewrite_suggestion: str = Field(..., description="Provide a powerful, high-impact, metric-driven rewrite.")
 
 class AtsXraySchema(BaseModel):
     overall_score: int = Field(..., description="Overall resume health score (0-100) based on impact, brevity, and action verbs.")
+    executive_summary: str = Field(..., description="A brutal, 2-sentence executive summary of the resume's overall impression on a recruiter.")
     key_strengths: List[str] = Field(..., description="List of 3 things the resume does well.")
     red_flags: List[str] = Field(..., description="List of critical structural, metric, or language issues.")
+    missing_critical_sections: List[str] = Field(..., description="List any standard resume sections that are missing or poorly placed (e.g., 'No Skills section', 'Education at the top for senior role').")
     suggestions: List[SuggestionDetail] = Field(..., description="List of 3 to 5 specific bullet point critiques and rewrites.")
 
 # ==========================================
