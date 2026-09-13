@@ -128,7 +128,7 @@ const ColdOutreachPage: React.FC = () => {
                     <div className="hero-badge badge-orange">
                         <Mail size={16} style={{ display: 'inline', marginRight: '5px' }}/> Networking
                     </div>
-                    <h1 className="animated-gradient-text gradient-text-orange tool-header-title">Cold Outreach AI</h1>
+                    <h1 className="tool-header-title">Cold Outreach AI</h1>
                     <p className="tool-header-subtitle">Generate highly-converting LinkedIn notes and cold emails to get referrals.</p>
                 </div>
 

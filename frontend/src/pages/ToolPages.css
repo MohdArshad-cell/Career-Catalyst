@@ -291,6 +291,8 @@
     font-size: 3rem;
     margin-bottom: 0.5rem;
     display: inline-block;
+    color: var(--text-primary, #f8fafc);
+    font-weight: 700;
 }
 
 .tool-header-subtitle {
