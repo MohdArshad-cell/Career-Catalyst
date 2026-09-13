@@ -110,9 +110,11 @@ export function Hero() {
           initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1, delay: shouldReduceMotion ? 0 : 0.2, ease: "easeOut" }}
-          style={shouldReduceMotion ? {} : { x: mockupX, y: mockupY }}
+          style={{
+            perspective: "2000px",
+            ...(shouldReduceMotion ? {} : { x: mockupX, y: mockupY })
+          }}
           className="relative w-full max-w-xl mx-auto mt-16 lg:mt-0"
-          style={{ perspective: "2000px" }}
         >
           {/* Floating Badge 1: ATS Score */}
           <motion.div 
