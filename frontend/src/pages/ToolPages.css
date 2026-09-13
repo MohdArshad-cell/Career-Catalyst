@@ -96,6 +96,10 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(98, 72, 255, 0.4);
+    width: auto !important;
+    min-width: 280px;
+    display: inline-flex !important;
+    margin: 0 auto;
 }
 
 .massive-btn:hover:not(:disabled) {
@@ -511,6 +515,10 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(234, 88, 12, 0.4);
+    width: auto !important;
+    min-width: 280px;
+    display: inline-flex !important;
+    margin: 0 auto;
 }
 
 .massive-btn-orange:hover:not(:disabled) {
@@ -551,6 +559,10 @@
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4);
+    width: auto !important;
+    min-width: 280px;
+    display: inline-flex !important;
+    margin: 0 auto;
 }
 
 .massive-btn-purple:hover:not(:disabled) {
