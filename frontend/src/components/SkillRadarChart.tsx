@@ -13,7 +13,7 @@ interface Props {
 }
 
 const levelToNumber = (level: string): number => {
-  const l = level.toLowerCase();
+  const l = (level || '').toLowerCase();
   if (l.includes('expert') || l.includes('advanced')) return 4;
   if (l.includes('intermediate') || l.includes('proficient')) return 3;
   if (l.includes('beginner') || l.includes('novice')) return 2;
@@ -21,16 +21,19 @@ const levelToNumber = (level: string): number => {
 };
 
 const SkillRadarChart: React.FC<Props> = ({ data }) => {
-  if (!data || data.length === 0) return null;
+  if (!data || !Array.isArray(data) || data.length === 0) return null;
 
-  const chartData = data.map((item) => ({
-    subject: item.skill.length > 15 ? item.skill.substring(0, 15) + '...' : item.skill,
-    fullSkill: item.skill,
-    current: levelToNumber(item.current_level),
-    required: levelToNumber(item.required_level),
-    currentLevelStr: item.current_level,
-    requiredLevelStr: item.required_level,
-  }));
+  const chartData = data.map((item) => {
+    const skillName = item?.skill || 'Unknown Skill';
+    return {
+      subject: skillName.length > 15 ? skillName.substring(0, 15) + '...' : skillName,
+      fullSkill: skillName,
+      current: levelToNumber(item?.current_level || 'beginner'),
+      required: levelToNumber(item?.required_level || 'advanced'),
+      currentLevelStr: item?.current_level || 'Beginner',
+      requiredLevelStr: item?.required_level || 'Advanced',
+    };
+  });
 
   return (
     <div style={{ width: '100%', height: 350 }}>

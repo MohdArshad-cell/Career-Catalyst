@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Map, Target, BookOpen, Clock, Settings2, FileText, CheckCircle, BrainCircuit } from 'lucide-react';
+import { Map, Target, BookOpen, Clock, Settings2, FileText, CheckCircle, BrainCircuit, Download } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -9,6 +9,7 @@ import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
 import SkillRadarChart, { Competency } from '../components/SkillRadarChart';
+import { saveAs } from 'file-saver';
 import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
@@ -120,6 +121,41 @@ const CareerRoadmapPage: React.FC = () => {
         }
     };
 
+    const handleDownloadMarkdown = () => {
+        if (!roadmapData) return;
+        
+        let md = `# Career Roadmap\n\n`;
+        md += `## Current Assessment vs Goal\n${roadmapData.current_assessment}\n\n`;
+        
+        md += `## Competency Analysis\n`;
+        roadmapData.competency_matrix?.forEach(comp => {
+            md += `- **${comp.skill}**: Current (${comp.current_level}) -> Required (${comp.required_level})\n  *Gap*: ${comp.gap_analysis}\n`;
+        });
+        md += `\n`;
+
+        md += `## Recommended Action Plan\n`;
+        roadmapData.recommended_resources?.forEach(res => {
+            md += `- **${res.title}** (${res.type})\n  ${res.reason}\n`;
+        });
+        md += `\n`;
+
+        md += `## Execution Timeline\n`;
+        roadmapData.milestones?.forEach(ms => {
+            md += `### ${ms.timeframe}: ${ms.focus}\n`;
+            md += `**Action Items:**\n`;
+            ms.action_items?.forEach(act => md += `- [ ] ${act}\n`);
+            if (ms.success_kpis?.length > 0) {
+                md += `\n**Success KPIs:**\n`;
+                ms.success_kpis.forEach(kpi => md += `- ${kpi}\n`);
+            }
+            md += `\n`;
+        });
+
+        const blob = new Blob([md], { type: 'text/markdown;charset=utf-8' });
+        saveAs(blob, 'Career_Roadmap.md');
+        showToast('Roadmap downloaded successfully!', 'success');
+    };
+
     return (
         <div className="page-container">
             <ParticleBackground />
@@ -199,6 +235,16 @@ const CareerRoadmapPage: React.FC = () => {
                 {roadmapData && (
                     <div className="output-section" style={{ maxWidth: '1000px', margin: '0 auto' }}>
                         
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+                            <button 
+                                onClick={handleDownloadMarkdown}
+                                className="btn-outline pulse-glow"
+                                style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '0.6rem 1.2rem', borderRadius: '50px', border: '1px solid #3b82f6', color: '#93c5fd', background: 'rgba(59, 130, 246, 0.1)', cursor: 'pointer' }}
+                            >
+                                <Download size={18} /> Download Roadmap
+                            </button>
+                        </div>
+
                         <div className="panel glass-panel" style={{ position: 'relative', marginBottom: '2rem', padding: '2rem', borderLeft: '4px solid #22c55e' }}>
                             <h3 style={{ color: '#22c55e', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
                                 <Target size={24}/> Current Assessment vs Goal
@@ -224,7 +270,7 @@ const CareerRoadmapPage: React.FC = () => {
                                     <BookOpen size={20}/> Recommended Action Plan
                                 </h3>
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                    {roadmapData.recommended_resources.map((res, idx) => (
+                                    {roadmapData.recommended_resources?.map((res, idx) => (
                                         <div key={idx} style={{ background: 'rgba(0,0,0,0.3)', padding: '1rem', borderRadius: '8px', borderLeft: '3px solid #3b82f6' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                                                 <strong style={{ color: 'white' }}>{res.title}</strong>
@@ -245,7 +291,7 @@ const CareerRoadmapPage: React.FC = () => {
                             </h3>
                             
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                                {roadmapData.milestones.map((ms, idx) => (
+                                {roadmapData.milestones?.map((ms, idx) => (
                                     <div key={idx} style={{ display: 'flex', gap: '2rem' }}>
                                         <div style={{ width: '120px', flexShrink: 0, textAlign: 'right', color: '#22c55e', fontWeight: 'bold', fontSize: '1.1rem', paddingTop: '0.2rem' }}>
                                             {ms.timeframe}
@@ -258,7 +304,7 @@ const CareerRoadmapPage: React.FC = () => {
                                             
                                             <h5 style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Action Items</h5>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '1.5rem' }}>
-                                                {ms.action_items.map((action, aIdx) => {
+                                                {ms.action_items?.map((action, aIdx) => {
                                                     const checkId = `${idx}-${aIdx}`;
                                                     const isChecked = checkedItems[checkId];
                                                     return (
