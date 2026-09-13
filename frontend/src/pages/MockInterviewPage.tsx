@@ -86,6 +86,8 @@ const MockInterviewPage: React.FC = () => {
             });
             
             // Extract the generated data from the backend's dictionary wrapper
+            const interviewResponse = response.data?.interview_data;
+
             if (!interviewResponse || !interviewResponse.analysis || !Array.isArray(interviewResponse.questions)) {
                 throw new Error("Invalid response format received from server.");
             }
