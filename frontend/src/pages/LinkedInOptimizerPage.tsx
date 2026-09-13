@@ -173,32 +173,49 @@ const LinkedInOptimizerPage: React.FC = () => {
                     <p className="tool-header-subtitle">Transform your profile into a magnet for recruiters.</p>
                 </div>
 
-                <div className="tool-input-grid">
+                <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                     <div className="panel glass-panel">
-                        <div className="panel-header">
+                        <div className="panel-header" style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'space-between' }}>
                             <h2 className="panel-title">
-                                <User size={22} color="#67e8f9" /> Current Profile Context
+                                <User size={22} color="#67e8f9" /> Profile & Strategy Settings
                             </h2>
-                            <input 
-                                type="file" 
-                                accept="application/pdf" 
-                                style={{ display: 'none' }} 
-                                ref={fileInputRef}
-                                onChange={handleFileUpload}
-                            />
-                            <button 
-                                className="btn-outline" 
-                                onClick={() => fileInputRef.current?.click()}
-                                disabled={isUploading || isLoading}
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '0.9rem', transition: 'all 0.3s ease' }}
-                            >
-                                <Upload size={16} />
-                                {isUploading ? 'Extracting...' : 'Upload PDF'}
-                            </button>
+                            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                                <div style={{ position: 'relative' }}>
+                                    <select 
+                                        value={tone} 
+                                        onChange={(e) => setTone(e.target.value)}
+                                        className="premium-input"
+                                        style={{ appearance: 'none', paddingRight: '2.5rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', padding: '0.6rem 1.2rem', fontSize: '0.9rem', cursor: 'pointer' }}
+                                        disabled={isLoading}
+                                    >
+                                        <option value="Professional">Professional Tone</option>
+                                        <option value="Conversational">Conversational Tone</option>
+                                        <option value="Executive & Bold">Executive & Bold</option>
+                                        <option value="Story-Driven">Story-Driven</option>
+                                    </select>
+                                    <ChevronDown size={16} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--accent-cyan)' }} />
+                                </div>
+                                <input 
+                                    type="file" 
+                                    accept="application/pdf" 
+                                    style={{ display: 'none' }} 
+                                    ref={fileInputRef}
+                                    onChange={handleFileUpload}
+                                />
+                                <button 
+                                    className="btn-outline" 
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={isUploading || isLoading}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '0.9rem', transition: 'all 0.3s ease' }}
+                                >
+                                    <Upload size={16} />
+                                    {isUploading ? 'Extracting...' : 'Upload PDF'}
+                                </button>
+                            </div>
                         </div>
                         
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', marginTop: '-0.5rem' }}>
-                            Upload your LinkedIn export or paste your About and Experience sections manually.
+                            Upload your LinkedIn export or paste your content manually. The AI will automatically infer your optimal career trajectory.
                         </p>
                         
                         <textarea
@@ -207,40 +224,8 @@ const LinkedInOptimizerPage: React.FC = () => {
                             onChange={(e) => setLinkedinContent(e.target.value)}
                             placeholder="Paste your content here..."
                             disabled={isLoading}
+                            style={{ minHeight: '350px', width: '100%', resize: 'vertical' }}
                         />
-                    </div>
-
-                    <div className="panel glass-panel">
-                        <div className="panel-header">
-                            <h2 className="panel-title">
-                                <Target size={22} color="#67e8f9" /> Career Trajectory
-                            </h2>
-                            <div style={{ position: 'relative' }}>
-                                <select 
-                                    value={tone} 
-                                    onChange={(e) => setTone(e.target.value)}
-                                    className="premium-input"
-                                    style={{ appearance: 'none', paddingRight: '2.5rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', padding: '0.6rem 1.2rem', fontSize: '0.9rem', cursor: 'pointer' }}
-                                    disabled={isLoading}
-                                >
-                                    <option value="Professional">Professional Tone</option>
-                                    <option value="Conversational">Conversational Tone</option>
-                                    <option value="Executive & Bold">Executive & Bold</option>
-                                    <option value="Story-Driven">Story-Driven</option>
-                                </select>
-                                <ChevronDown size={16} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--accent-cyan)' }} />
-                            </div>
-                        </div>
-
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', marginTop: '-0.5rem', lineHeight: '1.5' }}>
-                            We no longer require a Job Description! The AI will act as a Career Strategist, inferring your optimal trajectory from your current profile and upgrading your positioning automatically.
-                        </p>
-                        
-                        <div style={{ background: 'rgba(0,0,0,0.2)', borderRadius: '12px', padding: '2rem', border: '1px dashed rgba(255,255,255,0.1)', textAlign: 'center', marginTop: '1rem', height: '100%', minHeight: '180px', display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center' }}>
-                            <Compass size={40} color="#67e8f9" style={{ marginBottom: '1rem', opacity: 0.8 }} />
-                            <h4 style={{ color: '#fff', margin: '0 0 0.5rem 0' }}>AI Strategist Ready</h4>
-                            <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', margin: 0 }}>Click the button below to analyze and reposition your brand.</p>
-                        </div>
                     </div>
                 </div>
 
