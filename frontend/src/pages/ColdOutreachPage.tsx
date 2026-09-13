@@ -122,7 +122,7 @@ const ColdOutreachPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tool-page-container">
+            <div className="tool-page-container" style={{ maxWidth: '1600px' }}>
                 
                 <div className="tool-header">
                     <div className="hero-badge badge-orange">
@@ -147,6 +147,7 @@ const ColdOutreachPage: React.FC = () => {
                             onChange={(e) => setResumeText(e.target.value)}
                             placeholder="Paste your resume or upload a PDF..."
                             disabled={isLoading}
+                            style={{ minHeight: '400px' }}
                         />
                     </div>
                     <div className="panel glass-panel">
@@ -176,6 +177,7 @@ const ColdOutreachPage: React.FC = () => {
                             onChange={(e) => setJobDescription(e.target.value)}
                             placeholder="Paste the target JD or just the company name and role you are applying to..."
                             disabled={isLoading}
+                            style={{ minHeight: '400px' }}
                         />
                     </div>
                 </div>
