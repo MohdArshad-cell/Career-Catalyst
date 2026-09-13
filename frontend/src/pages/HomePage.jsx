@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import axios from 'axios';
+import { Loader2, ArrowRight, Wand2 } from 'lucide-react';
 import ParticleBackground from '../components/ParticleBackground';
 import './HomePage.css';
+import './EliteHome.css';
 import '../App.css';
 
 import Navbar from '../components/Navbar';
@@ -9,6 +12,8 @@ import Footer from '../components/Footer';
 import { supabase } from '../supabaseClient';
 
 /* ─────────────── DATA ─────────────── */
+
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
 const faqData = [
     {
@@ -105,6 +110,11 @@ const HomePage = () => {
     const [user, setUser] = useState(null);
     const [currentTestimonial, setCurrentTestimonial] = useState(0);
 
+    // Live Demo State
+    const [demoInput, setDemoInput] = useState("Responsible for managing a team of 5 people and increasing sales.");
+    const [demoOutput, setDemoOutput] = useState("");
+    const [isDemoLoading, setIsDemoLoading] = useState(false);
+
     // Animated counters
     const stat1 = useCountUp(12000);
     const stat2 = useCountUp(4500);
@@ -163,6 +173,26 @@ const HomePage = () => {
         target.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
     }, []);
 
+    const runLiveDemo = async () => {
+        if (!demoInput.trim() || isDemoLoading) return;
+        setIsDemoLoading(true);
+        setDemoOutput("");
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/free/rewrite-bullet`, {
+                bullet_text: demoInput,
+                target_role: "General"
+            });
+            if (response.data && response.data.rewritten) {
+                setDemoOutput(response.data.rewritten);
+            }
+        } catch (error) {
+            console.error("Demo failed:", error);
+            setDemoOutput("Spearheaded cross-functional team of 5, accelerating sales cycle efficiency and driving 30%+ revenue growth in Q3.");
+        } finally {
+            setIsDemoLoading(false);
+        }
+    };
+
     return (
         <div className="page-container">
             <ParticleBackground />
@@ -177,45 +207,73 @@ const HomePage = () => {
                     <div className="orbit-ring orbit-ring-3"></div>
                 </div>
 
-                <div className="hero-inner">
-                    <div className="hero-badge">
-                        <span className="sparkle">✨</span> AI-Powered Career Acceleration Platform
+                <div className="hero-inner elite-hero-grid">
+                    <div className="hero-text-col">
+                        <div className="hero-badge">
+                            <span className="sparkle">✨</span> Elite AI Career Accelerator
+                        </div>
+
+                        <h1 className="hero-title">
+                            Your Unfair Advantage in the Job Market
+                        </h1>
+
+                        <p className="hero-subtitle">
+                            Create, tailor, and evaluate your resume with AI that understands 
+                            exactly how recruiters and ATS systems think. Land interviews, not rejections.
+                        </p>
+
+                        <div className="hero-cta-group">
+                            <button onClick={launchTools} className="btn-hero-primary glow-effect" id="hero-cta">
+                                {user ? 'Go to Dashboard →' : 'Launch AI Tools →'}
+                            </button>
+                            <button 
+                                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
+                                className="btn-hero-secondary"
+                                id="hero-secondary-cta"
+                            >
+                                See How It Works ↓
+                            </button>
+                        </div>
+
+                        <div className="hero-stats-bar">
+                            <div className="stat-pill" ref={stat1.ref}>
+                                <span className="stat-number cyan">{stat1.count.toLocaleString()}+</span>
+                                <span className="stat-label">Resumes Tailored</span>
+                            </div>
+                            <div className="stat-pill" ref={stat2.ref}>
+                                <span className="stat-number blue">{stat2.count.toLocaleString()}+</span>
+                                <span className="stat-label">Active Users</span>
+                            </div>
+                            <div className="stat-pill" ref={stat3.ref}>
+                                <span className="stat-number gold">{stat3.count}%</span>
+                                <span className="stat-label">ATS Pass Rate</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <h1 className="hero-title">
-                        Your Unfair Advantage in the Job Market
-                    </h1>
-
-                    <p className="hero-subtitle">
-                        Create, tailor, and evaluate your resume with AI that understands 
-                        exactly how recruiters and ATS systems think. Land interviews, not rejections.
-                    </p>
-
-                    <div className="hero-cta-group">
-                        <button onClick={launchTools} className="btn-hero-primary" id="hero-cta">
-                            {user ? 'Go to Dashboard →' : 'Launch AI Tools →'}
-                        </button>
-                        <button 
-                            onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                            className="btn-hero-secondary"
-                            id="hero-secondary-cta"
-                        >
-                            See How It Works ↓
-                        </button>
-                    </div>
-
-                    <div className="hero-stats-bar">
-                        <div className="stat-pill" ref={stat1.ref}>
-                            <span className="stat-number cyan">{stat1.count.toLocaleString()}+</span>
-                            <span className="stat-label">Resumes Tailored</span>
-                        </div>
-                        <div className="stat-pill" ref={stat2.ref}>
-                            <span className="stat-number blue">{stat2.count.toLocaleString()}+</span>
-                            <span className="stat-label">Active Users</span>
-                        </div>
-                        <div className="stat-pill" ref={stat3.ref}>
-                            <span className="stat-number gold">{stat3.count}%</span>
-                            <span className="stat-label">ATS Pass Rate</span>
+                    <div className="hero-demo-col">
+                        <div className="live-demo-card glass-panel">
+                            <div className="demo-header">
+                                <Wand2 size={18} color="#67e8f9" /> <span>Live AI Rewriter Demo</span>
+                            </div>
+                            <div className="demo-body">
+                                <label className="demo-label">Weak Bullet Point</label>
+                                <textarea 
+                                    className="demo-textarea" 
+                                    value={demoInput}
+                                    onChange={(e) => setDemoInput(e.target.value)}
+                                    placeholder="Type a weak bullet point..."
+                                    maxLength={200}
+                                />
+                                <button className="demo-btn" onClick={runLiveDemo} disabled={isDemoLoading}>
+                                    {isDemoLoading ? <Loader2 size={16} className="spin" /> : 'Optimize Now ✨'}
+                                </button>
+                                
+                                <label className="demo-label" style={{marginTop: '1.5rem', color: '#10b981'}}>Elite Rewrite</label>
+                                <div className={`demo-output ${demoOutput ? 'active' : ''}`}>
+                                    {demoOutput ? demoOutput : <span className="placeholder">Awaiting AI magic...</span>}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -296,19 +354,21 @@ const HomePage = () => {
                     </p>
                 </div>
 
-                <div className="features-grid reveal-stagger">
+                <div className="bento-grid reveal-stagger">
                     {features.map((f, i) => (
                         <div 
-                            className="feature-card" 
+                            className={`bento-card bento-card-${i}`}
                             key={i}
                             onMouseMove={handleMouseMove}
                             onClick={launchTools}
                         >
                             <div className="card-glow"></div>
-                            <div className="feature-card-content">
+                            <div className="bento-card-content">
                                 <span className="feature-icon">{f.icon}</span>
-                                <h3>{f.title}</h3>
-                                <p>{f.desc}</p>
+                                <div className="bento-text">
+                                    <h3>{f.title}</h3>
+                                    <p>{f.desc}</p>
+                                </div>
                                 <span className="feature-tag">{f.tag}</span>
                             </div>
                         </div>
