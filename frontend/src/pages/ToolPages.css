@@ -64,7 +64,7 @@
 
 .tailor-output-grid {
     display: grid;
-    grid-template-columns: minmax(400px, 1fr) minmax(500px, 1.2fr); /* PDF gets slightly more space */
+    grid-template-columns: 1fr 1fr;
     gap: 2rem;
 }
 
@@ -197,6 +197,7 @@
 /* === Code Editor & PDF Viewer === */
 .code-viewer-premium {
     width: 100%;
+    box-sizing: border-box;
     height: 800px;
     background-color: #0d1117; /* GitHub Dark theme background */
     color: #c9d1d9; /* Syntax text color */
