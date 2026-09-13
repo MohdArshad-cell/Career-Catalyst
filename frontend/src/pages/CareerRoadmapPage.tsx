@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Map, Target, BookOpen, Clock, AlertTriangle, Settings2, FileText } from 'lucide-react';
+import { Map, Target, BookOpen, Clock, Settings2, FileText, CheckCircle, BrainCircuit } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
 import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
+import SkillRadarChart, { Competency } from '../components/SkillRadarChart';
 import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
@@ -16,6 +17,7 @@ interface Milestone {
   timeframe: string;
   focus: string;
   action_items: string[];
+  success_kpis: string[];
 }
 
 interface Resource {
@@ -26,7 +28,7 @@ interface Resource {
 
 interface RoadmapData {
   current_assessment: string;
-  skills_gap: string[];
+  competency_matrix: Competency[];
   milestones: Milestone[];
   recommended_resources: Resource[];
 }
@@ -40,6 +42,11 @@ const CareerRoadmapPage: React.FC = () => {
     const [timeframe, setTimeframe] = useState('12 Months');
     const [roadmapData, setRoadmapData] = useState<RoadmapData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
+
+    const toggleCheck = (id: string) => {
+        setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
+    };
 
     const handleGenerate = async () => {
         if (!resumeText.trim() || !targetGoal.trim()) {
@@ -203,18 +210,12 @@ const CareerRoadmapPage: React.FC = () => {
 
                         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
                             
-                            {/* Skills Gap */}
+                            {/* Competency Matrix Chart */}
                             <div className="panel glass-panel">
                                 <h3 style={{ color: '#ef4444', margin: '0 0 1.5rem 0', display: 'flex', alignItems: 'center', gap: '10px' }}>
-                                    <AlertTriangle size={20}/> Missing Skills & Gaps
+                                    <BrainCircuit size={20}/> Competency Analysis
                                 </h3>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                                    {roadmapData.skills_gap.map((skill, idx) => (
-                                        <span key={idx} style={{ background: 'rgba(239, 68, 68, 0.1)', color: '#fca5a5', padding: '0.4rem 1rem', borderRadius: '50px', border: '1px solid rgba(239, 68, 68, 0.2)' }}>
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
+                                <SkillRadarChart data={roadmapData.competency_matrix} />
                             </div>
 
                             {/* Resources */}
@@ -254,11 +255,38 @@ const CareerRoadmapPage: React.FC = () => {
                                         </div>
                                         <div style={{ flexGrow: 1, background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
                                             <h4 style={{ color: 'white', margin: '0 0 1rem 0', fontSize: '1.2rem' }}>{ms.focus}</h4>
-                                            <ul style={{ color: 'var(--text-secondary)', margin: 0, paddingLeft: '1.5rem', lineHeight: '1.6' }}>
-                                                {ms.action_items.map((action, aIdx) => (
-                                                    <li key={aIdx} style={{ marginBottom: '0.5rem' }}>{action}</li>
-                                                ))}
-                                            </ul>
+                                            
+                                            <h5 style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px' }}>Action Items</h5>
+                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', marginBottom: '1.5rem' }}>
+                                                {ms.action_items.map((action, aIdx) => {
+                                                    const checkId = `${idx}-${aIdx}`;
+                                                    const isChecked = checkedItems[checkId];
+                                                    return (
+                                                        <label key={aIdx} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', cursor: 'pointer', color: isChecked ? '#64748b' : 'var(--text-secondary)', textDecoration: isChecked ? 'line-through' : 'none', transition: 'all 0.2s' }}>
+                                                            <input 
+                                                                type="checkbox" 
+                                                                checked={!!isChecked}
+                                                                onChange={() => toggleCheck(checkId)}
+                                                                style={{ marginTop: '5px', accentColor: '#22c55e', cursor: 'pointer' }}
+                                                            />
+                                                            <span style={{ lineHeight: '1.5' }}>{action}</span>
+                                                        </label>
+                                                    );
+                                                })}
+                                            </div>
+
+                                            {ms.success_kpis && ms.success_kpis.length > 0 && (
+                                                <>
+                                                    <h5 style={{ color: '#fbbf24', fontSize: '0.9rem', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '5px' }}>
+                                                        <CheckCircle size={14} /> Success KPIs
+                                                    </h5>
+                                                    <ul style={{ color: '#fef3c7', margin: 0, paddingLeft: '1.5rem', lineHeight: '1.6', fontSize: '0.95rem' }}>
+                                                        {ms.success_kpis.map((kpi, kIdx) => (
+                                                            <li key={kIdx} style={{ marginBottom: '0.4rem' }}>{kpi}</li>
+                                                        ))}
+                                                    </ul>
+                                                </>
+                                            )}
                                         </div>
                                     </div>
                                 ))}
