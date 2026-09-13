@@ -122,7 +122,7 @@ const ColdOutreachPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tool-page-container" style={{ maxWidth: '1600px' }}>
+            <div className="tool-page-container">
                 
                 <div className="tool-header">
                     <div className="hero-badge badge-orange">

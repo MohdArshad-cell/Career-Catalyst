@@ -274,7 +274,11 @@
 .tool-page-container {
     padding-top: 100px;
     padding-bottom: 3rem;
-    max-width: 96%;
+    width: 100%;
+    max-width: 100%;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    box-sizing: border-box;
     margin: 0 auto;
 }
 
