@@ -201,106 +201,111 @@ const HomePage = () => {
 
             {/* ────────── 1. HERO ────────── */}
             <section className="hero-section" id="hero">
-                <div className="hero-orbit-container">
-                    <div className="orbit-ring orbit-ring-1"></div>
-                    <div className="orbit-ring orbit-ring-2"></div>
-                    <div className="orbit-ring orbit-ring-3"></div>
-                </div>
-
                 <div className="hero-inner elite-hero-grid">
                     <div className="hero-text-col">
-                        <div className="hero-badge">
-                            <span className="sparkle">✨</span> Elite AI Career Accelerator
+                        <div className="elite-pill">
+                            <span className="sparkle">🎯</span> TARGETED FOR AMBITIOUS PROFESSIONALS
                         </div>
 
-                        <h1 className="hero-title">
-                            Your Unfair Advantage in the Job Market
+                        <h1 className="hero-title elite-huge-title">
+                            Turn Ghosted Applications<br/>into <span className="gradient-text">Career Catalyst.</span>
                         </h1>
 
-                        <p className="hero-subtitle">
-                            Create, tailor, and evaluate your resume with AI that understands 
-                            exactly how recruiters and ATS systems think. Land interviews, not rejections.
+                        <p className="hero-subtitle elite-subtitle">
+                            We re-engineer your digital footprint so recruiters chase you, not the other way around. Dominate the global job market.
                         </p>
 
-                        <div className="hero-cta-group">
+                        <div className="hero-cta-group" style={{ marginBottom: '2rem' }}>
                             <button onClick={launchTools} className="btn-hero-primary glow-effect" id="hero-cta">
                                 {user ? 'Go to Dashboard →' : 'Launch AI Tools →'}
                             </button>
-                            <button 
-                                onClick={() => document.getElementById('how-it-works')?.scrollIntoView({ behavior: 'smooth' })}
-                                className="btn-hero-secondary"
-                                id="hero-secondary-cta"
-                            >
-                                See How It Works ↓
-                            </button>
-                        </div>
-
-                        <div className="hero-stats-bar">
-                            <div className="stat-pill" ref={stat1.ref}>
-                                <span className="stat-number cyan">{stat1.count.toLocaleString()}+</span>
-                                <span className="stat-label">Resumes Tailored</span>
-                            </div>
-                            <div className="stat-pill" ref={stat2.ref}>
-                                <span className="stat-number blue">{stat2.count.toLocaleString()}+</span>
-                                <span className="stat-label">Active Users</span>
-                            </div>
-                            <div className="stat-pill" ref={stat3.ref}>
-                                <span className="stat-number gold">{stat3.count}%</span>
-                                <span className="stat-label">ATS Pass Rate</span>
-                            </div>
                         </div>
                     </div>
 
-                    <div className="hero-demo-col">
-                        <div className="live-demo-card glass-panel">
-                            <div className="demo-header">
-                                <Wand2 size={18} color="#67e8f9" /> <span>Live AI Rewriter Demo</span>
-                            </div>
-                            <div className="demo-body">
-                                <label className="demo-label">Weak Bullet Point</label>
-                                <textarea 
-                                    className="demo-textarea" 
-                                    value={demoInput}
-                                    onChange={(e) => setDemoInput(e.target.value)}
-                                    placeholder="Type a weak bullet point..."
-                                    maxLength={200}
-                                />
-                                <button className="demo-btn" onClick={runLiveDemo} disabled={isDemoLoading}>
-                                    {isDemoLoading ? <Loader2 size={16} className="spin" /> : 'Optimize Now ✨'}
-                                </button>
-                                
-                                <label className="demo-label" style={{marginTop: '1.5rem', color: '#10b981'}}>Elite Rewrite</label>
-                                <div className={`demo-output ${demoOutput ? 'active' : ''}`}>
-                                    {demoOutput ? demoOutput : <span className="placeholder">Awaiting AI magic...</span>}
+                    <div className="hero-visual-col">
+                        <div className="tilt-container">
+                            <div className="floating-badge badge-top-left">
+                                <div className="badge-icon green">📄</div>
+                                <div className="badge-text">
+                                    <span className="tiny">ATS MATCH</span>
+                                    <strong>99/100</strong>
                                 </div>
                             </div>
+                            
+                            <div className="main-3d-card">
+                                <div className="card-header">
+                                    <span className="dot red"></span><span className="dot yellow"></span><span className="dot green"></span>
+                                    <span className="terminal-title">bash - 80x24</span>
+                                </div>
+                                <div className="card-body terminal-body">
+                                    <p>{'>'} Initializing ATS optimization...</p>
+                                    <p>{'>'} Injecting keywords: React, Node...</p>
+                                    <p>{'>'} Re-formatting to LaTeX standard...</p>
+                                    <p>{'>'} Deploying Next.js portfolio...</p>
+                                    <p className="success-text">{'>'} Status: Hired at Top Companies!_</p>
+                                </div>
+                            </div>
+
+                            <div className="floating-badge badge-bottom-right">
+                                <div className="badge-icon purple">📈</div>
+                                <div className="badge-text">
+                                    <span className="tiny">VISIBILITY</span>
+                                    <strong>+420%</strong>
+                                </div>
+                            </div>
+                            <div className="floating-company company-netflix">NETFLIX</div>
+                            <div className="floating-company company-stripe">STRIPE</div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* ────────── 2. TRUSTED BY ────────── */}
-            <section className="trusted-section">
-                <div className="container">
-                    <p className="trusted-label">Trusted by job seekers targeting</p>
-                    <div className="trusted-logos-wrapper">
-                        <div className="trusted-logos-track">
-                            {/* Set 1 */}
-                            <span className="trusted-logo">Google</span>
-                            <span className="trusted-logo">Amazon</span>
-                            <span className="trusted-logo">Microsoft</span>
-                            <span className="trusted-logo">Meta</span>
-                            <span className="trusted-logo">Apple</span>
-                            <span className="trusted-logo">Netflix</span>
-                            <span className="trusted-logo">Stripe</span>
-                            {/* Set 2 (for infinite scroll) */}
-                            <span className="trusted-logo">Google</span>
-                            <span className="trusted-logo">Amazon</span>
-                            <span className="trusted-logo">Microsoft</span>
-                            <span className="trusted-logo">Meta</span>
-                            <span className="trusted-logo">Apple</span>
-                            <span className="trusted-logo">Netflix</span>
-                            <span className="trusted-logo">Stripe</span>
+            {/* ────────── 2. ELITE MARQUEE ────────── */}
+            <section className="elite-marquee-section">
+                <div className="marquee-label">ENGINEERS PLACED AT</div>
+                <div className="marquee-divider">|</div>
+                <div className="trusted-logos-wrapper elite-marquee">
+                    <div className="trusted-logos-track">
+                        <span className="trusted-logo">ByteDance</span>
+                        <span className="trusted-logo">Databricks</span>
+                        <span className="trusted-logo">Google</span>
+                        <span className="trusted-logo">Meta</span>
+                        <span className="trusted-logo">Stripe</span>
+                        <span className="trusted-logo">Amazon</span>
+                        {/* Duplicate for infinite loop */}
+                        <span className="trusted-logo">ByteDance</span>
+                        <span className="trusted-logo">Databricks</span>
+                        <span className="trusted-logo">Google</span>
+                        <span className="trusted-logo">Meta</span>
+                        <span className="trusted-logo">Stripe</span>
+                        <span className="trusted-logo">Amazon</span>
+                    </div>
+                </div>
+            </section>
+
+            {/* ────────── ELITE DATA SECTION ────────── */}
+            <section className="elite-data-section">
+                <div className="data-header">
+                    <div className="elite-pill">
+                        <span className="sparkle">⚡</span> PERFORMANCE METRICS
+                    </div>
+                    <h2 className="data-title">The Difference is in the <span className="gradient-text-cyan">Data.</span></h2>
+                </div>
+                
+                <div className="before-after-container">
+                    <div className="before-after-grid">
+                        <div className="before-col">
+                            <h3 className="before-title">1. The Resume Metric Rewrite</h3>
+                            <p className="before-desc">We convert passive duties into high-impact engineering achievements using the XYZ framework.</p>
+                        </div>
+                        <div className="after-col">
+                            <div className="comparison-card">
+                                <div className="card-tag tag-before">BEFORE</div>
+                                <p className="text-before">"Worked on backend APIs using Java and Spring Boot for an e-commerce site."</p>
+                                <div className="arrow-divider">→</div>
+                                <div className="card-tag tag-after">AFTER (XYZ Framework)</div>
+                                <p className="text-after">"Architected <span className="highlight-purple">12+ RESTful microservices</span> using Spring Boot & Redis, reducing peak checkout latency by <span className="highlight-green">35%</span> across <span className="highlight-purple">50k+ daily transactions</span>."</p>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -553,14 +558,27 @@ const HomePage = () => {
                 </div>
             </section>
 
-            {/* ────────── 10. FINAL CTA ────────── */}
-            <section className="cta-section container">
-                <div className="cta-banner reveal">
-                    <h2>Ready to Land Your Dream Job?</h2>
-                    <p>Join thousands of job seekers who've already transformed their careers with AI.</p>
-                    <button onClick={launchTools} className="btn-hero-primary" id="final-cta">
-                        {user ? 'Go to Dashboard →' : 'Get Started — It\'s Free →'}
-                    </button>
+            {/* ────────── 10. ELITE WHATSAPP CTA ────────── */}
+            <section className="elite-cta-section container">
+                <div className="elite-cta-inner reveal">
+                    <h2>Ready to transform your applications?</h2>
+                    <p>Join <strong>100+ engineers</strong> who stopped getting ghosted and landed their dream roles.</p>
+                    <a href="https://wa.me/917887096421" target="_blank" rel="noreferrer" className="whatsapp-btn">
+                        <span className="wa-icon">💬</span> 
+                        <div className="wa-text">
+                            <strong>Chat on WhatsApp</strong>
+                            <span>+91 7887096421</span>
+                        </div>
+                    </a>
+                    
+                    <div className="trusted-partners">
+                        <span className="partner-label">TRUSTED PAYMENT PARTNERS</span>
+                        <div className="partner-badges">
+                            <span>Stripe</span>
+                            <span>PayPal</span>
+                            <span>Razorpay</span>
+                        </div>
+                    </div>
                 </div>
             </section>
 
