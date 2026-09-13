@@ -184,3 +184,7 @@ class ResignationRequest(BaseModel):
     tone: str = Field("professional")
     reason: str = Field(None)
     model_config = {"extra": "ignore"}
+
+class AtsXrayRequest(BaseModel):
+    resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText', 'resume'))
+    model_config = {"extra": "ignore"}

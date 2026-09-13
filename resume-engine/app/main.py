@@ -29,11 +29,12 @@ from supabase import create_client, Client
 
 # Local Imports
 from .models import (
-    GenerationRequest, TailorRequest, EvaluateRequest, CoverLetterRequest, InterviewRequest, LinkedInRequest, OutreachRequest, RoadmapRequest, BulletRewriteRequest, ResignationRequest
+    GenerationRequest, TailorRequest, EvaluateRequest, CoverLetterRequest, InterviewRequest, LinkedInRequest, OutreachRequest, RoadmapRequest, BulletRewriteRequest, ResignationRequest, AtsXrayRequest
 )
 from .generator import ResumeGenerator
 from app.services.tailor_service import execute_tailor_chain
 from app.services.evaluate_service import execute_evaluate_chain
+from app.services.ats_xray_service import execute_ats_xray_chain
 from app.services.cover_letter_service import execute_cover_letter_chain
 from app.services.interview_service import execute_interview_chain
 from app.services.linkedin_service import execute_linkedin_chain
@@ -404,6 +405,28 @@ async def evaluate(request: EvaluateRequest, user_auth: dict = Depends(verify_us
     # 2. Deduct Token and Log SECOND
     deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_evaluate")
     return {"evaluation_result": result}
+
+@app.post("/api/ai/ats-xray")
+async def ats_xray(request: AtsXrayRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+    # 0. Rate Limit Check
+    check_user_rate_limit(user_auth["user_id"])
+    
+    # 1. Execute AI Logic FIRST
+    start_time = time.time()
+    try:
+        result = execute_ats_xray_chain(request.resume_text)
+        latency_ms = int((time.time() - start_time) * 1000)
+        log_generation(user_auth["user_id"], "ai_ats_xray", "success", latency_ms)
+    except Exception as ai_error:
+        latency_ms = int((time.time() - start_time) * 1000)
+        log_generation(user_auth["user_id"], "ai_ats_xray", "failed", latency_ms, str(ai_error))
+        print(f"❌ [AI ERROR]: {str(ai_error)}")
+        raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
+
+    # 2. Deduct Token and Log SECOND
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_ats_xray")
+    return {"xray_data": result}
+
 
 @app.post("/api/ai/coverletter")
 async def coverletter(request: CoverLetterRequest, background_tasks: BackgroundTasks, user_auth: dict = Depends(verify_user_and_tokens)): 
