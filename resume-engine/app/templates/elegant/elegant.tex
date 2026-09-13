@@ -70,7 +70,7 @@
 \begin{center}
     {\Huge \textbf{\VAR{ resume_data.personal_info.fullName | escape_tex }}} \\ \vspace{2pt}
     \small
-    \BLOCK{ if resume_data.personal_info.phone }+91-\VAR{ resume_data.personal_info.phone | escape_tex }\BLOCK{ endif }
+    \BLOCK{ if resume_data.personal_info.phone }\VAR{ resume_data.personal_info.phone | escape_tex }\BLOCK{ endif }
     \BLOCK{ if resume_data.personal_info.email }\BLOCK{ if resume_data.personal_info.phone } $|$ \BLOCK{ endif }\href{mailto:\VAR{ resume_data.personal_info.email }}{\underline{\VAR{ resume_data.personal_info.email | escape_tex }}}\BLOCK{ endif }
     \BLOCK{ if resume_data.personal_info.address }\BLOCK{ if resume_data.personal_info.email or resume_data.personal_info.phone } $|$ \BLOCK{ endif }\VAR{ resume_data.personal_info.address | escape_tex }\BLOCK{ endif }
     \BLOCK{ if resume_data.personal_info.linkedin }\BLOCK{ if resume_data.personal_info.email or resume_data.personal_info.phone or resume_data.personal_info.address } $|$ \BLOCK{ endif }\href{https://\VAR{resume_data.personal_info.linkedin}}{\faLinkedinSquare\ \underline{LinkedIn}}\BLOCK{ endif }

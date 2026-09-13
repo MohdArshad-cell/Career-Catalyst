@@ -33,6 +33,14 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str:
         page = doc[page_num]
         # Use "text" mode for clean extraction preserving line breaks
         page_text = page.get_text("text")
+        
+        # Extract links so AI can see URLs that are hidden behind text
+        links = page.get_links()
+        link_urls = [link.get("uri") for link in links if link.get("uri")]
+        
+        if link_urls:
+            page_text += "\n\nLinks found on this page:\n" + "\n".join(link_urls)
+
         if page_text.strip():
             full_text.append(page_text.strip())
 

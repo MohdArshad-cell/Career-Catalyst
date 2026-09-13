@@ -383,7 +383,7 @@ const AiTailorPage: React.FC = () => {
                                     <div className="panel output-panel glass-card-premium">
                                         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                                             <h3 style={{ margin: 0, color: 'var(--accent-purple)' }}>📄 PDF Preview</h3>
-                                            <button onClick={handleDownloadPdf} className="btn-premium" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>
+                                            <button onClick={handleDownloadPdf} className="btn-premium" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem', width: 'auto' }}>
                                                 ⬇️ Download PDF
                                             </button>
                                         </div>
