@@ -32,7 +32,6 @@
 }
 
 .tool-card {
-    min-height: 320px;
     cursor: pointer;
     display: flex;
     flex-direction: column;
@@ -83,8 +82,7 @@
 .tool-card p {
     color: var(--text-secondary);
     line-height: 1.6;
-    margin: 0 0 2rem 0;
-    flex-grow: 1; /* Automatically pushes CTA to the absolute bottom */
+    margin: 0 0 1.5rem 0;
 }
 
 /* Animated CTA */
