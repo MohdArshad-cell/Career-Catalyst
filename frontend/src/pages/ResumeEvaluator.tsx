@@ -8,6 +8,7 @@ import PdfUploadButton from '../components/PdfUploadButton';
 import AiLoadingState from '../components/AiLoadingState';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
+import { FileText, Target, Flame } from 'lucide-react';
 import './ToolPages.css';
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
@@ -173,24 +174,26 @@ const AtsEvaluatorPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ borderColor: '#ef4444', color: '#ef4444', background: 'rgba(239, 68, 68, 0.1)' }}>
-                        <span className="sparkle">🔥</span> Enterprise ATS Engine
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Flame size={16} /> Enterprise ATS Engine
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>Resume Evaluator</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>No sugarcoating. Find out exactly how a modern semantic ATS ranks you.</p>
+                    <h1 className="tool-header-title">Resume Evaluator</h1>
+                    <p className="tool-header-subtitle">No sugarcoating. Find out exactly how a modern semantic ATS ranks you.</p>
                 </div>
 
-                <div className="tailor-input-grid">
-                    <div className="panel glass-card relative-panel">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0 }}>Your Resume (Text, JSON, or PDF)</h2>
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel relative-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
+                            </h2>
                             <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
                         </div>
                         <textarea
-                            className={`drop-zone premium-textarea ${isDragging ? 'drag-active' : ''}`}
+                            className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
                             value={resumeText}
                             onChange={(e) => setResumeText(e.target.value)}
                             onDragOver={handleDragOver}
@@ -200,8 +203,12 @@ const AtsEvaluatorPage: React.FC = () => {
                             disabled={isLoading}
                         />
                     </div>
-                    <div className="panel glass-card">
-                        <h2 className="panel-title">Target Job Description</h2>
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Job Description
+                            </h2>
+                        </div>
                         <textarea
                             className="premium-textarea"
                             value={jobDescription}
@@ -231,10 +238,10 @@ const AtsEvaluatorPage: React.FC = () => {
                         ) : evaluationResult && (
                             <div className="dashboard-wrapper">
                                 {/* SCORE & RED FLAGS ROW */}
-                                <div className="tailor-input-grid" style={{ marginBottom: '2rem', gridTemplateColumns: '1fr 1.5fr 1fr' }}>
+                                <div className="tool-input-grid" style={{ marginBottom: '2rem', gridTemplateColumns: '1fr 1.5fr 1fr' }}>
 
                                     {/* ATS SCORE PANEL */}
-                                    <div className="panel glass-card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
+                                    <div className="panel glass-panel" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
                                         <h2 className="panel-title">ATS Score</h2>
                                         <div style={{
                                             width: '140px', height: '140px', borderRadius: '50%',
@@ -293,7 +300,7 @@ const AtsEvaluatorPage: React.FC = () => {
                                 </div>
 
                                 {/* KEYWORDS ROW */}
-                                <div className="panel glass-card" style={{ marginBottom: '2rem' }}>
+                                <div className="panel glass-panel" style={{ marginBottom: '2rem' }}>
                                     <h2 className="panel-title" style={{ color: '#00e5ff' }}>🔍 Missing Keywords (Semantic Gap)</h2>
                                     <div style={{ background: 'rgba(0,0,0,0.2)', padding: '1.5rem', borderRadius: '12px' }}>
                                         <div className="pills-container" style={{ justifyContent: 'flex-start', flexWrap: 'wrap', gap: '10px' }}>

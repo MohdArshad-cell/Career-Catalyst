@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { FileText, Target, Sparkles } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -249,24 +250,26 @@ const AiTailorPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="glass-badge">
-                        <span className="sparkle">✨</span> AI Optimizer
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Sparkles size={16} /> AI Optimizer
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>Resume Tailor</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Instantly align your resume with any job description. Precision matters.</p>
+                    <h1 className="tool-header-title">Resume Tailor</h1>
+                    <p className="tool-header-subtitle">Instantly align your resume with any job description. Precision matters.</p>
                 </div>
 
-                <div className="tailor-input-grid">
-                    <div className="panel glass-card-premium relative-panel">
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                            <h2 className="panel-title" style={{ margin: 0 }}>Your Resume (Text, JSON, or PDF)</h2>
+                <div className="tool-input-grid">
+                    <div className="panel glass-panel relative-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
+                            </h2>
                             <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
                         </div>
                         <textarea
-                            className={`drop-zone textarea-premium ${isDragging ? 'drag-active' : ''}`}
+                            className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
                             value={resumeText}
                             onChange={(e) => setResumeText(e.target.value)}
                             onDragOver={handleDragOver}
@@ -276,10 +279,14 @@ const AiTailorPage: React.FC = () => {
                             disabled={isLoading}
                         />
                     </div>
-                    <div className="panel glass-card-premium">
-                        <h2 className="panel-title">Target Job Description</h2>
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Job Description
+                            </h2>
+                        </div>
                         <textarea
-                            className="textarea-premium"
+                            className="premium-textarea"
                             value={jobDescription}
                             onChange={(e) => setJobDescription(e.target.value)}
                             placeholder="Paste the target JD here..."

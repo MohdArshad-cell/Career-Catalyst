@@ -4,7 +4,8 @@ import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
 import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
-import './ToolPages.css'; 
+import { Sparkles, FileText, Target, Scan } from 'lucide-react';
+import './ToolPages.css';
 
 // Standard English + HR/Resume Fluff Stop Words
 const stopWords = new Set([
@@ -154,26 +155,28 @@ const AtsXrayPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ borderColor: '#10b981', color: '#10b981', background: 'rgba(16, 185, 129, 0.1)' }}>
-                        <span className="sparkle">👁️</span> Local Edge Scanner
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Scan size={16} /> Local Edge Scanner
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>ATS X-Ray Vision</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>See your resume exactly how an ATS robot sees it. Discover hidden missing keywords instantly.</p>
+                    <h1 className="tool-header-title">ATS X-Ray Vision</h1>
+                    <p className="tool-header-subtitle">See your resume exactly how an ATS robot sees it. Discover hidden missing keywords instantly.</p>
                 </div>
 
                 {!scanComplete && !isScanning ? (
                     <>
-                        <div className="tailor-input-grid">
-                            <div className="panel glass-card relative-panel">
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                                    <h2 className="panel-title" style={{ margin: 0 }}>Your Resume (Text, JSON, or PDF)</h2>
+                        <div className="tool-input-grid">
+                            <div className="panel glass-panel relative-panel">
+                                <div className="panel-header">
+                                    <h2 className="panel-title">
+                                        <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
+                                    </h2>
                                     <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} />
                                 </div>
                                 <textarea
-                                    className={`drop-zone premium-textarea ${isDragging ? 'drag-active' : ''}`}
+                                    className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
                                     value={resumeText}
                                     onChange={(e) => setResumeText(e.target.value)}
                                     onDragOver={handleDragOver}
@@ -182,8 +185,12 @@ const AtsXrayPage: React.FC = () => {
                                     placeholder='Paste your resume text, or click "Upload PDF" above...'
                                 />
                             </div>
-                            <div className="panel glass-card">
-                                <h2 className="panel-title">Target Job Description</h2>
+                            <div className="panel glass-panel">
+                                <div className="panel-header">
+                                    <h2 className="panel-title">
+                                        <Target size={22} color="#67e8f9" /> Target Job Description
+                                    </h2>
+                                </div>
                                 <textarea
                                     className="premium-textarea"
                                     value={jobDescription}
@@ -200,7 +207,7 @@ const AtsXrayPage: React.FC = () => {
                                 disabled={!resumeText.trim() || !jobDescription.trim()}
                                 style={{ padding: '1.2rem 3rem', fontSize: '1.2rem', borderRadius: '50px', background: 'linear-gradient(135deg, #10b981, #047857)' }}
                             >
-                                Activate X-Ray Vision 👁️
+                                Activate X-Ray Vision <Scan size={20} style={{display: 'inline', marginLeft: '8px'}} />
                             </button>
                         </div>
                     </>
@@ -236,7 +243,7 @@ const AtsXrayPage: React.FC = () => {
                                 </div>
 
                                 {/* KEYWORD PILL CLOUDS */}
-                                <div className="panel glass-card" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                <div className="panel glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                     <div>
                                         <h4 style={{ color: '#10b981', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                             <span>✅</span> Discovered Keywords
