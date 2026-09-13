@@ -93,16 +93,16 @@ const featuresList: Feature[] = [
     },
     {
         id: 'xray',
-        title: 'ATS X-Ray Vision',
+        title: 'Autonomous ATS X-Ray',
         icon: '👁️',
-        description: 'See your resume through the eyes of an ATS. Live split-screen keyword highlighting.',
+        description: 'Paste your resume and let our AI instantly hunt down formatting red flags, weak bullets, and generic fluff. No JD required.',
         status: 'live',            
-        badge: 'Live Now',          
+        badge: 'Elite AI',          
         route: '/ats-xray',         
-        buttonText: 'Try for Free 🚀',
+        buttonText: 'Scan Deep Structure 🚀',
         accent: '#10b981', 
-        tags: ['Live Highlighting', 'Gap Analysis'],
-        stats: [{ label: 'Accuracy', value: '99%' }, { label: 'Cost', value: 'Free' }]
+        tags: ['Health Score', 'Red Flags', 'Auto-Rewrite'],
+        stats: [{ label: 'Depth', value: 'Deep Scan' }, { label: 'Cost', value: 'Free' }]
     },
     {
         id: 'networking',
