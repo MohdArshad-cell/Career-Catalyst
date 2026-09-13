@@ -150,6 +150,8 @@ class CoverLetterRequest(BaseModel):
 
 class InterviewRequest(BaseModel):
     job_description: str = Field(..., validation_alias=AliasChoices('job_description', 'jobDescription'))
+    resume_text: Optional[str] = Field("", validation_alias=AliasChoices('resume_text', 'resumeText'))
+    interview_round: str = Field("Technical Deep Dive", validation_alias=AliasChoices('interview_round', 'interviewRound'))
     model_config = {"extra": "ignore"}
 
 class LinkedInRequest(BaseModel):

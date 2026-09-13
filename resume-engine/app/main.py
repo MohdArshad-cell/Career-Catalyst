@@ -439,7 +439,7 @@ async def interview(request: InterviewRequest, user_auth: dict = Depends(verify_
     # 1. Execute AI Logic FIRST
     start_time = time.time()
     try:
-        result = execute_interview_chain(request.job_description)
+        result = execute_interview_chain(request.job_description, request.resume_text, request.interview_round)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_interview", "success", latency_ms)
     except Exception as ai_error:
