@@ -3,21 +3,57 @@
    ========================================================================== */
 
 /* === Main Container === */
-/* Update this in AiTailorPage.css */
+.tool-page-container,
 .tailor-studio-container {
     color: var(--text-primary);
     animation: fadeIn 0.8s ease-out;
     width: 100% !important;
     max-width: 1600px !important; /* Forces a wide, professional workspace */
     margin: 0 auto;
+    padding-top: 100px;
+    padding-bottom: 4rem;
     padding-left: 2rem;
     padding-right: 2rem;
     box-sizing: border-box;
 }
 
+/* === Unified Headers === */
+.tool-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.badge-neutral {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #e2e8f0;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tool-header-title {
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
+    color: #ffffff;
+    text-shadow: 0 0 20px rgba(103, 232, 249, 0.4);
+    font-weight: 800;
+}
+
+.tool-header-subtitle {
+    color: var(--text-secondary);
+    font-size: 1.15rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
 /* === Headers & Badges === */
 
-/* Update this in AiTailorPage.css */
 .tailor-input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -422,13 +458,14 @@
 }
 
 .premium-textarea {
-    min-height: 200px;
+    min-height: 400px; /* Increased from 200px to properly use vertical space */
+    resize: vertical;
     background-color: rgba(0, 0, 0, 0.2);
     border: 1px dashed rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 1.2rem;
     color: #f8fafc;
-    font-size: 1rem;
+    font-size: 1.05rem;
     line-height: 1.6;
     width: 100%;
     box-sizing: border-box;
