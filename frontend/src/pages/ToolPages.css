@@ -364,13 +364,13 @@
 
 .glass-panel {
     position: relative;
-    padding: 2.5rem;
-    border-radius: 20px;
+    padding: 2rem;
+    border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    background: linear-gradient(180deg, rgba(15, 23, 42, 0.5) 0%, rgba(10, 15, 30, 0.3) 100%);
-    box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255,255,255,0.02);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: rgba(15, 23, 42, 0.75);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
@@ -418,8 +418,8 @@
 
 .premium-textarea {
     min-height: 200px;
-    background-color: rgba(255, 255, 255, 0.015);
-    border: 1px dashed rgba(255, 255, 255, 0.15);
+    background-color: rgba(0, 0, 0, 0.2);
+    border: 1px dashed rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     padding: 1.2rem;
     color: #f8fafc;
@@ -428,7 +428,6 @@
     width: 100%;
     box-sizing: border-box;
     transition: all 0.3s ease;
-    backdrop-filter: blur(10px);
 }
 
 .premium-textarea:focus {
@@ -487,7 +486,7 @@
 .tool-input-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    gap: 1.25rem;
     align-items: stretch;
 }
 
