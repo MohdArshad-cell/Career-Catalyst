@@ -125,8 +125,8 @@ const ColdOutreachPage: React.FC = () => {
             <div className="tool-page-container">
                 
                 <div className="tool-header">
-                    <div className="hero-badge badge-orange">
-                        <Mail size={16} style={{ display: 'inline', marginRight: '5px' }}/> Networking
+                    <div className="badge-neutral">
+                        <Sparkles size={16} /> Networking
                     </div>
                     <h1 className="tool-header-title">Cold Outreach AI</h1>
                     <p className="tool-header-subtitle">Generate highly-converting LinkedIn notes and cold emails to get referrals.</p>
@@ -134,7 +134,7 @@ const ColdOutreachPage: React.FC = () => {
 
                 <div className="tool-input-grid">
                     <div className="panel glass-panel">
-                        <div className="panel-accent-orange"></div>
+
                         <div className="panel-header">
                             <h2 className="panel-title">
                                 <FileText size={22} color="#f97316" /> Your Resume
@@ -151,7 +151,7 @@ const ColdOutreachPage: React.FC = () => {
                         />
                     </div>
                     <div className="panel glass-panel">
-                        <div className="panel-accent-orange"></div>
+
                         <div className="panel-header">
                             <h2 className="panel-title">
                                 <Target size={22} color="#ea580c" /> Target Role

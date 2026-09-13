@@ -76,8 +76,8 @@ const BulletRewriterPage: React.FC = () => {
             <div className="tool-page-container" style={{ maxWidth: '900px' }}>
                 
                 <div className="tool-header">
-                    <div className="hero-badge badge-purple">
-                        <span className="sparkle">✨</span> Free Tool
+                    <div className="badge-neutral">
+                        <Sparkles size={16} /> Free Tool
                     </div>
                     <h1 className="tool-header-title">AI Bullet Rewriter</h1>
                     <p className="tool-header-subtitle">Turn weak, generic duties into powerful, metric-driven achievements instantly.</p>
