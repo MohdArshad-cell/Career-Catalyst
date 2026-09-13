@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Mic, ChevronDown, ChevronUp, Target, FileText, Settings, Activity, Brain } from 'lucide-react';
+import { Mic, ChevronDown, ChevronUp, Target, FileText, Settings, Activity, Brain, Upload } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -37,15 +37,50 @@ const MockInterviewPage: React.FC = () => {
     
     const [interviewData, setInterviewData] = useState<InterviewData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [isUploading, setIsUploading] = useState(false);
     const [error, setError] = useState('');
     
-    const [visibleAnswers, setVisibleAnswers] = useState<{ [key: number]: boolean }>({});
+    const [visibleAnswers, setVisibleAnswers] = useState<Record<number, boolean>>({});
+    const fileInputRef = useRef<HTMLInputElement>(null);
 
     const toggleAnswer = (index: number) => {
         setVisibleAnswers(prev => ({
             ...prev,
             [index]: !prev[index]
         }));
+    };
+
+    const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (!file) return;
+
+        if (file.type !== 'application/pdf') {
+            setError('Please upload a PDF file.');
+            return;
+        }
+
+        setIsUploading(true);
+        setError('');
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axios.post(`${API_BASE_URL}/api/upload-pdf`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' }
+            });
+            
+            if (response.data.extracted_text) {
+                setResumeText(response.data.extracted_text);
+            }
+        } catch (err: any) {
+            console.error('PDF upload failed:', err);
+            setError(err.response?.data?.detail || 'Failed to extract text from PDF.');
+        } finally {
+            setIsUploading(false);
+            if (fileInputRef.current) {
+                fileInputRef.current.value = '';
+            }
+        }
     };
 
     const handleGenerate = async () => {
@@ -174,10 +209,26 @@ const MockInterviewPage: React.FC = () => {
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
                         {/* Resume Input */}
                         <div className="panel glass-panel">
-                            <div className="panel-header">
+                            <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                 <h2 className="panel-title">
                                     <FileText size={22} color="#67e8f9" /> Your Resume (Optional)
                                 </h2>
+                                <input 
+                                    type="file" 
+                                    accept="application/pdf" 
+                                    style={{ display: 'none' }} 
+                                    ref={fileInputRef}
+                                    onChange={handleFileUpload}
+                                />
+                                <button 
+                                    className="btn-outline" 
+                                    onClick={() => fileInputRef.current?.click()}
+                                    disabled={isUploading || isLoading}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.85rem' }}
+                                >
+                                    <Upload size={14} />
+                                    {isUploading ? 'Extracting...' : 'Upload PDF'}
+                                </button>
                             </div>
                             <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', marginTop: '-0.5rem' }}>
                                 For personalized questions mapping your experience to the JD.
