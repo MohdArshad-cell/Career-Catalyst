@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { Mic, ChevronDown, ChevronUp } from 'lucide-react';
+import { Mic, ChevronDown, ChevronUp, Target } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import ParticleBackground from '../components/ParticleBackground';
@@ -110,20 +110,24 @@ const MockInterviewPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '96%', margin: '0 auto' }}>
+            <div className="tool-page-container">
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge">
-                        <span className="sparkle">🎤</span> Interview Prep
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Mic size={16} /> Interview Prep
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem' }}>AI Mock Interview</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Paste a Job Description. Our AI HR Manager will grill you with targeted questions.</p>
+                    <h1 className="tool-header-title">AI Mock Interview</h1>
+                    <p className="tool-header-subtitle">Paste a Job Description. Our AI HR Manager will grill you with targeted questions.</p>
                 </div>
 
                 {/* Input Section - Centered wide panel */}
                 <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-                    <div className="panel glass-card">
-                        <h2 className="panel-title">Target Job Description</h2>
+                    <div className="panel glass-panel">
+                        <div className="panel-header">
+                            <h2 className="panel-title">
+                                <Target size={22} color="#67e8f9" /> Target Job Description
+                            </h2>
+                        </div>
                         <textarea
                             className="premium-textarea"
                             placeholder="Paste the full job description here (e.g., 'Senior Software Engineer at Google...')"
@@ -152,14 +156,14 @@ const MockInterviewPage: React.FC = () => {
                 {(isLoading || questions.length > 0) && (
                     <div className="output-section" style={{ maxWidth: '900px', margin: '0 auto' }}>
                         {isLoading ? (
-                            <div className="loading-state glass-card text-center" style={{ padding: '4rem' }}>
+                            <div className="loading-state glass-panel text-center" style={{ padding: '4rem' }}>
                                 <div className="spinner-premium"></div>
                                 <h3 className="step-text" style={{ color: 'var(--accent-cyan)', margin: '1.5rem 0' }}>
                                     🧠 HR AI is reviewing the JD and drafting questions...
                                 </h3>
                             </div>
                         ) : (
-                            <div className="panel output-panel glass-card">
+                            <div className="panel output-panel glass-panel">
                                 <div className="panel-header" style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '2rem' }}>
                                     <Mic size={28} style={{ color: 'var(--accent-purple)' }} />
                                     <h3 style={{ margin: 0, color: 'var(--text-primary)', fontSize: '1.5rem' }}>Interview Session Active</h3>
@@ -167,7 +171,7 @@ const MockInterviewPage: React.FC = () => {
                                 
                                 <div className="questions-container" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                     {questions.map((item, index) => (
-                                        <div key={index} className="question-item glass-card" style={{ padding: '1.5rem', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
+                                        <div key={index} className="question-item glass-panel" style={{ padding: '1.5rem', background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '12px' }}>
                                             <h4 style={{ color: 'var(--accent-cyan)', margin: '0 0 0.5rem 0' }}>Question {index + 1}</h4>
                                             <p style={{ color: 'var(--text-primary)', fontSize: '1.1rem', marginBottom: '1rem', lineHeight: '1.6' }}>
                                                 {item.question}

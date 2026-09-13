@@ -84,19 +84,19 @@ const ReferralPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '800px', margin: '0 auto' }}>
+            <div className="tool-page-container" style={{ maxWidth: '800px' }}>
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(234, 179, 8, 0.1)', color: '#eab308', border: '1px solid rgba(234, 179, 8, 0.2)' }}>
-                        <Gift size={16} style={{ display: 'inline', marginRight: '5px' }}/> Earn Free Tokens
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <Gift size={16} /> Earn Free Tokens
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #eab308, #f59e0b)' }}>Refer a Friend</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Give 5 tokens, get 5 tokens. Invite your network to Career Catalyst and earn free AI generations.</p>
+                    <h1 className="tool-header-title">Refer a Friend</h1>
+                    <p className="tool-header-subtitle">Give 5 tokens, get 5 tokens. Invite your network to Career Catalyst and earn free AI generations.</p>
                 </div>
 
                 {!isLoading && stats ? (
                     <>
-                        <div className="panel glass-card text-center" style={{ marginBottom: '2rem', padding: '3rem' }}>
+                        <div className="panel glass-panel text-center" style={{ marginBottom: '2rem', padding: '3rem' }}>
                             <h2 style={{ color: 'white', marginBottom: '1rem' }}>Your Unique Referral Link</h2>
                             
                             <div style={{ display: 'flex', alignItems: 'center', background: 'rgba(0,0,0,0.4)', borderRadius: '8px', padding: '10px', marginBottom: '1.5rem', border: '1px solid rgba(234, 179, 8, 0.3)' }}>
@@ -128,7 +128,7 @@ const ReferralPage: React.FC = () => {
                         </div>
 
                         {/* Redeem Section */}
-                        <div className="panel glass-card" style={{ padding: '2rem', borderTop: '4px solid #3b82f6' }}>
+                        <div className="panel glass-panel" style={{ marginTop: '3rem', borderTop: '4px solid #3b82f6' }}>
                             <h3 style={{ color: 'white', marginBottom: '1rem' }}>Have a referral code?</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>Enter a friend's code below to claim your 5 free tokens.</p>
                             <div style={{ display: 'flex', gap: '10px' }}>

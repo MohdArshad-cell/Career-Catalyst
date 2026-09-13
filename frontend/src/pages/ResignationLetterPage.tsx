@@ -91,17 +91,17 @@ const ResignationLetterPage: React.FC = () => {
             <div className="background-aurora"></div>
             <Navbar />
 
-            <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '800px', margin: '0 auto' }}>
+            <div className="tool-page-container" style={{ maxWidth: '800px' }}>
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(236, 72, 153, 0.1)', color: '#ec4899', border: '1px solid rgba(236, 72, 153, 0.2)' }}>
-                        <span className="sparkle">✉️</span> Free Tool
+                <div className="tool-header">
+                    <div className="badge-neutral">
+                        <FileText size={16} /> Free Tool
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #ec4899, #f43f5e)' }}>Resignation Letter Generator</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Draft a perfect, bridge-building resignation letter in seconds.</p>
+                    <h1 className="tool-header-title">Resignation Letter Generator</h1>
+                    <p className="tool-header-subtitle">Draft a perfect, bridge-building resignation letter in seconds.</p>
                 </div>
 
-                <div className="panel glass-card" style={{ marginBottom: '2rem' }}>
+                <div className="panel glass-panel" style={{ marginBottom: '2rem' }}>
                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                         <div>
                             <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Your Name *</label>
@@ -180,7 +180,7 @@ const ResignationLetterPage: React.FC = () => {
 
                 {resultData && (
                     <div className="output-section">
-                        <div className="panel glass-card" style={{ padding: '2rem', border: '1px solid rgba(236, 72, 153, 0.3)' }}>
+                        <div className="panel glass-panel" style={{ padding: '2rem', border: '1px solid rgba(236, 72, 153, 0.3)' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
                                 <h3 style={{ margin: 0, color: '#ec4899', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
                                     <FileText size={20}/> Draft Ready
@@ -203,7 +203,7 @@ const ResignationLetterPage: React.FC = () => {
                         </div>
 
                         {/* Upsell CTA */}
-                        <div className="glass-card text-center" style={{ marginTop: '2rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(236,72,153,0.1), rgba(0,0,0,0))' }}>
+                        <div className="glass-panel text-center" style={{ marginTop: '2rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(236,72,153,0.1), rgba(0,0,0,0))' }}>
                             <h3 style={{ margin: '0 0 1rem 0', color: 'white' }}>Starting a new job hunt?</h3>
                             <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Make sure your resume is ready. Use our Premium AI tools to build, tailor, and optimize your resume for your next role.</p>
                             <button className="btn-premium" onClick={() => navigate('/AiTools')} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
