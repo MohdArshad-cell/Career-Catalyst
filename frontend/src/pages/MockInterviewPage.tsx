@@ -140,7 +140,7 @@ const MockInterviewPage: React.FC = () => {
                     <p className="tool-header-subtitle">Paste a Job Description. Our AI HR Manager will grill you with targeted questions.</p>
                 </div>
 
-                <div style={{ maxWidth: '900px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                <div style={{ maxWidth: '1200px', margin: '0 auto', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                     
                     {/* Settings Row */}
                     <div className="panel glass-panel">
@@ -228,7 +228,7 @@ const MockInterviewPage: React.FC = () => {
 
                 {/* Output Section */}
                 {(isLoading || interviewData) && (
-                    <div className="output-section" style={{ maxWidth: '1000px', margin: '0 auto' }}>
+                    <div className="output-section" style={{ maxWidth: '1200px', margin: '0 auto' }}>
                         {isLoading ? (
                             <div className="loading-state glass-panel text-center" style={{ padding: '4rem' }}>
                                 <div className="spinner-premium"></div>
