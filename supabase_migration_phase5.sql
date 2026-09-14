@@ -23,9 +23,21 @@ CREATE TABLE IF NOT EXISTS profiles (
 -- Helper function to generate unique referral code if needed
 -- We'll handle referral code generation in the backend python code instead.
 
+-- Add referral_code column if the table already existed without it
+ALTER TABLE profiles ADD COLUMN IF NOT EXISTS referral_code TEXT UNIQUE;
+
 -- RLS Policies
 ALTER TABLE referrals ENABLE ROW LEVEL SECURITY;
 ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+
+-- Drop existing policies so this script can be re-run safely
+DO $$
+BEGIN
+    DROP POLICY IF EXISTS "Users read own referrals" ON referrals;
+    DROP POLICY IF EXISTS "Users read own profile" ON profiles;
+    DROP POLICY IF EXISTS "Service role referrals" ON referrals;
+    DROP POLICY IF EXISTS "Service role profiles" ON profiles;
+END $$;
 
 CREATE POLICY "Users read own referrals" ON referrals FOR SELECT USING (auth.uid() = referrer_id);
 CREATE POLICY "Users read own profile" ON profiles FOR SELECT USING (auth.uid() = id);
