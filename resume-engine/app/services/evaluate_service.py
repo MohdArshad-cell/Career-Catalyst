@@ -84,17 +84,31 @@ def execute_evaluate_chain(resume_text: str, job_description: str) -> dict:
         soft_score = ((soft_total - len(missing_soft)) / soft_total * 100) if soft_total > 0 else 100
 
         # Weighted calculation (75% Hard / 25% Soft)
-        final_score = int(round((hard_score * 0.75) + (soft_score * 0.25)))
+        keyword_match_score = int(round((hard_score * 0.75) + (soft_score * 0.25)))
+
+        # Extract other dimension scores
+        metrics_score = ai_data.get("metrics_score", 50)
+        brevity_score = ai_data.get("brevity_score", 50)
+        action_verbs_score = ai_data.get("action_verbs_score", 50)
+
+        # Final ATS Score Calculation (Weighted)
+        # Keywords: 60%, Metrics: 15%, Brevity: 10%, Action Verbs: 15%
+        final_score = int(round(
+            (keyword_match_score * 0.60) +
+            (metrics_score * 0.15) +
+            (brevity_score * 0.10) +
+            (action_verbs_score * 0.15)
+        ))
 
         print(f"--- ✅ Evaluation Complete. Semantic ATS Score: {final_score}% ---")
 
         result = {
             "score": final_score,
             "dimension_scores": {
-                "keyword_match": final_score,
-                "metrics": ai_data.get("metrics_score", 50),
-                "brevity": ai_data.get("brevity_score", 50),
-                "action_verbs": ai_data.get("action_verbs_score", 50)
+                "keyword_match": keyword_match_score,
+                "metrics": metrics_score,
+                "brevity": brevity_score,
+                "action_verbs": action_verbs_score
             },
             "red_flags": ai_data.get("red_flags", []),
             "missing_keywords": missing_hard + missing_soft,
