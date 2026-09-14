@@ -49,7 +49,10 @@ const features = [
     { icon: "✉️", title: "Cover Letter Generator", desc: "Hook recruiters instantly with a hyper-personalized cover letter mapped perfectly to the job description.", tag: "1 Token" },
     { icon: "🎤", title: "Mock Interview AI", desc: "Practice with AI-generated questions tailored to your target role. Get feedback on your answers in real time.", tag: "1 Token" },
     { icon: "💼", title: "LinkedIn Optimizer", desc: "Re-write your headline, About section, and experience to rank higher in LinkedIn Recruiter search algorithms.", tag: "1 Token" },
-    { icon: "🗺️", title: "Career Roadmap", desc: "Analyze your resume vs your dream job and get a week-by-week upskilling roadmap powered by AI.", tag: "1 Token" }
+    { icon: "🗺️", title: "Career Roadmap", desc: "Analyze your resume vs your dream job and get a week-by-week upskilling roadmap powered by AI.", tag: "1 Token" },
+    { icon: "✨", title: "Resume Builder", desc: "Build a highly professional, ATS-optimized resume from the ground up with AI guidance.", tag: "1 Token" },
+    { icon: "🤝", title: "Cold Outreach AI", desc: "Generate personalized cold emails and LinkedIn messages to recruiters and hiring managers.", tag: "1 Token" },
+    { icon: "🔗", title: "Referral Generator", desc: "Craft the perfect message to ask for referrals from alumni and employees at top companies.", tag: "1 Token" }
 ];
 
 const freeTools = [
@@ -171,7 +174,7 @@ const HomePage = () => {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ delay: i * 0.1 }}
-                            className={`relative group rounded-3xl p-8 bg-white/[0.02] border border-white/5 hover:border-indigo-500/40 transition-all duration-500 overflow-hidden cursor-pointer ${i === 0 ? 'md:col-span-2 bg-gradient-to-br from-indigo-900/20 to-black' : ''}`}
+                            className={`relative group rounded-3xl p-8 bg-white/[0.02] border border-white/5 hover:border-indigo-500/40 transition-all duration-500 overflow-hidden cursor-pointer`}
                             onClick={launchTools}
                         >
                             <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />

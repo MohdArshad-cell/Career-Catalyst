@@ -106,16 +106,9 @@ const Navbar = () => {
                                 
                                 <div className="nav-dropdown">
                                     <button className="nav-dropdown-btn text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors uppercase">
-                                        Tools <span className="text-[10px] ml-1">▼</span>
+                                        Free Tools <span className="text-[10px] ml-1">▼</span>
                                     </button>
                                     <div className="nav-dropdown-content">
-                                        <Link to="/ai-tailor" className="text-xs font-mono tracking-widest hover:text-cyan-400">AI RESUME TAILOR</Link>
-                                        <Link to="/ats-evaluator" className="text-xs font-mono tracking-widest hover:text-cyan-400">ATS SCANNER</Link>
-                                        <Link to="/cover-letter" className="text-xs font-mono tracking-widest hover:text-cyan-400">COVER LETTER</Link>
-                                        <Link to="/mock-interview" className="text-xs font-mono tracking-widest hover:text-cyan-400">MOCK INTERVIEW</Link>
-                                        <Link to="/linkedin-optimizer" className="text-xs font-mono tracking-widest hover:text-cyan-400">LINKEDIN OPTIMIZER</Link>
-                                        <Link to="/career-roadmap" className="text-xs font-mono tracking-widest hover:text-cyan-400">CAREER ROADMAP</Link>
-                                        <div className="dropdown-divider"></div>
                                         <Link to="/bullet-rewriter" className="text-xs font-mono tracking-widest hover:text-cyan-400">BULLET REWRITER</Link>
                                         <Link to="/job-fit" className="text-xs font-mono tracking-widest hover:text-cyan-400">JOB FIT SCORE</Link>
                                         <Link to="/resignation-letter" className="text-xs font-mono tracking-widest hover:text-cyan-400">RESIGNATION</Link>
@@ -131,16 +124,9 @@ const Navbar = () => {
                                 
                                 <div className="nav-dropdown">
                                     <button className="nav-dropdown-btn text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors uppercase">
-                                        Tools <span className="text-[10px] ml-1">▼</span>
+                                        Free Tools <span className="text-[10px] ml-1">▼</span>
                                     </button>
                                     <div className="nav-dropdown-content">
-                                        <Link to="/ai-tailor" className="text-xs font-mono tracking-widest hover:text-cyan-400">AI RESUME TAILOR</Link>
-                                        <Link to="/ats-evaluator" className="text-xs font-mono tracking-widest hover:text-cyan-400">ATS SCANNER</Link>
-                                        <Link to="/cover-letter" className="text-xs font-mono tracking-widest hover:text-cyan-400">COVER LETTER</Link>
-                                        <Link to="/mock-interview" className="text-xs font-mono tracking-widest hover:text-cyan-400">MOCK INTERVIEW</Link>
-                                        <Link to="/linkedin-optimizer" className="text-xs font-mono tracking-widest hover:text-cyan-400">LINKEDIN OPTIMIZER</Link>
-                                        <Link to="/career-roadmap" className="text-xs font-mono tracking-widest hover:text-cyan-400">CAREER ROADMAP</Link>
-                                        <div className="dropdown-divider"></div>
                                         <Link to="/bullet-rewriter" className="text-xs font-mono tracking-widest hover:text-cyan-400">BULLET REWRITER</Link>
                                         <Link to="/job-fit" className="text-xs font-mono tracking-widest hover:text-cyan-400">JOB FIT SCORE</Link>
                                         <Link to="/resignation-letter" className="text-xs font-mono tracking-widest hover:text-cyan-400">RESIGNATION</Link>
@@ -189,13 +175,7 @@ const Navbar = () => {
                                 <Link to="/ai-tools" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">DASHBOARD</Link>
                                 <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">PRICING</Link>
                                 
-                                <div className="text-gray-500 font-mono tracking-widest mt-2 mb-1 text-xs">TOOLS:</div>
-                                <Link to="/ai-tailor" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">AI RESUME TAILOR</Link>
-                                <Link to="/ats-evaluator" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">ATS SCANNER</Link>
-                                <Link to="/cover-letter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">COVER LETTER</Link>
-                                <Link to="/mock-interview" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">MOCK INTERVIEW</Link>
-                                <Link to="/linkedin-optimizer" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">LINKEDIN OPTIMIZER</Link>
-                                <Link to="/career-roadmap" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">CAREER ROADMAP</Link>
+                                <div className="text-gray-500 font-mono tracking-widest mt-2 mb-1 text-xs">FREE TOOLS:</div>
                                 <Link to="/bullet-rewriter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">BULLET REWRITER</Link>
                                 <Link to="/job-fit" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">JOB FIT SCORE</Link>
                                 <Link to="/resignation-letter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">RESIGNATION LETTER</Link>
@@ -207,13 +187,7 @@ const Navbar = () => {
                             <>
                                 <Link to="/features" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest">FEATURES</Link>
                                 
-                                <div className="text-gray-500 font-mono tracking-widest mt-2 mb-1 text-xs">TOOLS:</div>
-                                <Link to="/ai-tailor" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">AI RESUME TAILOR</Link>
-                                <Link to="/ats-evaluator" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">ATS SCANNER</Link>
-                                <Link to="/cover-letter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">COVER LETTER</Link>
-                                <Link to="/mock-interview" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">MOCK INTERVIEW</Link>
-                                <Link to="/linkedin-optimizer" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">LINKEDIN OPTIMIZER</Link>
-                                <Link to="/career-roadmap" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">CAREER ROADMAP</Link>
+                                <div className="text-gray-500 font-mono tracking-widest mt-2 mb-1 text-xs">FREE TOOLS:</div>
                                 <Link to="/bullet-rewriter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">BULLET REWRITER</Link>
                                 <Link to="/job-fit" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">JOB FIT SCORE</Link>
                                 <Link to="/resignation-letter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">RESIGNATION LETTER</Link>
