@@ -132,7 +132,7 @@ const HomePage = () => {
         <div className="min-h-screen bg-[#030303] text-white overflow-hidden flex flex-col selection:bg-indigo-500/30">
                                     
             {/* ────────── 1. HERO ────────── */}
-            <Hero />
+            <Hero user={user} />
 
             {/* ────────── 2. ELITE MARQUEE ────────── */}
             <section className="border-y border-white/5 py-6 bg-white/[0.01] backdrop-blur-sm relative z-20">

@@ -6,7 +6,7 @@ import { MagneticButton } from "./MagneticButton";
 import { NetworkBackground } from "./NetworkBackground";
 import { Terminal } from "./Terminal";
 
-export function Hero() {
+export function Hero({ user }) {
   const shouldReduceMotion = useReducedMotion();
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -66,7 +66,7 @@ export function Hero() {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 mb-8 w-full max-w-md">
-            <MagneticButton href="/pricing" className="relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-indigo-600/20 text-indigo-300 hover:text-white font-mono uppercase tracking-widest text-sm rounded-2xl transition-all shadow-[0_0_30px_rgba(99,102,241,0.2)] hover:shadow-[0_0_50px_rgba(99,102,241,0.6)] w-full sm:w-auto z-20 group overflow-hidden">
+            <MagneticButton href={user ? "/ai-tools" : "/login"} className="relative inline-flex items-center justify-center gap-2 px-8 py-4 bg-indigo-600/20 text-indigo-300 hover:text-white font-mono uppercase tracking-widest text-sm rounded-2xl transition-all shadow-[0_0_30px_rgba(99,102,241,0.2)] hover:shadow-[0_0_50px_rgba(99,102,241,0.6)] w-full sm:w-auto z-20 group overflow-hidden">
               <div className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200%] h-[300%] bg-[conic-gradient(from_0deg,transparent_0_340deg,rgba(99,102,241,1)_360deg)] ${shouldReduceMotion ? '' : 'animate-[spin_2s_linear_infinite]'} z-0`} />
               <div className="absolute inset-[2px] bg-[#1e1b4b] group-hover:bg-[#312e81] rounded-[14px] z-0 transition-colors" />
               <div className={`absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full ${shouldReduceMotion ? '' : 'group-hover:animate-[shimmer_1.5s_infinite]'} z-10 rounded-[14px]`} />
