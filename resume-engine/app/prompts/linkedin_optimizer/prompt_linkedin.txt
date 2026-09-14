@@ -12,39 +12,11 @@ First, analyze their profile and determine their current positioning vs. their o
 
 Then, generate the following rewritten sections:
 1. headline — A compelling 220-character headline optimized for LinkedIn search. Avoid generic buzzwords.
-2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact), Paragraph 3 (Call to Action). USE MARKDOWN.
+2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact), Paragraph 3 (Call to Action). USE MARKDOWN for line breaks (use real newlines, not escaped \n characters).
 3. experience_bullets — Rewritten experience bullets using the X-Y-Z formula (Accomplished [X] as measured by [Y], by doing [Z]).
-4. project_bullets — Rewritten major project descriptions using the X-Y-Z formula.
+4. project_bullets — Extract and rewrite all personal, academic, or professional projects found in the text using the X-Y-Z formula. If there are no explicitly labeled projects, extract major initiatives from their experience into this section.
 
 Also, provide the following Elite Strategy components:
 - content_ideas: 3 specific post topics to build authority in their niche.
 - networking_targets: 3 specific job titles they should connect with to advance their trajectory.
 - banner_prompt: A 1-2 sentence image generation prompt (for DALL-E/Midjourney) to create a matching LinkedIn background banner.
-
-OUTPUT FORMAT:
-Return ONLY a valid JSON object matching this exact schema:
-{
-  "trajectory_analysis": {
-    "current_perception": "string",
-    "optimized_positioning": "string"
-  },
-  "headline": "string",
-  "about_section": "string",
-  "experience_bullets": [
-    {
-      "company": "string",
-      "bullets": ["string", "string"]
-    }
-  ],
-  "project_bullets": [
-    {
-      "project_name": "string",
-      "bullets": ["string", "string"]
-    }
-  ],
-  "content_ideas": ["string", "string", "string"],
-  "networking_targets": ["string", "string", "string"],
-  "banner_prompt": "string"
-}
-
-CRITICAL JSON INSTRUCTION: Ensure all newlines within your string values (especially in `about_section`) are properly escaped as `\n` (e.g., "Paragraph 1\\n\\nParagraph 2"). DO NOT output literal newline characters inside strings.
