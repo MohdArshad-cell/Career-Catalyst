@@ -33,7 +33,7 @@ const featuresList: Feature[] = [
         description: 'A step-by-step builder to craft a new, professional resume from the ground up.',
         status: 'live',
         badge: 'Live Now',
-        route: '/resume-builder', // Make sure this matches your App.tsx route
+        route: '/ResumeFromScratchPage',
         buttonText: 'Start Building ➔',
         accent: '#06b6d4', // Cyan matching your screenshot's CTA text
         tags: ['Step-by-Step', 'Auto-Format', 'LaTeX Export'],
@@ -66,6 +66,19 @@ const featuresList: Feature[] = [
         stats: [{ label: 'Accuracy', value: '99%' }, { label: 'Cost', value: '1 Token' }]
     },
     {
+        id: 'xray',
+        title: 'Autonomous ATS X-Ray',
+        icon: '👁️',
+        description: 'Paste your resume and let our AI instantly hunt down formatting red flags, weak bullets, and generic fluff. No JD required.',
+        status: 'live',            
+        badge: 'Elite AI',          
+        route: '/ats-xray',         
+        buttonText: 'Scan Deep Structure 🚀',
+        accent: '#10b981', 
+        tags: ['Health Score', 'Red Flags', 'Auto-Rewrite'],
+        stats: [{ label: 'Depth', value: 'Deep Scan' }, { label: 'Cost', value: 'Free' }]
+    },
+    {
         id: 'cover-letter',
         title: 'Pitch-Perfect Cover Letter',
         icon: '✉️',
@@ -83,52 +96,65 @@ const featuresList: Feature[] = [
         title: 'AI Mock Interview',
         icon: '🎙️',
         description: 'Practice with an AI hiring manager. Generate rigorous, JD-specific technical and behavioral questions with ideal answers.',
-        status: 'live', // UNLOCKED: You built this, let people use it.
+        status: 'live',
         badge: 'Live Now',
-        route: '/mock-interview', // Ensure this matches your App.tsx route
+        route: '/mock-interview',
         buttonText: 'Start Interview 🎤',
         accent: '#a855f7', // Purple to match the mic icon on the actual page
         tags: ['Behavioral', 'Technical', 'STAR Method'],
         stats: [{ label: 'Questions', value: '10' }, { label: 'Cost', value: '1 Token' }]
     },
     {
-        id: 'xray',
-        title: 'Autonomous ATS X-Ray',
-        icon: '👁️',
-        description: 'Paste your resume and let our AI instantly hunt down formatting red flags, weak bullets, and generic fluff. No JD required.',
-        status: 'live',            
-        badge: 'Elite AI',          
-        route: '/ats-xray',         
-        buttonText: 'Scan Deep Structure 🚀',
-        accent: '#10b981', 
-        tags: ['Health Score', 'Red Flags', 'Auto-Rewrite'],
-        stats: [{ label: 'Depth', value: 'Deep Scan' }, { label: 'Cost', value: 'Free' }]
+        id: 'linkedin',
+        title: 'LinkedIn Optimizer',
+        icon: '💼',
+        description: 'Re-write your headline, About section, and experience to rank higher in LinkedIn Recruiter search algorithms.',
+        status: 'live',
+        badge: 'Live Now',
+        route: '/linkedin-optimizer',
+        buttonText: 'Optimize Profile ⚡',
+        accent: '#0077b5', // LinkedIn Blue
+        tags: ['Search Ranking', 'X-Y-Z Bullets', 'Creator Mode'],
+        stats: [{ label: 'Impact', value: 'High' }, { label: 'Cost', value: '1 Token' }]
+    },
+    {
+        id: 'roadmap',
+        title: 'Career Roadmap',
+        icon: '🗺️',
+        description: 'Analyze your resume vs your dream job and get a week-by-week upskilling roadmap powered by AI.',
+        status: 'live',
+        badge: 'Live Now',
+        route: '/career-roadmap',
+        buttonText: 'Generate Roadmap 🧭',
+        accent: '#f59e0b', // Amber
+        tags: ['Upskilling', 'Milestones', 'Resource Links'],
+        stats: [{ label: 'Timeline', value: '12 Weeks' }, { label: 'Cost', value: '1 Token' }]
     },
     {
         id: 'networking',
         title: 'Cold Outreach AI',
-        icon: '⚡',
+        icon: '🤝',
         description: 'Stop waiting for recruiters. Generate highly personalized LinkedIn connection requests and cold emails that guarantee replies.',
-        status: 'upcoming',
-        badge: 'Next Release',
-        route: '#',
-        buttonText: 'Join VIP Waitlist ⏳',
-        accent: '#f59e0b', // Amber/Gold
+        status: 'live',
+        badge: 'Live Now',
+        route: '/cold-outreach',
+        buttonText: 'Draft Outreach 📨',
+        accent: '#ec4899', // Pink
         tags: ['Hook Generation', 'Follow-ups', 'Direct DM'],
-        stats: [{ label: 'Reply Rate', value: '+40%' }, { label: 'Status', value: 'In Lab' }]
+        stats: [{ label: 'Reply Rate', value: '+40%' }, { label: 'Cost', value: '1 Token' }]
     },
     {
-        id: 'extension',
-        title: 'LinkedIn X-Ray Extension',
-        icon: '🧩',
-        description: 'Auto-scrape Job Descriptions from LinkedIn or Naukri and tailor your resume in 1-click without ever leaving the tab.',
-        status: 'upcoming',
-        badge: 'Concept',
-        route: '#',
-        buttonText: 'Join Waitlist 🔔',
-        accent: '#ec4899', // Pink
-        tags: ['Chrome V3', '1-Click Apply'],
-        stats: [{ label: 'Platform', value: 'Chrome' }, { label: 'Status', value: 'Design' }]
+        id: 'referrals',
+        title: 'Referral Generator',
+        icon: '🔗',
+        description: 'Craft the perfect message to ask for referrals from alumni and employees at top companies.',
+        status: 'live',
+        badge: 'Live Now',
+        route: '/referrals',
+        buttonText: 'Get Referrals 🎯',
+        accent: '#14b8a6', // Teal
+        tags: ['Alumni Network', 'High Conversion'],
+        stats: [{ label: 'Success', value: 'High' }, { label: 'Cost', value: '1 Token' }]
     }
 ];
 
@@ -177,7 +203,7 @@ const FeaturesPage: React.FC = () => {
                 {/* Hero Section */}
                 <header className="features-hero animate-fade-up">
                     <div className="glass-badge pulse-glow" style={{ borderColor: 'rgba(0, 229, 255, 0.5)', color: '#00e5ff', background: 'rgba(0, 229, 255, 0.1)' }}>
-                        <span className="live-indicator"></span> 5 Core Modules Online
+                        <span className="live-indicator"></span> 10 Core Modules Online
                     </div>
                     <h1 className="hero-title">
                         The Ultimate <span className="text-gradient">Arsenal.</span>
