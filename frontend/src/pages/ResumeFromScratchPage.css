@@ -3,6 +3,8 @@
     /* Changed from 1600px to 96% to utilize almost the entire screen */
     max-width: 96%; 
     margin: 0 auto;
+    padding-top: 120px;
+    padding-bottom: 40px;
     width: 100%;
     color: var(--text-primary);
 }
