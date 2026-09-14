@@ -50,7 +50,7 @@ const featuresList: Feature[] = [
         buttonText: 'Launch Engine 🚀',
         accent: '#00e5ff', // Neon Cyan
         tags: ['Gemini 3.1', 'LaTeX Core', 'ATS Bypass'],
-        stats: [{ label: 'Speed', value: '< 12s' }, { label: 'Cost', value: '1 Token' }]
+        stats: [{ label: 'Speed', value: '< 12s' }, { label: 'Cost', value: '3 Tokens' }]
     },
     {
         id: 'evaluator',
@@ -63,7 +63,7 @@ const featuresList: Feature[] = [
         buttonText: 'Scan Resume 🔍',
         accent: '#ef4444', // Neon Red
         tags: ['Harsh Feedback', 'Score System', 'Auto-Rewrite'],
-        stats: [{ label: 'Accuracy', value: '99%' }, { label: 'Cost', value: '1 Token' }]
+        stats: [{ label: 'Accuracy', value: '99%' }, { label: 'Cost', value: '2 Tokens' }]
     },
     {
         id: 'xray',
@@ -102,7 +102,7 @@ const featuresList: Feature[] = [
         buttonText: 'Start Interview 🎤',
         accent: '#a855f7', // Purple to match the mic icon on the actual page
         tags: ['Behavioral', 'Technical', 'STAR Method'],
-        stats: [{ label: 'Questions', value: '10' }, { label: 'Cost', value: '1 Token' }]
+        stats: [{ label: 'Questions', value: '10' }, { label: 'Cost', value: '3 Tokens' }]
     },
     {
         id: 'linkedin',
@@ -115,7 +115,7 @@ const featuresList: Feature[] = [
         buttonText: 'Optimize Profile ⚡',
         accent: '#0077b5', // LinkedIn Blue
         tags: ['Search Ranking', 'X-Y-Z Bullets', 'Creator Mode'],
-        stats: [{ label: 'Impact', value: 'High' }, { label: 'Cost', value: '1 Token' }]
+        stats: [{ label: 'Impact', value: 'High' }, { label: 'Cost', value: '2 Tokens' }]
     },
     {
         id: 'roadmap',
@@ -128,7 +128,7 @@ const featuresList: Feature[] = [
         buttonText: 'Generate Roadmap 🧭',
         accent: '#f59e0b', // Amber
         tags: ['Upskilling', 'Milestones', 'Resource Links'],
-        stats: [{ label: 'Timeline', value: '12 Weeks' }, { label: 'Cost', value: '1 Token' }]
+        stats: [{ label: 'Timeline', value: '12 Weeks' }, { label: 'Cost', value: '2 Tokens' }]
     },
     {
         id: 'networking',

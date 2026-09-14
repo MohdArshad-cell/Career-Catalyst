@@ -44,13 +44,13 @@ const testimonials = [
 ];
 
 const features = [
-    { icon: "🎯", title: "AI Resume Tailor", desc: "Micro-tailor your resume for any specific Job Description in under 12 seconds. Outputs a pixel-perfect ATS-friendly LaTeX PDF.", tag: "1 Token" },
-    { icon: "🔥", title: "Brutal ATS Scanner", desc: "Find out exactly why you're getting rejected. Zero sugarcoating. Get a harsh score and fix weak bullets instantly.", tag: "1 Token" },
+    { icon: "🎯", title: "AI Resume Tailor", desc: "Micro-tailor your resume for any specific Job Description in under 12 seconds. Outputs a pixel-perfect ATS-friendly LaTeX PDF.", tag: "3 Tokens" },
+    { icon: "🔥", title: "Brutal ATS Scanner", desc: "Find out exactly why you're getting rejected. Zero sugarcoating. Get a harsh score and fix weak bullets instantly.", tag: "2 Tokens" },
     { icon: "✉️", title: "Cover Letter Generator", desc: "Hook recruiters instantly with a hyper-personalized cover letter mapped perfectly to the job description.", tag: "1 Token" },
-    { icon: "🎤", title: "Mock Interview AI", desc: "Practice with AI-generated questions tailored to your target role. Get feedback on your answers in real time.", tag: "1 Token" },
-    { icon: "💼", title: "LinkedIn Optimizer", desc: "Re-write your headline, About section, and experience to rank higher in LinkedIn Recruiter search algorithms.", tag: "1 Token" },
-    { icon: "🗺️", title: "Career Roadmap", desc: "Analyze your resume vs your dream job and get a week-by-week upskilling roadmap powered by AI.", tag: "1 Token" },
-    { icon: "✨", title: "Resume Builder", desc: "Build a highly professional, ATS-optimized resume from the ground up with AI guidance.", tag: "1 Token" },
+    { icon: "🎤", title: "Mock Interview AI", desc: "Practice with AI-generated questions tailored to your target role. Get feedback on your answers in real time.", tag: "3 Tokens" },
+    { icon: "💼", title: "LinkedIn Optimizer", desc: "Re-write your headline, About section, and experience to rank higher in LinkedIn Recruiter search algorithms.", tag: "2 Tokens" },
+    { icon: "🗺️", title: "Career Roadmap", desc: "Analyze your resume vs your dream job and get a week-by-week upskilling roadmap powered by AI.", tag: "2 Tokens" },
+    { icon: "✨", title: "Resume Builder", desc: "Build a highly professional, ATS-optimized resume from the ground up with AI guidance.", tag: "Free" },
     { icon: "🤝", title: "Cold Outreach AI", desc: "Generate personalized cold emails and LinkedIn messages to recruiters and hiring managers.", tag: "1 Token" },
     { icon: "🔗", title: "Referral Generator", desc: "Craft the perfect message to ask for referrals from alumni and employees at top companies.", tag: "1 Token" }
 ];

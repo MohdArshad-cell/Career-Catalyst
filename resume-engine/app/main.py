@@ -150,17 +150,50 @@ def verify_user_and_tokens(credentials: HTTPAuthorizationCredentials = Security(
         print(f"❌ [DB ERROR]: Failed to fetch tokens for user {user_id}: {str(db_err)}")
         raise HTTPException(status_code=500, detail="Internal server error during token validation.")
 
+def verify_user_only(credentials: HTTPAuthorizationCredentials = Security(security)):
+    """Validates the Supabase JWT securely but does NOT check token balance."""
+    token = credentials.credentials
+    payload = None
 
-def deduct_token_and_log(user_id: str, current_tokens: int, action_name: str):
+    try:
+        unverified_header = jwt.get_unverified_header(token)
+        token_alg = unverified_header.get("alg", "HS256")
+    except Exception:
+        raise HTTPException(status_code=401, detail="Malformed authorization token.")
+
+    if jwk_client:
+        try:
+            signing_key = jwk_client.get_signing_key_from_jwt(token)
+            payload = jwt.decode(token, signing_key.key, algorithms=[token_alg], audience="authenticated")
+        except Exception:
+            pass
+
+    if not payload:
+        jwt_secret = os.getenv("SUPABASE_JWT_SECRET")
+        if not jwt_secret:
+            raise HTTPException(status_code=500, detail="Server Error: Missing JWT Secret configuration.")
+        try:
+            payload = jwt.decode(token, jwt_secret, algorithms=[token_alg], audience="authenticated")
+        except Exception:
+            raise HTTPException(status_code=401, detail="Invalid authentication token signature or audience.")
+
+    user_id = payload.get("sub")
+    if not user_id:
+        raise HTTPException(status_code=401, detail="Invalid token payload: Missing user subject.")
+
+    return {"user_id": user_id, "current_tokens": 0}
+
+
+def deduct_token_and_log(user_id: str, current_tokens: int, action_name: str, cost: int = 1):
     """Safely deducts a token via update to prevent duplicate key crashes."""
     try:
-        new_tokens = current_tokens - 1
+        new_tokens = current_tokens - cost
         
         # Update the token_ledger row (DO NOT INSERT)
         supabase.table("token_ledger").update({
             "tokens_balance": new_tokens,
             "transaction_type": "deduction",
-            "amount": -1,
+            "amount": -cost,
             "action": action_name
         }).eq("user_id", user_id).execute()
         
@@ -361,6 +394,9 @@ async def compile_latex_only(request: CompileRequest):
 
 @app.post("/api/ai/tailor")
 async def tailor(request: TailorRequest, background_tasks: BackgroundTasks, user_auth: dict = Depends(verify_user_and_tokens)): 
+    if user_auth["current_tokens"] < 3:
+        raise HTTPException(status_code=402, detail="This tool requires 3 tokens.")
+    
     # 0. Rate Limit Check
     check_user_rate_limit(user_auth["user_id"])
     
@@ -382,11 +418,14 @@ async def tailor(request: TailorRequest, background_tasks: BackgroundTasks, user
         background_tasks.add_task(cleanup_session_and_task, "ephemeral_tailor_task", session_dir)
         
     # 2. Deduct Token and Log SECOND
-    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_tailor")
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_tailor", cost=3)
     return result
 
 @app.post("/api/ai/evaluate")
 async def evaluate(request: EvaluateRequest, user_auth: dict = Depends(verify_user_and_tokens)): 
+    if user_auth["current_tokens"] < 2:
+        raise HTTPException(status_code=402, detail="This tool requires 2 tokens.")
+    
     # 0. Rate Limit Check
     check_user_rate_limit(user_auth["user_id"])
     
@@ -403,11 +442,11 @@ async def evaluate(request: EvaluateRequest, user_auth: dict = Depends(verify_us
         raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
 
     # 2. Deduct Token and Log SECOND
-    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_evaluate")
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_evaluate", cost=2)
     return {"evaluation_result": result}
 
 @app.post("/api/ai/ats-xray")
-async def ats_xray(request: AtsXrayRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+async def ats_xray(request: AtsXrayRequest, user_auth: dict = Depends(verify_user_only)):
     # 0. Rate Limit Check
     check_user_rate_limit(user_auth["user_id"])
     
@@ -421,10 +460,9 @@ async def ats_xray(request: AtsXrayRequest, user_auth: dict = Depends(verify_use
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_ats_xray", "failed", latency_ms, str(ai_error))
         print(f"❌ [AI ERROR]: {str(ai_error)}")
-        raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
+        raise HTTPException(status_code=500, detail="AI processing failed.")
 
-    # 2. Deduct Token and Log SECOND
-    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_ats_xray")
+    # Free tool, no token deduction
     return {"xray_data": result}
 
 
@@ -456,6 +494,9 @@ async def coverletter(request: CoverLetterRequest, background_tasks: BackgroundT
 
 @app.post("/api/ai/interview")
 async def interview(request: InterviewRequest, user_auth: dict = Depends(verify_user_and_tokens)): 
+    if user_auth["current_tokens"] < 3:
+        raise HTTPException(status_code=402, detail="This tool requires 3 tokens.")
+        
     # 0. Rate Limit Check
     check_user_rate_limit(user_auth["user_id"])
     
@@ -472,11 +513,14 @@ async def interview(request: InterviewRequest, user_auth: dict = Depends(verify_
         raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
 
     # 2. Deduct Token and Log SECOND
-    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_interview")
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_interview", cost=3)
     return {"interview_data": result}
 
 @app.post("/api/ai/linkedin")
 async def linkedin_optimize(request: LinkedInRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+    if user_auth["current_tokens"] < 2:
+        raise HTTPException(status_code=402, detail="This tool requires 2 tokens.")
+        
     # 0. Rate Limit Check
     check_user_rate_limit(user_auth["user_id"])
     
@@ -491,7 +535,7 @@ async def linkedin_optimize(request: LinkedInRequest, user_auth: dict = Depends(
         print(f"❌ [AI ERROR]: {str(ai_error)}")
         raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
     
-    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_linkedin")
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_linkedin", cost=2)
     return {"linkedin_data": result}
 
 @app.post("/api/ai/outreach")
@@ -515,6 +559,9 @@ async def outreach_generate(request: OutreachRequest, user_auth: dict = Depends(
 
 @app.post("/api/ai/roadmap")
 async def roadmap_generate(request: RoadmapRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+    if user_auth["current_tokens"] < 2:
+        raise HTTPException(status_code=402, detail="This tool requires 2 tokens.")
+        
     # 0. Rate Limit Check
     check_user_rate_limit(user_auth["user_id"])
     
@@ -529,7 +576,7 @@ async def roadmap_generate(request: RoadmapRequest, user_auth: dict = Depends(ve
         print(f"❌ [AI ERROR]: {str(ai_error)}")
         raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
     
-    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_roadmap")
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_roadmap", cost=2)
     return {"roadmap_data": result}
 
 # ==========================================
