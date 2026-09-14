@@ -131,25 +131,24 @@ const ResumeFromScratchPage: React.FC = () => {
         };
     }, [previewPdfUrl]);
 
-    // 2. ADDED: Single-Fire Debounced Auto-Preview Engine
+    // 2. ADDED: Continuous Debounced Auto-Preview Engine
     useEffect(() => {
-        if (hasAutoPreviewed || isPreviewLoading || isGenerating) return;
-
         const hasMeaningfulInput = 
             (resumeData.personal_info.full_name?.length || 0) > 3 || 
             (resumeData.work_experience[0]?.job_title?.length || 0) > 3;
 
         if (hasMeaningfulInput) {
             const timer = setTimeout(() => {
-                console.log("🚀 Triggering Initial Auto-Preview...");
-                setHasAutoPreviewed(true); 
-                handleAction(true); 
-            }, 2000);
+                if (!isPreviewLoading && !isGenerating) {
+                    console.log("🚀 Triggering Auto-Preview...");
+                    handleAction(true); 
+                }
+            }, 1500);
 
             return () => clearTimeout(timer);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [resumeData, hasAutoPreviewed]); 
+    }, [resumeData, selectedTemplate]); 
 
     const b64toBlob = (b64Data: string, contentType = '') => {
         const byteCharacters = atob(b64Data);
@@ -198,7 +197,7 @@ const ResumeFromScratchPage: React.FC = () => {
                 setErrorMessage('Connection error during backend build execution pipeline.');
                 isPreview ? setIsPreviewLoading(false) : setIsGenerating(false);
             }
-        }, 2000);
+        }, 800);
     };
 
     const handleAction = async (isPreview: boolean) => {
