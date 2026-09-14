@@ -1,5 +1,5 @@
 """LinkedIn Profile Optimization Service."""
-from app.services.llm_client import call_llm_structured, load_prompt
+from app.services.llm_client import call_llm, parse_ai_json, load_prompt
 from pydantic import BaseModel
 from typing import List
 
@@ -37,13 +37,9 @@ def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional") ->
         .replace('{linkedin_content}', truncated_linkedin) \
         .replace('{tone}', tone)
     
-    raw_data = call_llm_structured(
-        prompt,
-        response_schema=LinkedInResponse,
-        temperature=0.7,
-        max_output_tokens=4096
-    )
+    raw_json = call_llm(prompt, force_json=True)
+    parsed_data = parse_ai_json(raw_json)
     
     # Validate output matches schema
-    validated_data = LinkedInResponse(**raw_data)
+    validated_data = LinkedInResponse(**parsed_data)
     return validated_data.model_dump()
