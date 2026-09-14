@@ -143,7 +143,7 @@ const ResumeFromScratchPage: React.FC = () => {
                     console.log("🚀 Triggering Auto-Preview...");
                     handleAction(true); 
                 }
-            }, 1500);
+            }, 800);
 
             return () => clearTimeout(timer);
         }
@@ -160,7 +160,8 @@ const ResumeFromScratchPage: React.FC = () => {
     };
 
     const pollTask = async (taskId: string, isPreview: boolean) => {
-        const interval = setInterval(async () => {
+        let interval: NodeJS.Timeout;
+        const checkStatus = async () => {
             try {
                 const res = await axios.get(`${API_BASE_URL}/generate/status/${taskId}`);
                 
@@ -197,7 +198,11 @@ const ResumeFromScratchPage: React.FC = () => {
                 setErrorMessage('Connection error during backend build execution pipeline.');
                 isPreview ? setIsPreviewLoading(false) : setIsGenerating(false);
             }
-        }, 800);
+        };
+
+        // Fire first check quickly, then poll
+        setTimeout(checkStatus, 200);
+        interval = setInterval(checkStatus, 400);
     };
 
     const handleAction = async (isPreview: boolean) => {
