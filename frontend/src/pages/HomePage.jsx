@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, ArrowRight, ChevronDown, CheckCircle2, MessageCircle } from 'lucide-react';
 import '../App.css';
 
@@ -353,29 +353,31 @@ const HomePage = () => {
                 />
 
                 <div className="max-w-4xl mx-auto px-6">
-                    <div className="relative rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-12 overflow-hidden min-h-[300px] flex flex-col justify-center shadow-2xl backdrop-blur-sm">
+                    <div className="relative rounded-3xl border border-white/10 bg-white/[0.02] p-8 md:p-12 overflow-hidden min-h-[400px] flex flex-col justify-center shadow-2xl backdrop-blur-sm">
                         <div className="absolute top-8 left-8 text-6xl text-white/5 font-serif">"</div>
-                        <motion.div 
-                            key={currentTestimonial}
-                            initial={{ opacity: 0, x: 20 }}
-                            animate={{ opacity: 1, x: 0 }}
-                            exit={{ opacity: 0, x: -20 }}
-                            transition={{ duration: 0.5 }}
-                            className="relative z-10 text-center"
-                        >
-                            <p className="text-xl md:text-2xl text-zinc-300 font-light italic leading-relaxed mb-8">
-                                "{testimonials[currentTestimonial].text}"
-                            </p>
-                            <div className="flex flex-col items-center gap-3">
-                                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
-                                    {testimonials[currentTestimonial].initial}
+                        <AnimatePresence mode="wait">
+                            <motion.div 
+                                key={currentTestimonial}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.5 }}
+                                className="relative z-10 text-center"
+                            >
+                                <p className="text-xl md:text-2xl text-zinc-300 font-light italic leading-relaxed mb-8">
+                                    "{testimonials[currentTestimonial].text}"
+                                </p>
+                                <div className="flex flex-col items-center gap-3">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                                        {testimonials[currentTestimonial].initial}
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-white">{testimonials[currentTestimonial].name}</div>
+                                        <div className="text-sm text-indigo-400">{testimonials[currentTestimonial].role}</div>
+                                    </div>
                                 </div>
-                                <div>
-                                    <div className="font-bold text-white">{testimonials[currentTestimonial].name}</div>
-                                    <div className="text-sm text-indigo-400">{testimonials[currentTestimonial].role}</div>
-                                </div>
-                            </div>
-                        </motion.div>
+                            </motion.div>
+                        </AnimatePresence>
 
                         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
                             {testimonials.map((_, idx) => (
