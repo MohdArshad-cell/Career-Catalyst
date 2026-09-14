@@ -103,6 +103,8 @@ const Navbar = () => {
                                 <Link to="/features" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">FEATURES</Link>
                                 <Link to="/ai-tools" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">DASHBOARD</Link>
                                 <Link to="/pricing" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">PRICING</Link>
+                                <Link to="/history" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">HISTORY</Link>
+                                <Link to="/referrals" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">REFERRALS</Link>
                                 
                                 <div className="nav-dropdown">
                                     <button className="nav-dropdown-btn text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors uppercase">
@@ -174,6 +176,8 @@ const Navbar = () => {
                             <>
                                 <Link to="/ai-tools" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">DASHBOARD</Link>
                                 <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">PRICING</Link>
+                                <Link to="/history" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">HISTORY</Link>
+                                <Link to="/referrals" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">REFERRALS</Link>
                                 
                                 <div className="text-gray-500 font-mono tracking-widest mt-2 mb-1 text-xs">FREE TOOLS:</div>
                                 <Link to="/bullet-rewriter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">BULLET REWRITER</Link>
