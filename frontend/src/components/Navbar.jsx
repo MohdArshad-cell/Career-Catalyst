@@ -103,6 +103,19 @@ const Navbar = () => {
                                 <Link to="/features" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">FEATURES</Link>
                                 <Link to="/ai-tools" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">DASHBOARD</Link>
                                 <Link to="/pricing" className="text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors">PRICING</Link>
+                                
+                                <div className="nav-dropdown">
+                                    <button className="nav-dropdown-btn text-xs text-gray-400 hover:text-white font-mono tracking-widest transition-colors uppercase">
+                                        Free Tools <span className="text-[10px] ml-1">▼</span>
+                                    </button>
+                                    <div className="nav-dropdown-content">
+                                        <Link to="/bullet-rewriter" className="text-xs font-mono tracking-widest hover:text-cyan-400">BULLET REWRITER</Link>
+                                        <Link to="/job-fit" className="text-xs font-mono tracking-widest hover:text-cyan-400">JOB FIT SCORE</Link>
+                                        <Link to="/resignation-letter" className="text-xs font-mono tracking-widest hover:text-cyan-400">RESIGNATION</Link>
+                                        <Link to="/resume-diff" className="text-xs font-mono tracking-widest hover:text-cyan-400">RESUME DIFF</Link>
+                                    </div>
+                                </div>
+                                
                                 {isAdmin && <Link to="/admin" className="text-xs text-amber-400 hover:text-amber-300 font-mono tracking-widest transition-colors">ADMIN</Link>}
                             </>
                         ) : (
@@ -161,7 +174,14 @@ const Navbar = () => {
                             <>
                                 <Link to="/ai-tools" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">DASHBOARD</Link>
                                 <Link to="/pricing" onClick={() => setIsMobileMenuOpen(false)} className="text-white font-mono tracking-widest">PRICING</Link>
-                                <button onClick={handleLogout} className="text-red-400 text-left font-mono tracking-widest">LOGOUT</button>
+                                
+                                <div className="text-gray-500 font-mono tracking-widest mt-2 mb-1 text-xs">FREE TOOLS:</div>
+                                <Link to="/bullet-rewriter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">BULLET REWRITER</Link>
+                                <Link to="/job-fit" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">JOB FIT SCORE</Link>
+                                <Link to="/resignation-letter" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">RESIGNATION LETTER</Link>
+                                <Link to="/resume-diff" onClick={() => setIsMobileMenuOpen(false)} className="text-gray-300 hover:text-white font-mono tracking-widest pl-4 text-sm">RESUME DIFF</Link>
+                                
+                                <button onClick={handleLogout} className="text-red-400 text-left font-mono tracking-widest mt-2">LOGOUT</button>
                             </>
                         ) : (
                             <>
