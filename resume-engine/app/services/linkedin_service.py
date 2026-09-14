@@ -7,6 +7,10 @@ class ExperienceBullet(BaseModel):
     company: str
     bullets: List[str]
 
+class ProjectBullet(BaseModel):
+    project_name: str
+    bullets: List[str]
+
 class TrajectoryAnalysis(BaseModel):
     current_perception: str
     optimized_positioning: str
@@ -16,6 +20,7 @@ class LinkedInResponse(BaseModel):
     headline: str
     about_section: str
     experience_bullets: List[ExperienceBullet]
+    project_bullets: List[ProjectBullet]
     content_ideas: List[str]
     networking_targets: List[str]
     banner_prompt: str

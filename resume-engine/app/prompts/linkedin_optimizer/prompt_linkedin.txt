@@ -14,6 +14,7 @@ Then, generate the following rewritten sections:
 1. headline — A compelling 220-character headline optimized for LinkedIn search. Avoid generic buzzwords.
 2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact), Paragraph 3 (Call to Action). USE MARKDOWN.
 3. experience_bullets — Rewritten experience bullets using the X-Y-Z formula (Accomplished [X] as measured by [Y], by doing [Z]).
+4. project_bullets — Rewritten major project descriptions using the X-Y-Z formula.
 
 Also, provide the following Elite Strategy components:
 - content_ideas: 3 specific post topics to build authority in their niche.
@@ -32,6 +33,12 @@ Return ONLY a valid JSON object matching this exact schema:
   "experience_bullets": [
     {
       "company": "string",
+      "bullets": ["string", "string"]
+    }
+  ],
+  "project_bullets": [
+    {
+      "project_name": "string",
       "bullets": ["string", "string"]
     }
   ],

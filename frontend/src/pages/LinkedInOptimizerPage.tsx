@@ -17,6 +17,11 @@ interface ExperienceBullet {
   bullets: string[];
 }
 
+interface ProjectBullet {
+  project_name: string;
+  bullets: string[];
+}
+
 interface TrajectoryAnalysis {
   current_perception: string;
   optimized_positioning: string;
@@ -27,6 +32,7 @@ interface LinkedInData {
   headline: string;
   about_section: string;
   experience_bullets: ExperienceBullet[];
+  project_bullets: ProjectBullet[];
   content_ideas: string[];
   networking_targets: string[];
   banner_prompt: string;
@@ -363,6 +369,34 @@ const LinkedInOptimizerPage: React.FC = () => {
                                 ))}
                             </div>
                         </div>
+
+                        {/* PROJECTS SECTION CARD */}
+                        {optimizedData.project_bullets && optimizedData.project_bullets.length > 0 && (
+                            <div className="panel glass-card" style={{ padding: '2rem', borderRadius: '16px', borderLeft: '4px solid #10b981', background: 'linear-gradient(145deg, rgba(20, 20, 30, 0.8) 0%, rgba(10, 10, 15, 0.9) 100%)', marginTop: '2rem' }}>
+                                <h3 style={{ color: 'white', margin: '0 0 2rem 0', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '1.4rem' }}>
+                                    <Target size={24} color="#10b981" /> Projects Section
+                                </h3>
+                                
+                                <div className="panel glass-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                                    {optimizedData.project_bullets.map((proj, idx) => (
+                                        <div key={idx} style={{ padding: '1.5rem', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', background: 'rgba(255,255,255,0.02)', position: 'relative', overflow: 'hidden' }}>
+                                            <div style={{ position: 'absolute', top: 0, left: 0, width: '3px', height: '100%', background: 'rgba(255,255,255,0.2)' }}></div>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.2rem', paddingLeft: '1rem' }}>
+                                                <h4 style={{ color: 'white', margin: 0, fontSize: '1.2rem', fontWeight: 600 }}>{proj.project_name}</h4>
+                                                <button className="btn-outline" onClick={() => handleCopy(proj.bullets.join('\n'), `proj-${idx}`)} style={{ padding: '0.4rem 0.8rem', borderRadius: '6px', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', background: copiedStates[`proj-${idx}`] ? 'rgba(16, 185, 129, 0.2)' : 'transparent', color: copiedStates[`proj-${idx}`] ? '#10b981' : 'var(--text-secondary)', borderColor: copiedStates[`proj-${idx}`] ? '#10b981' : 'rgba(255,255,255,0.2)' }}>
+                                                    {copiedStates[`proj-${idx}`] ? <CheckCircle size={14}/> : <Copy size={14}/>} {copiedStates[`proj-${idx}`] ? 'Copied' : 'Copy'}
+                                                </button>
+                                            </div>
+                                            <ul style={{ color: '#cbd5e1', paddingLeft: '2.5rem', margin: 0, lineHeight: '1.7', fontSize: '1rem' }}>
+                                                {proj.bullets.map((bullet, bIdx) => (
+                                                    <li key={bIdx} style={{ marginBottom: '0.75rem' }}>{bullet}</li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 )}
             </div>
