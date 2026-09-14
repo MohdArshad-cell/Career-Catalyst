@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../supabaseClient';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import './Pricing.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
@@ -110,9 +110,9 @@ const Pricing = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="pricing-container">
                 <div className="pricing-header text-center">
@@ -171,7 +171,7 @@ const Pricing = () => {
                     </p>
                 </div>
             </div>
-            <Footer />
+            
         </div>
     );
 };

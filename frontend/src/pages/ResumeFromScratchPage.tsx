@@ -14,9 +14,9 @@ import AchievementsForm from '../forms/AchievementsForm';
 import CertificationsForm from '../forms/CertificationsForm';
 
 import './ResumeFromScratchPage.css';
-import ParticleBackground from '../components/ParticleBackground';
-import Navbar from '../components/Navbar'; 
-import Footer from '../components/Footer'; 
+
+ 
+ 
 import { ResumeData } from '../types';
 
 interface LocalDownloadLinks {
@@ -273,9 +273,9 @@ const ResumeFromScratchPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="scratch-studio-container">
                 
@@ -355,7 +355,7 @@ const ResumeFromScratchPage: React.FC = () => {
 
                 </div>
             </div>
-            <Footer />
+            
         </div>
     );
 };

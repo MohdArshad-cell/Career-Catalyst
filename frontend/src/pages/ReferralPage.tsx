@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Share2, Copy, CheckCircle, Gift, Users } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
 import './ToolPages.css';
@@ -80,9 +80,9 @@ const ReferralPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tool-page-container" style={{ maxWidth: '800px' }}>
                 
@@ -157,7 +157,7 @@ const ReferralPage: React.FC = () => {
                 )}
             </div>
             
-            <Footer />
+            
         </div>
     );
 };

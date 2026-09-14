@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { History, Activity, Zap, AlertCircle } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import { useToast } from '../components/Toast';
 import './ToolPages.css';
 
@@ -57,9 +57,9 @@ const UsageHistoryPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '1000px', margin: '0 auto' }}>
                 
@@ -144,7 +144,7 @@ const UsageHistoryPage: React.FC = () => {
                 )}
             </div>
             
-            <Footer />
+            
         </div>
     );
 };

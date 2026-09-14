@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Mail, Copy, CheckCircle, FileText, Target, MessageSquare, Settings2, Sparkles, Send, Calendar, Coffee, Twitter, ShieldCheck } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import PdfUploadButton from '../components/PdfUploadButton';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
@@ -124,9 +124,9 @@ const ColdOutreachPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tool-page-container">
                 
@@ -351,7 +351,7 @@ const ColdOutreachPage: React.FC = () => {
                 )}
             </div>
             
-            <Footer />
+            
         </div>
     );
 };

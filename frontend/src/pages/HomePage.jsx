@@ -2,11 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, ArrowRight, ChevronDown, CheckCircle2, MessageCircle } from 'lucide-react';
-import ParticleBackground from '../components/ParticleBackground';
 import '../App.css';
 
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
 import { supabase } from '../supabaseClient';
 import { Hero } from '../components/Hero/Hero';
 
@@ -133,10 +130,7 @@ const HomePage = () => {
 
     return (
         <div className="min-h-screen bg-[#030303] text-white overflow-hidden flex flex-col selection:bg-indigo-500/30">
-            <ParticleBackground />
-            <div className="background-aurora pointer-events-none"></div>
-            <Navbar />
-
+                                    
             {/* ────────── 1. HERO ────────── */}
             <Hero />
 
@@ -519,8 +513,7 @@ const HomePage = () => {
                 </div>
             </section>
 
-            <Footer />
-        </div>
+                    </div>
     );
 };
 

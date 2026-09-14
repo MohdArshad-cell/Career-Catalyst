@@ -21,15 +21,12 @@ import ResignationLetterPage from './pages/ResignationLetterPage';
 import ResumeDiffPage from './pages/ResumeDiffPage';
 import ReferralPage from './pages/ReferralPage';
 import UsageHistoryPage from './pages/UsageHistoryPage';
+import MainLayout from './components/MainLayout';
 import "./App.css";
 
 function App() {
   return (
-    <div className="App">
-      
-      {/* ✅ THIS IS THE FIX: The global aurora background now sits permanently behind EVERY page */}
-      <div className="background-aurora"></div>
-
+    <MainLayout>
       <Routes>
         {/* =========================================
             Public Routes - Free Tools & Landing Pages
@@ -112,7 +109,7 @@ function App() {
             </ProtectedRoute>
         } />
       </Routes>
-    </div>
+    </MainLayout>
   );
 }
 

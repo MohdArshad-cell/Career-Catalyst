@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { supabase } from '../supabaseClient';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import './LoginPage.css'; 
 
 const LoginPage = () => {
@@ -63,9 +63,9 @@ const LoginPage = () => {
     return (
         <div className="page-container">
             {/* Background integration to match the rest of the site */}
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="login-studio-container">
                 <div className="glass-card-premium" style={{ width: '100%', maxWidth: '460px', position: 'relative', overflow: 'hidden' }}>
@@ -147,7 +147,7 @@ const LoginPage = () => {
                 </div>
             </div>
 
-            <Footer />
+            
         </div>
     );
 };

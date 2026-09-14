@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 // Added FaEye for the ATS X-Ray Vision icon, and FaLinkedin, FaPaperPlane, FaMapSigns for Phase 3 tools
 import { FaWandMagicSparkles, FaFileLines, FaEnvelopeOpenText, FaFileSignature, FaMicrophone, FaEye, FaLinkedin, FaPaperPlane } from "react-icons/fa6";
 import { FaMapSigns } from "react-icons/fa";
-import ParticleBackground from '../components/ParticleBackground';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
+
+
+
 import './AiToolsPage.css';
 import '../App.css';
 
@@ -24,11 +24,11 @@ const AiToolsPage = () => {
 
     return (
         <div className="page-container">
-            {/* Background Effects */}
-            <ParticleBackground />
-            <div className="background-aurora"></div>
+            
+            
+            
 
-            <Navbar />
+            
 
             <div className="container content-wrapper" style={{ paddingTop: '120px', paddingBottom: '5rem' }}>
                 
@@ -208,7 +208,7 @@ const AiToolsPage = () => {
                 </div>
             </div>
             
-            <Footer />
+            
         </div>
     );
 };

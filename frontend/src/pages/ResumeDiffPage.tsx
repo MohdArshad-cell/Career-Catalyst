@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SplitSquareHorizontal, CheckCircle, ArrowRight, FileText, Search } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import { useToast } from '../components/Toast';
 import './ToolPages.css';
 
@@ -72,9 +72,9 @@ const ResumeDiffPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tool-page-container">
                 
@@ -175,7 +175,7 @@ const ResumeDiffPage: React.FC = () => {
                 )}
             </div>
             
-            <Footer />
+            
         </div>
     );
 };

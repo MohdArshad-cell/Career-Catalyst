@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import PdfUploadButton from '../components/PdfUploadButton';
 import AiLoadingState from '../components/AiLoadingState';
 import { useToast } from '../components/Toast';
@@ -170,9 +170,9 @@ const AtsEvaluatorPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tool-page-container">
 
@@ -395,7 +395,7 @@ const AtsEvaluatorPage: React.FC = () => {
                 )}
             </div>
 
-            <Footer />
+            
         </div>
     );
 };

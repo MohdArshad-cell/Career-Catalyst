@@ -1,8 +1,8 @@
 import React, { MouseEvent, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import { useToast } from '../components/Toast';
 import './FeaturesPage.css';
 
@@ -169,9 +169,9 @@ const FeaturesPage: React.FC = () => {
 
     return (
         <div className="page-container features-page">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <main className="features-main-container">
                 {/* Hero Section */}
@@ -246,7 +246,7 @@ const FeaturesPage: React.FC = () => {
                 </div>
             </main>
 
-            <Footer />
+            
         </div>
     );
 };

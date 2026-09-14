@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { FileText, Copy, CheckCircle, ArrowRight, Download } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import { useToast } from '../components/Toast';
 import './ToolPages.css';
 
@@ -87,9 +87,9 @@ const ResignationLetterPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tool-page-container" style={{ maxWidth: '800px' }}>
                 
@@ -214,7 +214,7 @@ const ResignationLetterPage: React.FC = () => {
                 )}
             </div>
             
-            <Footer />
+            
         </div>
     );
 };

@@ -2,9 +2,9 @@ import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Mic, ChevronDown, ChevronUp, Target, FileText, Settings, Activity, Brain, Upload } from 'lucide-react';
-import Navbar from '../components/Navbar';
-import Footer from '../components/Footer';
-import ParticleBackground from '../components/ParticleBackground';
+
+
+
 import { supabase } from '../supabaseClient';
 import './ToolPages.css';  // Utilizing the premium Tailor CSS
 
@@ -161,9 +161,9 @@ const MockInterviewPage: React.FC = () => {
 
     return (
         <div className="page-container">
-            <ParticleBackground />
-            <div className="background-aurora"></div>
-            <Navbar />
+            
+            
+            
 
             <div className="tool-page-container">
                 
@@ -368,7 +368,7 @@ const MockInterviewPage: React.FC = () => {
             </div>
             
             <div style={{ width: '100%', marginTop: 'auto' }}>
-                <Footer />
+                
             </div>
         </div>
     );
