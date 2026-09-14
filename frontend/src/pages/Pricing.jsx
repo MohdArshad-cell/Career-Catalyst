@@ -64,8 +64,8 @@ const Pricing = () => {
             stripeId: process.env.REACT_APP_STRIPE_PRICE_99,
             features: [
                 '✔️ 10 Premium AI Tokens',
-                '✔️ Resume Tailor (Beat the ATS)',
-                '❌ Advanced Cover Letters',
+                '✔️ Access to 10+ AI Tools',
+                '❌ Advanced Interview AI',
                 '❌ Priority Support'
             ],
             isPopular: false,
@@ -81,9 +81,9 @@ const Pricing = () => {
             stripeId: process.env.REACT_APP_STRIPE_PRICE_199,
             features: [
                 '✨ 30 Premium AI Tokens',
-                '🚀 Resume Tailor (Beat the ATS)',
-                '🔥 Brutal ATS Evaluator',
-                '✉️ Cover Letter Generator'
+                '🚀 Full Access to 10+ Premium Tools',
+                '🔥 AI Resume Tailoring (ATS Bypass)',
+                '✉️ Cover Letters & LinkedIn SEO'
             ],
             isPopular: true, // The Decoy Effect target
             buttonText: 'Buy 30 Tokens',
@@ -98,8 +98,8 @@ const Pricing = () => {
             stripeId: process.env.REACT_APP_STRIPE_PRICE_499,
             features: [
                 '💎 100 Premium AI Tokens',
-                '🚀 Unrestricted Tool Access',
-                '🎤 AI Mock Interview Data',
+                '🎤 AI Mock Interview Training',
+                '🗺️ Personalized Career Roadmaps',
                 '⚡ Priority Generation Speed'
             ],
             isPopular: false,
@@ -167,7 +167,7 @@ const Pricing = () => {
                 <div className="pricing-faq text-center" style={{ marginTop: '3rem' }}>
                     <p style={{ color: 'var(--text-secondary)', fontSize: '0.95rem' }}>
                         Payments are securely processed by <strong>Stripe (UPI, Cards & Netbanking Supported)</strong>. <br/>
-                        1 Token = 1 AI Request (Tailor, Evaluate, or Cover Letter).
+                        Tool usage costs range from 1 to 3 tokens depending on AI complexity. ATS X-Ray is free!
                     </p>
                 </div>
             </div>

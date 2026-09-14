@@ -24,7 +24,7 @@ const faqData = [
     },
     {
         question: "How do tokens work?",
-        answer: "Tokens are our platform currency. You get free tokens on signup, and can purchase more as needed. Each AI generation (tailoring, evaluating) costs 1 token."
+        answer: "Tokens are our platform currency. You get 10 free tokens on signup! Tools cost between 1 to 3 tokens depending on the complexity of the AI generation."
     },
     {
         question: "Can I get a refund?",
