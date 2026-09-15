@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Copy, CheckCircle, ArrowRight, Download } from 'lucide-react';
-
-
-
+import { FileText, Copy, CheckCircle, ArrowRight, Download, Sparkles, Send } from 'lucide-react';
 import { useToast } from '../components/Toast';
-import './ToolPages.css';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 
@@ -69,16 +65,27 @@ const ResignationLetterPage: React.FC = () => {
             };
 
             const response = await axios.post(`${API_BASE_URL}/api/free/resignation-letter`, payload);
+            console.log("Resignation letter response:", response.data);
             
-            setResultData(response.data);
-            showToast('Letter generated successfully!', 'success');
+            if (response.data && response.data.subject_line) {
+                setResultData(response.data);
+                showToast('Letter generated successfully!', 'success');
+            } else if (typeof response.data === 'string') {
+                setResultData({
+                    subject_line: `Resignation - ${employeeName}`,
+                    letter_body: response.data
+                });
+                showToast('Letter generated successfully!', 'success');
+            } else {
+                showToast('Received unexpected format from AI.', 'error');
+            }
 
         } catch (err: any) {
             console.error("Letter generation error:", err);
             if (err.response?.status === 429) {
                 showToast("Rate limit exceeded. Please try again later.", "warning");
             } else {
-                showToast("Failed to generate letter.", "error");
+                showToast("Failed to generate letter. Ensure the backend is running.", "error");
             }
         } finally {
             setIsLoading(false);
@@ -86,66 +93,74 @@ const ResignationLetterPage: React.FC = () => {
     };
 
     return (
-        <div className="page-container">
-            
-            
-            
+        <div className="min-h-screen bg-[#0a0a0a] text-white pt-24 pb-12 px-4 relative overflow-hidden">
+            {/* Background Effects */}
+            <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-pink-600/20 rounded-full blur-[120px] -z-10 animate-pulse"></div>
+            <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-rose-600/20 rounded-full blur-[100px] -z-10"></div>
+            <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] -z-10"></div>
 
-            <div className="tool-page-container" style={{ maxWidth: '800px' }}>
-                
-                <div className="tool-header">
-                    <div className="badge-neutral">
-                        <FileText size={16} /> Free Tool
+            <div className="max-w-4xl mx-auto">
+                {/* Header */}
+                <div className="text-center mb-12">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-500/10 border border-pink-500/20 text-pink-400 text-sm font-medium mb-6">
+                        <Sparkles size={16} /> Free AI Tool
                     </div>
-                    <h1 className="tool-header-title">Resignation Letter Generator</h1>
-                    <p className="tool-header-subtitle">Draft a perfect, bridge-building resignation letter in seconds.</p>
+                    <h1 className="text-4xl md:text-6xl font-black mb-6 bg-clip-text text-transparent bg-gradient-to-r from-pink-400 via-rose-400 to-orange-400">
+                        Resignation Letter Generator
+                    </h1>
+                    <p className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto">
+                        Draft a perfect, bridge-building resignation letter in seconds.
+                    </p>
                 </div>
 
-                <div className="panel glass-panel" style={{ marginBottom: '2rem' }}>
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                {/* Input Section */}
+                <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8 mb-8 shadow-2xl relative">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-500 to-orange-500 rounded-t-3xl"></div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Your Name *</label>
+                            <label className="block text-gray-400 font-medium mb-2 text-sm">Your Name <span className="text-rose-500">*</span></label>
                             <input 
                                 type="text" 
-                                className="premium-textarea" 
-                                style={{ minHeight: '50px' }} 
                                 value={employeeName} 
                                 onChange={e => setEmployeeName(e.target.value)} 
                                 placeholder="John Doe"
+                                disabled={isLoading}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all"
                             />
                         </div>
                         <div>
-                            <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Company Name *</label>
+                            <label className="block text-gray-400 font-medium mb-2 text-sm">Company Name <span className="text-rose-500">*</span></label>
                             <input 
                                 type="text" 
-                                className="premium-textarea" 
-                                style={{ minHeight: '50px' }} 
                                 value={companyName} 
                                 onChange={e => setCompanyName(e.target.value)} 
                                 placeholder="Acme Corp"
+                                disabled={isLoading}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all"
                             />
                         </div>
                     </div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                         <div>
-                            <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Last Working Day *</label>
+                            <label className="block text-gray-400 font-medium mb-2 text-sm">Last Working Day <span className="text-rose-500">*</span></label>
                             <input 
                                 type="text" 
-                                className="premium-textarea" 
-                                style={{ minHeight: '50px' }} 
                                 value={lastDate} 
                                 onChange={e => setLastDate(e.target.value)} 
                                 placeholder="e.g., October 31st, 2026"
+                                disabled={isLoading}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all"
                             />
                         </div>
                         <div>
-                            <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Tone</label>
+                            <label className="block text-gray-400 font-medium mb-2 text-sm">Tone</label>
                             <select 
-                                className="premium-textarea" 
-                                style={{ minHeight: '50px', background: 'rgba(0,0,0,0.4)' }}
                                 value={tone}
                                 onChange={e => setTone(e.target.value)}
+                                disabled={isLoading}
+                                className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all appearance-none"
                             >
                                 <option value="professional">Professional & Standard</option>
                                 <option value="grateful">Grateful & Warm</option>
@@ -154,67 +169,81 @@ const ResignationLetterPage: React.FC = () => {
                         </div>
                     </div>
 
-                    <div style={{ marginBottom: '1rem' }}>
-                        <label style={{ display: 'block', color: 'var(--text-secondary)', marginBottom: '0.5rem' }}>Reason for Leaving (Optional)</label>
+                    <div className="mb-8">
+                        <label className="block text-gray-400 font-medium mb-2 text-sm">Reason for Leaving (Optional)</label>
                         <input 
                             type="text" 
-                            className="premium-textarea" 
-                            style={{ minHeight: '50px' }} 
                             value={reason} 
                             onChange={e => setReason(e.target.value)} 
                             placeholder="e.g., Relocating, New opportunity, Going back to school"
+                            disabled={isLoading}
+                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-pink-500/50 transition-all"
                         />
                     </div>
-                </div>
 
-                <div className="action-row text-center" style={{ margin: '2rem 0' }}>
                     <button 
-                        className="btn-premium pulse-glow massive-btn" 
                         onClick={handleGenerate}
                         disabled={isLoading || !employeeName || !companyName || !lastDate}
-                        style={{ padding: '1rem 3rem', fontSize: '1.2rem', borderRadius: '50px', background: 'linear-gradient(45deg, #ec4899, #e11d48)' }}
+                        className="w-full md:w-auto px-8 py-4 bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 text-white rounded-xl font-bold text-lg transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-[0_0_20px_rgba(225,29,72,0.4)] disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 mx-auto"
                     >
-                        {isLoading ? 'Drafting...' : 'Generate Letter ⚡'}
+                        {isLoading ? (
+                            <><div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> Drafting...</>
+                        ) : (
+                            <><Send size={20} /> Generate Letter</>
+                        )}
                     </button>
                 </div>
 
+                {/* Output Section */}
                 {resultData && (
-                    <div className="output-section">
-                        <div className="panel glass-panel" style={{ padding: '2rem', border: '1px solid rgba(236, 72, 153, 0.3)' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem' }}>
-                                <h3 style={{ margin: 0, color: '#ec4899', fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                    <FileText size={20}/> Draft Ready
-                                </h3>
-                                <div style={{ display: 'flex', gap: '10px' }}>
-                                    <button className="btn-outline" onClick={() => handleCopy(resultData.letter_body)} style={{ padding: '0.4rem 0.8rem', color: '#ec4899', borderColor: 'rgba(236,72,153,0.4)' }}>
-                                        {isCopied ? <CheckCircle size={16}/> : <Copy size={16}/>} Copy
-                                    </button>
-                                    <button className="btn-outline" onClick={handleDownload} style={{ padding: '0.4rem 0.8rem', color: 'white', borderColor: 'rgba(255,255,255,0.2)' }}>
-                                        <Download size={16}/> Save .txt
-                                    </button>
-                                </div>
+                    <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-3xl p-6 md:p-8 shadow-2xl relative animate-in fade-in slide-in-from-bottom-4 duration-500">
+                        <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+                            <h3 className="text-2xl font-bold text-pink-400 flex items-center gap-2">
+                                <FileText size={24} /> Draft Ready
+                            </h3>
+                            <div className="flex flex-wrap gap-3">
+                                <button 
+                                    onClick={() => handleCopy(resultData.letter_body)} 
+                                    className="px-4 py-2 rounded-lg border border-pink-500/30 text-pink-400 hover:bg-pink-500/10 transition-colors flex items-center gap-2 font-medium"
+                                >
+                                    {isCopied ? <CheckCircle size={18}/> : <Copy size={18}/>} 
+                                    {isCopied ? 'Copied!' : 'Copy'}
+                                </button>
+                                <button 
+                                    onClick={handleDownload} 
+                                    className="px-4 py-2 rounded-lg border border-white/20 text-white hover:bg-white/10 transition-colors flex items-center gap-2 font-medium"
+                                >
+                                    <Download size={18}/> Save .txt
+                                </button>
                             </div>
-                            
-                            <div style={{ background: 'rgba(0,0,0,0.3)', padding: '1.5rem', borderRadius: '8px', borderLeft: '4px solid #ec4899', color: 'white', fontSize: '1.1rem', lineHeight: '1.6' }}>
-                                <strong>Subject:</strong> {resultData.subject_line}
-                                <hr style={{ borderTop: '1px solid rgba(255,255,255,0.1)', margin: '1rem 0' }} />
-                                <div style={{ whiteSpace: 'pre-wrap' }}>{resultData.letter_body}</div>
+                        </div>
+                        
+                        <div className="bg-black/50 border border-pink-500/20 rounded-2xl p-6 mb-6">
+                            <div className="mb-4 pb-4 border-b border-white/10">
+                                <strong className="text-gray-400 text-sm uppercase tracking-wider">Subject:</strong>
+                                <p className="text-lg text-white font-medium mt-1">{resultData.subject_line}</p>
+                            </div>
+                            <div className="text-gray-300 leading-relaxed whitespace-pre-wrap text-[1.05rem]">
+                                {resultData.letter_body}
                             </div>
                         </div>
 
                         {/* Upsell CTA */}
-                        <div className="glass-panel text-center" style={{ marginTop: '2rem', padding: '2rem', background: 'linear-gradient(135deg, rgba(236,72,153,0.1), rgba(0,0,0,0))' }}>
-                            <h3 style={{ margin: '0 0 1rem 0', color: 'white' }}>Starting a new job hunt?</h3>
-                            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem' }}>Make sure your resume is ready. Use our Premium AI tools to build, tailor, and optimize your resume for your next role.</p>
-                            <button className="btn-premium" onClick={() => navigate('/AiTools')} style={{ display: 'inline-flex', alignItems: 'center', gap: '10px' }}>
+                        <div className="mt-8 p-6 bg-gradient-to-br from-pink-900/40 to-black rounded-2xl border border-pink-500/20 text-center">
+                            <h4 className="text-xl font-bold text-white mb-2">Starting a new job hunt?</h4>
+                            <p className="text-gray-400 mb-6 max-w-lg mx-auto text-sm">
+                                Make sure your resume is ready. Use our Premium AI tools to build, tailor, and optimize your resume for your next role.
+                            </p>
+                            <button 
+                                onClick={() => navigate('/AiTools')} 
+                                className="inline-flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-xl font-semibold transition-colors border border-white/10"
+                            >
                                 View AI Toolkit <ArrowRight size={18} />
                             </button>
                         </div>
                     </div>
                 )}
             </div>
-            
-            
         </div>
     );
 };
