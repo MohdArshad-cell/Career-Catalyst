@@ -63,12 +63,16 @@ const UsageHistoryPage: React.FC = () => {
 
             <div className="tailor-studio-container" style={{ paddingTop: '100px', paddingBottom: '3rem', maxWidth: '1000px', margin: '0 auto' }}>
                 
-                <div className="studio-header text-center" style={{ marginBottom: '3rem' }}>
-                    <div className="hero-badge" style={{ background: 'rgba(139, 92, 246, 0.1)', color: '#8b5cf6', border: '1px solid rgba(139, 92, 246, 0.2)' }}>
-                        <History size={16} style={{ display: 'inline', marginRight: '5px' }}/> Your Activity
+                <div className="text-center mb-12">
+                    <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-sm font-medium mb-6">
+                        <History size={16} /> Your Activity
                     </div>
-                    <h1 className="animated-gradient-text" style={{ fontSize: '3rem', marginBottom: '0.5rem', background: 'linear-gradient(90deg, #8b5cf6, #3b82f6)' }}>Usage History</h1>
-                    <p style={{ color: 'var(--text-secondary)', fontSize: '1.1rem' }}>Track your AI generations, token usage, and activity logs.</p>
+                    <h1 className="text-4xl md:text-5xl font-black mb-4 bg-clip-text text-transparent bg-gradient-to-r from-purple-500 to-blue-500">
+                        Usage History
+                    </h1>
+                    <p className="text-gray-400 text-lg">
+                        Track your AI generations, token usage, and activity logs.
+                    </p>
                 </div>
 
                 {!isLoading ? (
