@@ -75,7 +75,7 @@ const BulletRewriterPage: React.FC = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white pt-24 pb-12 px-4 relative overflow-hidden">
+        <div className="min-h-screen bg-transparent text-white pt-24 pb-12 px-4 relative overflow-hidden">
             {/* Background Effects */}
             <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-purple-600/20 rounded-full blur-[120px] -z-10 animate-pulse"></div>
             <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-cyan-600/20 rounded-full blur-[100px] -z-10"></div>
