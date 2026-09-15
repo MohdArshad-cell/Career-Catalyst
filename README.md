@@ -1,14 +1,15 @@
 <div align="center">
   
 # 🚀 Career Catalyst
-### AI-Powered Resume Tailoring & Full-Stack Career Optimization Platform
+### The AI-Powered Resume Engine & Full-Stack Career Optimization Platform
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)](#)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.100%2B-009688?logo=fastapi&logoColor=white)](#)
 [![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](#)
-[![Supabase](https://img.shields.io/badge/Supabase-Auth-3ECF8E?logo=supabase&logoColor=white)](#)
-[![Redis](https://img.shields.io/badge/Redis-Queueing-DC382D?logo=redis&logoColor=white)](#)
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-red.svg)](#)
+[![Supabase](https://img.shields.io/badge/Supabase-Auth_%26_DB-3ECF8E?logo=supabase&logoColor=white)](#)
+[![Redis](https://img.shields.io/badge/Redis-Rate_Limiting-DC382D?logo=redis&logoColor=white)](#)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.0-38B2AC?logo=tailwind-css&logoColor=white)](#)
+[![Stripe](https://img.shields.io/badge/Stripe-Payments-6772E5?logo=stripe&logoColor=white)](#)
 
 *Your unfair advantage in the modern job market.*
 
@@ -17,77 +18,147 @@
 ---
 
 ## 📖 Table of Contents
-- [About The Project](#-about-the-project)
-- [Key Features](#-key-features)
-  - [Premium SaaS Toolkit](#-premium-saas-toolkit)
-  - [Free SEO & Viral Tools](#-free-seo--viral-tools)
-- [Tech Stack](#-tech-stack)
-- [System Architecture](#-system-architecture)
-- [Growth Infrastructure](#-growth-infrastructure)
-- [Getting Started (Local Setup)](#-getting-started)
+1. [Domain & Vision](#-domain--vision)
+2. [Tech Stack](#-tech-stack)
+3. [Premium SaaS Features](#-premium-saas-features)
+4. [Free Lead-Gen Tools](#-free-lead-gen-tools)
+5. [Database Schema](#-database-schema)
+6. [System Architecture & Data Flow](#-system-architecture--data-flow)
+7. [Growth & Economy Mechanics](#-growth--economy-mechanics)
+8. [Getting Started (Local Setup)](#-getting-started)
 
 ---
 
-## 💡 About The Project
+## 🌐 Domain & Vision
 
-**Career Catalyst** is a state-of-the-art, full-stack application designed to instantly hyper-optimize resumes to pass Applicant Tracking Systems (ATS) and provide a comprehensive suite of career acceleration tools. 
+**Career Catalyst** operates in the **Career Technology (CareerTech) and HR-Tech domain**. 
+The job market is increasingly dominated by automated Applicant Tracking Systems (ATS) that ruthlessly filter resumes before human eyes ever see them. Career Catalyst is a B2C / B2B SaaS platform built to level the playing field.
 
-Instead of just blindly injecting keywords, it uses intelligent LLM orchestration (Groq/Gemini), mathematical fuzzy matching, and dynamic tone scaling to rewrite resumes exactly how senior technical recruiters want to read them. It also features a built-in token economy, referral mechanics, and dedicated Admin monitoring.
-
----
-
-## ✨ Key Features
-
-### 💎 Premium SaaS Toolkit (Requires Tokens)
-- **AI Resume Tailor:** Uses mathematical `rapidfuzz` algorithms to detect missing technical skills and rewrites bullet points to perfectly match the target Job Description using the STAR/XYZ formula. Compiles to PDF via Tectonic LaTeX.
-- **ATS Evaluator:** Get a real-time, mathematical score on your resume's compatibility with Applicant Tracking Systems.
-- **Cover Letter Generator:** Dynamically generates targeted, markdown-stripped cover letters.
-- **Mock Interview Simulator:** Practice with AI-generated questions tailored to your target job.
-- **LinkedIn Profile Optimizer:** Re-writes your headline, 'About' section, and experience to rank higher in LinkedIn Recruiter search algorithms.
-- **Cold Outreach Drafter:** Generates personalized, high-converting cold emails/DMs to hiring managers based on their profile and the job description.
-- **Career Roadmap:** Analyzes your current resume vs your "dream job" and generates a week-by-week upskilling roadmap.
-
-### 🧲 Free SEO & Viral Tools (Lead Generation)
-- **Bullet Rewriter (`/bullet-rewriter`):** Instantly converts a weak resume task into a metric-driven achievement.
-- **Job Fit Calculator (`/job-fit`):** Client-side keyword matching tool to score your resume against a job description instantly.
-- **Resignation Letter Generator (`/resignation-letter`):** Quick, form-based tool to draft professional resignation letters in various tones.
-- **Resume Diff Checker (`/resume-diff`):** Client-side tool that shows exactly what lines were added/removed between an old resume and a tailored one.
+Instead of just blindly injecting keywords, the platform uses intelligent LLM orchestration (Groq/Gemini), mathematical fuzzy matching, and dynamic tone scaling to rewrite resumes exactly how senior technical recruiters and ATS algorithms want to read them. It features a built-in token economy, referral mechanics, secure authentication, and a full admin suite.
 
 ---
 
 ## 🛠️ Tech Stack
 
-### Frontend (`/frontend`)
-- **Framework:** React.js (React Router v6)
-- **Styling & UI:** Tailwind CSS, custom CSS Glassmorphism, 3D interactive elements
-- **Authentication:** Supabase Auth (Magic Links, OAuth)
-
-### Backend (`/resume-engine`)
-- **API Framework:** FastAPI
-- **AI/LLMs:** Groq SDK, Google Generative AI (Gemini Flash)
-- **Data & Rate Limiting:** Redis
-- **Database:** Supabase PostgreSQL
-- **Compiler:** Tectonic (LaTeX to PDF)
-
----
-
-## 🏗️ System Architecture
-
-1. **User Input:** User interacts with frontend tools (React).
-2. **Auth & Gateway:** Supabase verifies the session. Paid endpoints require token deduction via JWT validation. Free endpoints use Redis IP-based rate limiting (e.g., 10 requests/hour).
-3. **LLM Orchestration:** FastAPI backend parses requests, loads specific prompt templates, and queries Groq/Gemini.
-4. **Data Validation:** Pydantic models strictly validate all JSON outputs from the LLM.
-5. **Compilation (For Resumes):** The JSON output is converted to `.tex`, sanitized for special characters (like `%`, `&`, `#`), and compiled to PDF by Tectonic.
-6. **Logging:** Every API request logs latency, token cost, and success/failure to a Supabase `generation_logs` table for Admin Dashboard monitoring.
+| Domain | Technology | Purpose |
+| :--- | :--- | :--- |
+| **Frontend UI** | **React.js (v18)** | Component-based SPA framework. |
+| **Styling** | **Tailwind CSS** | Utility-first CSS framework for custom Glassmorphism and 3D UI. |
+| **Routing** | **React Router v6** | Client-side routing and protected SaaS routes. |
+| **Backend API** | **FastAPI (Python)** | High-performance async API for AI orchestration. |
+| **AI / LLMs** | **Groq & Google Gemini** | Ultra-fast inference for generative career text. |
+| **Database** | **Supabase (PostgreSQL)** | Relational DB for logs, tokens, users, and referrals. |
+| **Auth** | **Supabase Auth** | JWT-based OAuth and Magic Link authentication. |
+| **Caching/Limits** | **Redis** | IP-based rate limiting for free endpoints. |
+| **Payments** | **Stripe** | Checkout sessions and webhooks for token purchasing. |
+| **Document Gen** | **Tectonic (LaTeX)** | Compiles dynamic `.tex` templates into beautiful PDFs. |
 
 ---
 
-## 🚀 Growth Infrastructure
+## 💎 Premium SaaS Features
 
-- **Token Economy:** Users receive 15 free tokens upon signup. Each premium AI generation costs 1 token. Additional tokens can be purchased via Stripe.
-- **Referral System:** Users have unique referral codes. When a friend signs up using their link (`/signup?ref=CODE`), both users receive 5 bonus tokens.
-- **Usage History:** Users have full transparency over their token ledger in the `/history` dashboard.
-- **Admin Dashboard:** Real-time visibility into `generation_logs`, live active users, failed API requests, and monthly revenue estimates.
+Access to these tools is gated behind the internal **Token Economy**. Users spend 1 token per generation.
+
+| Feature | Description | Underlying Technology |
+| :--- | :--- | :--- |
+| **AI Resume Tailor** | Rewrites an entire resume to perfectly match a target Job Description. | RapidFuzz + LLM Orchestration + LaTeX Compiler |
+| **Brutal ATS Scanner** | Mathematical evaluation of ATS compatibility with actionable Roasts. | Keyword extraction + AI Critique |
+| **ATS X-Ray Vision** | Live split-screen highlighting of missing keywords from a JD. | NLP text parsing + React Highlighting |
+| **Cover Letter AI** | Dynamically generates targeted, markdown-stripped cover letters. | LLM + Dynamic Prompting |
+| **Mock Interview** | Generates highly-specific behavioral and technical interview questions. | LLM Context Injection |
+| **LinkedIn Optimizer** | Re-writes headlines and About sections to rank in Recruiter search. | LLM + SEO heuristics |
+| **Cold Outreach Drafter** | Generates personalized, high-converting networking DMs. | LLM + Value Prop matching |
+| **Career Roadmap** | Analyzes a resume vs a dream job and outputs a 12-month upskill plan. | Gap Analysis AI |
+
+---
+
+## 🧲 Free Lead-Gen Tools
+
+Designed for viral marketing and SEO. Protected by **Redis IP Rate Limiting** to prevent abuse.
+
+| Tool Name | Route | Functionality |
+| :--- | :--- | :--- |
+| **Bullet Rewriter** | `/bullet-rewriter` | Converts weak tasks into XYZ/STAR formula achievements. (Limit: 10/hr) |
+| **Job Fit Score** | `/job-fit` | Client-side keyword matching tool for instant % match rating. |
+| **Resignation Letter** | `/resignation-letter` | Quick, form-based tool to draft professional resignation letters. (Limit: 5/hr) |
+| **Resume Diff Checker** | `/resume-diff` | Client-side tool that shows diffs between old and AI-tailored resumes. |
+
+---
+
+## 🗄️ Database Schema
+
+The platform relies on a robust PostgreSQL schema hosted on Supabase.
+
+### 1. `profiles`
+Manages user profiles and their unique referral identifiers.
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `UUID (PK)` | Links directly to `auth.users` via foreign key. |
+| `referral_code` | `TEXT (Unique)` | The unique 8-character string for their referral link. |
+| `created_at` | `TIMESTAMPTZ` | Timestamp of profile creation. |
+
+### 2. `referrals`
+Tracks the lifecycle of a referral for the Viral Loop.
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `UUID (PK)` | Unique ID for the referral instance. |
+| `referrer_id` | `UUID (FK)` | The user who shared the link. |
+| `referred_user_id`| `UUID (FK)` | The new user who signed up. |
+| `status` | `TEXT` | `pending`, `completed`, or `rewarded`. |
+| `tokens_awarded` | `INTEGER` | Amount of tokens given to both parties (default 5). |
+
+### 3. `token_ledger`
+Immutable ledger for the internal token economy.
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `UUID (PK)` | Unique transaction/ledger row. |
+| `user_id` | `UUID (FK)` | The user who owns the tokens. |
+| `tokens_balance` | `INTEGER` | The current real-time balance of the user. |
+| `transaction_type`| `TEXT` | `grant` (adding) or `deduct` (spending). |
+| `action` | `TEXT` | E.g., `signup_bonus`, `stripe_checkout`, `ai_generation`. |
+
+### 4. `generation_logs`
+Used by the Admin Dashboard to track LLM costs and usage.
+| Column | Type | Description |
+| :--- | :--- | :--- |
+| `id` | `UUID (PK)` | Unique generation ID. |
+| `user_id` | `UUID (FK)` | The user who requested the generation. |
+| `tool_name` | `TEXT` | E.g., `ai_tailor`, `mock_interview`. |
+| `status` | `TEXT` | `success` or `failed`. |
+| `latency_ms` | `INTEGER` | Milliseconds taken by the LLM. |
+| `cost_estimate` | `FLOAT` | Estimated API cost for the generation. |
+
+---
+
+## 🏗️ System Architecture & Data Flow
+
+1. **Frontend Request:** User interacts with React UI and submits data (e.g. PDF upload).
+2. **Gateway & Auth:** 
+   - Paid endpoints pass the JWT token to FastAPI.
+   - FastAPI verifies the token asynchronously using PyJWKClient against Supabase Auth.
+   - FastAPI checks the user's `token_ledger` balance. If `< 1`, raises `402 Payment Required`.
+3. **AI Processing:** 
+   - Prompt engineering templates are dynamically loaded.
+   - Groq/Gemini processes the text. Pydantic enforces strict JSON structures.
+4. **Compilation (Resumes Only):**
+   - AI JSON is injected into Jinja2 templates for LaTeX.
+   - Subprocess runs `tectonic` to compile the PDF.
+5. **Ledger Update:** 
+   - 1 token is deducted.
+   - Usage is logged in `generation_logs`.
+6. **Response:** Data (JSON or binary PDF) is returned to the user.
+
+---
+
+## 📈 Growth & Economy Mechanics
+
+- **Sign Up Bonus:** New users get **15 free tokens** via Supabase Auth triggers/backend grants.
+- **Stripe Integration:** Users can buy Token Packs. Webhooks securely update the `token_ledger`.
+- **Viral Referral Loop:** 
+  - User shares `career-catalyst.com/login?ref=XYZ`.
+  - New user clicks and signs up. The frontend detects the `ref` code in `localStorage`.
+  - Upon first dashboard entry, the frontend auto-redeems the code.
+  - The `grant_tokens` Postgres RPC function atomically adds **5 tokens** to *both* the referrer and referee.
 
 ---
 
@@ -97,12 +168,12 @@ Instead of just blindly injecting keywords, it uses intelligent LLM orchestratio
 - Node.js v18+
 - Python 3.10+
 - Redis Server (running locally on port `6379`)
-- [Tectonic LaTeX Compiler](https://tectonic-typesetting.github.io/en-US/) installed and added to PATH.
+- [Tectonic LaTeX Compiler](https://tectonic-typesetting.github.io/en-US/) in system PATH.
 
-### 1. Supabase Database Setup
-Execute the following SQL files in your Supabase SQL Editor:
-1. `supabase_migration_phase2.sql` (Initializes `generation_logs`)
-2. `supabase_migration_phase5.sql` (Initializes `referrals` and `profiles`)
+### 1. Database Setup (Supabase)
+Execute the migration scripts in the Supabase SQL Editor:
+- `supabase_migration_phase2.sql`
+- `supabase_migration_phase5.sql`
 
 ### 2. Backend Setup
 ```bash
@@ -111,13 +182,7 @@ python -m venv venv
 venv\Scripts\activate   # (On Windows)
 pip install -r requirements.txt
 
-# Create a .env file with:
-# GROQ_API_KEY=your_key
-# GEMINI_API_KEY=your_key
-# REDIS_URL=redis://localhost:6379
-# SUPABASE_URL=...
-# SUPABASE_KEY=...
-
+# Create .env with required keys (Groq, Gemini, Stripe, Supabase, Redis)
 uvicorn app.main:app --reload
 ```
 
@@ -126,14 +191,9 @@ uvicorn app.main:app --reload
 cd frontend
 npm install
 
-# Create a .env file with:
-# REACT_APP_SUPABASE_URL=...
-# REACT_APP_SUPABASE_ANON_KEY=...
-# REACT_APP_API_BASE_URL=http://localhost:8000
-
+# Create .env with REACT_APP_SUPABASE_URL, ANON_KEY, and API_BASE_URL
 npm start
 ```
 
 ---
-
-*Built for the future of recruiting.* 🚀
+*Built to beat the ATS and land interviews.* 🎯
