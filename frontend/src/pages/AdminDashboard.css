@@ -24,7 +24,7 @@
 .admin-page {
   background-color: transparent;
   min-height: calc(100vh - 80px);
-  padding: 40px 20px;
+  padding: 120px 20px 40px;
   width: 100%;
 }
 
