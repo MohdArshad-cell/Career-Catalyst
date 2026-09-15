@@ -9,7 +9,7 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
-        <div className="min-h-screen bg-[#030303] text-white overflow-x-hidden flex flex-col selection:bg-indigo-500/30 w-full relative">
+        <div className="min-h-screen bg-transparent text-white overflow-x-hidden flex flex-col selection:bg-indigo-500/30 w-full relative">
             <ParticleBackground />
             <div className="background-aurora pointer-events-none"></div>
             
