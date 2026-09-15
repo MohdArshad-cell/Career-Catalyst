@@ -480,12 +480,9 @@ body {
 .footer-long {
     margin-top: auto;
     width: 100%;
-    background: rgba(3, 3, 3, 0.85); /* Deep pitch black glass */
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-    box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.2);
-    padding: 4rem 0 0 0; /* Upar se thoda space */
+    background: transparent; /* Changed to let the body gradient shine through */
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 4rem 0 0 0;
     position: relative;
     overflow: hidden;
 }
@@ -593,7 +590,7 @@ body {
     text-align: center;
     padding: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
-    background: rgba(0, 0, 0, 0.2);
+    background: transparent;
 }
 
 .footer-copyright p {
