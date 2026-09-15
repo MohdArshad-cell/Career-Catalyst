@@ -43,7 +43,7 @@ const ReferralPage: React.FC = () => {
     };
 
     const handleCopy = () => {
-        const url = `${window.location.origin}/signup?ref=${referralCode}`;
+        const url = `${window.location.origin}/login?ref=${referralCode}`;
         navigator.clipboard.writeText(url);
         setIsCopied(true);
         showToast("Referral link copied!", "success");
@@ -107,7 +107,7 @@ const ReferralPage: React.FC = () => {
                             
                             <div className="flex flex-col md:flex-row items-center bg-black/40 rounded-2xl p-2 mb-6 border border-white/5 relative z-10">
                                 <div className="flex-grow text-left text-cyan-400 font-mono text-sm md:text-base overflow-hidden text-ellipsis whitespace-nowrap px-4 py-3">
-                                    {window.location.origin}/signup?ref={referralCode}
+                                    {window.location.origin}/login?ref={referralCode}
                                 </div>
                                 <button 
                                     onClick={handleCopy} 

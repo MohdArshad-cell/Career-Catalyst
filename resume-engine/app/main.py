@@ -41,7 +41,7 @@ from app.services.linkedin_service import execute_linkedin_chain
 from app.services.outreach_service import execute_outreach_chain
 from app.services.roadmap_service import execute_roadmap_chain
 from app.services.pdf_extractor import extract_text_from_pdf
-from app.services.llm_client import call_llm, parse_ai_json
+from app.services.llm_client import call_llm, parse_ai_json, load_prompt
 
 # ==========================================
 # 1. INITIALIZATION & CONFIGURATION
@@ -588,14 +588,19 @@ async def rewrite_bullet(req: BulletRewriteRequest, request: Request):
     """Free tool: Rewrite a single resume bullet using STAR/XYZ formula."""
     ip = request.client.host if request.client else "unknown"
     key = f"rate_limit_free_bullet:{ip}"
-    current = redis_client.get(key)
-    if current and int(current) >= 10:
-        raise HTTPException(429, "Too many free requests. Please try again in an hour.")
-    
-    pipe = redis_client.pipeline()
-    pipe.incr(key)
-    pipe.expire(key, 3600)
-    pipe.execute()
+    try:
+        current = redis_client.get(key)
+        if current and int(current) >= 10:
+            raise HTTPException(429, "Too many free requests. Please try again in an hour.")
+        
+        pipe = redis_client.pipeline()
+        pipe.incr(key)
+        pipe.expire(key, 3600)
+        pipe.execute()
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Redis rate limiting bypassed due to error: {e}")
 
     prompt = f"""Rewrite this weak resume bullet point into a powerful, metric-driven statement using the XYZ formula (Accomplished [X] as measured by [Y], by doing [Z]).
 
@@ -695,9 +700,9 @@ async def redeem_referral(code: str = Body(..., embed=True), user_auth: dict = D
         }).execute()
         
         # Award new user
-        supabase.rpc('increment_tokens', {'user_id': new_user_id, 'amount': 5}).execute()
+        supabase.rpc('grant_tokens', {'user_id': new_user_id, 'amount': 5}).execute()
         # Award referrer
-        supabase.rpc('increment_tokens', {'user_id': referrer_id, 'amount': 5}).execute()
+        supabase.rpc('grant_tokens', {'user_id': referrer_id, 'amount': 5}).execute()
         
         return {"success": True, "message": "Referral applied! Both users received 5 tokens."}
     except Exception as e:
@@ -709,14 +714,19 @@ async def generate_resignation_letter(req: ResignationRequest, request: Request)
     """Free tool: Generate a resignation letter."""
     ip = request.client.host if request.client else "unknown"
     key = f"rate_limit_free_resignation:{ip}"
-    current = redis_client.get(key)
-    if current and int(current) >= 5:
-        raise HTTPException(429, "Too many free requests. Please try again later.")
-    
-    pipe = redis_client.pipeline()
-    pipe.incr(key)
-    pipe.expire(key, 3600)
-    pipe.execute()
+    try:
+        current = redis_client.get(key)
+        if current and int(current) >= 5:
+            raise HTTPException(429, "Too many free requests. Please try again later.")
+        
+        pipe = redis_client.pipeline()
+        pipe.incr(key)
+        pipe.expire(key, 3600)
+        pipe.execute()
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Redis rate limiting bypassed due to error: {e}")
 
     prompt_template = load_prompt("resignation", "prompt_resignation.txt")
     prompt = prompt_template \

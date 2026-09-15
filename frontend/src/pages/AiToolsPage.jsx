@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { supabase } from '../supabaseClient';
 // Added FaEye for the ATS X-Ray Vision icon, and FaLinkedin, FaPaperPlane, FaMapSigns for Phase 3 tools
 import { FaWandMagicSparkles, FaFileLines, FaEnvelopeOpenText, FaFileSignature, FaMicrophone, FaEye, FaLinkedin, FaPaperPlane } from "react-icons/fa6";
 import { FaMapSigns } from "react-icons/fa";
@@ -11,6 +13,32 @@ import '../App.css';
 
 const AiToolsPage = () => {
     const navigate = useNavigate();
+
+    useEffect(() => {
+        const autoRedeem = async () => {
+            const pendingCode = localStorage.getItem('pending_referral');
+            if (pendingCode) {
+                try {
+                    const { data: { session } } = await supabase.auth.getSession();
+                    if (!session) return;
+                    
+                    const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
+                    await axios.post(`${API_BASE_URL}/api/referral/redeem`, { code: pendingCode }, {
+                        headers: { Authorization: `Bearer ${session.access_token}` }
+                    });
+                    
+                    console.log("Successfully redeemed pending referral code!");
+                    // Give server a moment then reload to update token counters in navbar
+                    setTimeout(() => window.location.reload(), 1000);
+                } catch (err) {
+                    console.error("Failed to auto-redeem referral:", err);
+                } finally {
+                    localStorage.removeItem('pending_referral');
+                }
+            }
+        };
+        autoRedeem();
+    }, []);
 
     // Mouse flashlight effect for the premium cards
     const handleMouseMove = (e) => {

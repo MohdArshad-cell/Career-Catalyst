@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { supabase } from '../supabaseClient';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 
 
@@ -8,11 +8,21 @@ import './LoginPage.css';
 
 const LoginPage = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const [isSignUp, setIsSignUp] = useState(false);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        const params = new URLSearchParams(location.search);
+        const refCode = params.get('ref');
+        if (refCode) {
+            localStorage.setItem('pending_referral', refCode);
+            setIsSignUp(true); // Default to signup if they came from a referral link
+        }
+    }, [location]);
 
     const handleEmailAuth = async (e) => {
         e.preventDefault();
