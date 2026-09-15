@@ -132,7 +132,7 @@ const HomePage = () => {
     );
 
     return (
-        <div className="min-h-screen bg-[#030303] text-white overflow-hidden flex flex-col selection:bg-indigo-500/30">
+        <div className="min-h-screen bg-transparent text-white overflow-hidden flex flex-col selection:bg-indigo-500/30">
                                     
             {/* ────────── 1. HERO ────────── */}
             <Hero user={user} />
