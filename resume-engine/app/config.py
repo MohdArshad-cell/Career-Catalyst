@@ -10,7 +10,7 @@ load_dotenv()
 # ==========================================
 # LLM CONFIGURATION
 # ==========================================
-LLM_MODEL = "gemini-3.5-flash-lite"
+LLM_MODEL = "gemini-3.1-flash-lite-preview"
 LLM_MAX_OUTPUT_TOKENS = 8192
 LLM_MAX_OUTPUT_TOKENS_SMALL = 4096  # For smaller outputs (JD analysis, evaluation)
 LLM_TEMPERATURE = 0.2

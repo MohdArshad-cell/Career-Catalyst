@@ -36,8 +36,23 @@ const UsageHistoryPage: React.FC = () => {
                 // Calculate stats
                 let tokens = 0;
                 let fails = 0;
+
+                const getActionCost = (action: string) => {
+                    switch (action) {
+                        case 'ai_tailor': return 3;
+                        case 'ai_roadmap': return 2;
+                        case 'ai_evaluate': return 2;
+                        case 'ai_interview': return 3;
+                        case 'ai_linkedin': return 2;
+                        case 'ai_ats_xray': return 0;
+                        case 'ai_coverletter': return 1;
+                        case 'ai_outreach': return 1;
+                        default: return 1;
+                    }
+                };
+
                 data.forEach(log => {
-                    if (log.status === 'success') tokens += (log.tokens_deducted || 1);
+                    if (log.status === 'success') tokens += (log.tokens_deducted || getActionCost(log.action));
                     if (log.status === 'failed') fails += 1;
                 });
                 
@@ -46,6 +61,14 @@ const UsageHistoryPage: React.FC = () => {
                     total_generations: data.length,
                     failed_generations: fails
                 });
+                
+                // Attach the calculated cost to each log for rendering
+                const processedData = data.map(log => ({
+                    ...log,
+                    calculated_cost: log.tokens_deducted || getActionCost(log.action)
+                }));
+                
+                setLogs(processedData);
             }
         } catch (err) {
             console.error("Error fetching history:", err);
@@ -127,7 +150,7 @@ const UsageHistoryPage: React.FC = () => {
                                                     </span>
                                                 </td>
                                                 <td style={{ padding: '1rem', color: '#cbd5e1' }}>
-                                                    {log.status === 'success' ? `-${log.tokens_deducted}` : '0'}
+                                                    {log.status === 'success' ? `-${log.calculated_cost}` : '0'}
                                                 </td>
                                             </tr>
                                         ))}

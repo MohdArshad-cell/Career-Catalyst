@@ -10,7 +10,8 @@ from functools import lru_cache
 from pathlib import Path
 
 import redis
-import google.generativeai as genai
+from google import genai
+from google.genai import types
 
 from app.config import (
     GOOGLE_API_KEYS, LLM_MODEL, LLM_MAX_OUTPUT_TOKENS,
@@ -86,19 +87,15 @@ def get_redis_client():
 # ==========================================
 # 2. GEMINI API — SINGLE IMPLEMENTATION
 # ==========================================
-# Cache model instances per API key to avoid re-initialization
-_model_cache: dict = {}
+# Cache client instances per API key to avoid re-initialization
+_client_cache: dict = {}
 
 
-def _get_model(api_key: str) -> genai.GenerativeModel:
-    """Get or create a cached GenerativeModel for the given API key."""
-    if api_key not in _model_cache:
-        genai.configure(api_key=api_key)
-        _model_cache[api_key] = genai.GenerativeModel(model_name=LLM_MODEL)
-    else:
-        # Reconfigure in case a different key was used last
-        genai.configure(api_key=api_key)
-    return _model_cache[api_key]
+def _get_client(api_key: str) -> genai.Client:
+    """Get or create a cached Client for the given API key."""
+    if api_key not in _client_cache:
+        _client_cache[api_key] = genai.Client(api_key=api_key)
+    return _client_cache[api_key]
 
 
 def call_llm(
@@ -144,14 +141,18 @@ def call_llm(
             + schema_json
         )
 
-    gen_config = genai.types.GenerationConfig(**config_kwargs)
+    gen_config = types.GenerateContentConfig(**config_kwargs)
 
     for attempt in range(_max_retries):
         api_key = get_api_key()
-        model = _get_model(api_key)
+        client = _get_client(api_key)
 
         try:
-            response = model.generate_content(prompt, generation_config=gen_config)
+            response = client.models.generate_content(
+                model=LLM_MODEL,
+                contents=prompt,
+                config=gen_config
+            )
             return response.text
         except Exception as e:
             error_msg = str(e).lower()
@@ -193,13 +194,19 @@ def call_llm_structured(
     }
     if response_schema:
         config_kwargs["response_schema"] = response_schema
+        
+    gen_config = types.GenerateContentConfig(**config_kwargs)
 
     for attempt in range(_max_retries):
         api_key = get_api_key()
-        model = _get_model(api_key)
+        client = _get_client(api_key)
 
         try:
-            response = model.generate_content(prompt, generation_config=config_kwargs)
+            response = client.models.generate_content(
+                model=LLM_MODEL,
+                contents=prompt,
+                config=gen_config
+            )
             return json.loads(response.text)
         except Exception as e:
             error_msg = str(e).lower()

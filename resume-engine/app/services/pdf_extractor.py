@@ -4,7 +4,7 @@ Extracts clean, structured text from uploaded PDF resumes using PyMuPDF (fitz).
 Handles multi-page PDFs and preserves section structure.
 """
 import re
-import fitz  # PyMuPDF
+import pymupdf
 
 
 def extract_text_from_pdf(pdf_bytes: bytes) -> str:
@@ -21,7 +21,7 @@ def extract_text_from_pdf(pdf_bytes: bytes) -> str:
         ValueError: If the PDF contains no extractable text (likely image-based/scanned).
     """
     try:
-        doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+        doc = pymupdf.open(stream=pdf_bytes, filetype="pdf")
     except Exception as e:
         raise ValueError(f"Failed to open PDF: {str(e)}")
 

@@ -16,7 +16,8 @@ OUTPUT SCHEMA (Output ONLY valid JSON, do not wrap in ```json blocks):
     "phone": "Extracted phone or null",
     "linkedin": "Extracted URL or null",
     "github": "Extracted URL or null",
-    "address": "Extracted address or null"
+    "address": "Extracted address or null",
+    "portfolio_url": "Extracted portfolio or personal website URL or null"
   },
   "summary": "Extracted summary text or null",
   "education": [

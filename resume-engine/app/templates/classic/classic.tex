@@ -72,7 +72,7 @@
 %----------HEADING----------
 \begin{center}
     \textbf{\Huge \scshape \VAR{resume_data.personal_info.fullName | escape_tex}} \\ \vspace{2pt}
-    \small \VAR{resume_data.personal_info.phone | escape_tex} $|$ 
+    \small \BLOCK{ if resume_data.personal_info.address }\VAR{resume_data.personal_info.address | escape_tex} $|$ \BLOCK{ endif }\VAR{resume_data.personal_info.phone | escape_tex} $|$ 
     \href{mailto:\VAR{resume_data.personal_info.email}}{\underline{\VAR{resume_data.personal_info.email | escape_tex}}}
     \BLOCK{ if resume_data.personal_info.linkedin } $|$ \href{\VAR{resume_data.personal_info.linkedin}}{\underline{LinkedIn}} \BLOCK{ endif }
     \BLOCK{ if resume_data.personal_info.github } $|$ \href{\VAR{resume_data.personal_info.github}}{\underline{GitHub}} \BLOCK{ endif }
