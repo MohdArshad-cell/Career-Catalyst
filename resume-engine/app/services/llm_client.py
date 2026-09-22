@@ -169,6 +169,7 @@ def call_llm(
                 raise RuntimeError(
                     f"Gemini failed permanently after {_max_retries} attempts: {str(e)}"
                 ) from e
+            time.sleep(min(1.0 * (2 ** attempt), 8))
 
     raise RuntimeError(f"API Rate Limit: All {_max_retries} attempts exhausted.")
 
@@ -222,6 +223,7 @@ def call_llm_structured(
                 raise RuntimeError(
                     f"Structured API failed after {_max_retries} attempts: {str(e)}"
                 ) from e
+            time.sleep(min(1.0 * (2 ** attempt), 8))
 
     raise RuntimeError(f"Structured API: All {_max_retries} attempts exhausted.")
 
