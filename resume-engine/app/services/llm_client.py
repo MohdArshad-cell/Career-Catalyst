@@ -49,19 +49,24 @@ _round_robin_idx = 0
 
 
 def get_api_key() -> str:
-    """Get the next available (non-rate-limited) API key."""
+    """Get the next available (non-rate-limited) API key in round-robin fashion."""
     global _round_robin_idx
     
     r = _get_redis()
     if r:
-        # Redis-backed: skip keys that are locked
-        for key in GOOGLE_API_KEYS:
+        # Redis-backed: check keys in round-robin order
+        for _ in range(len(GOOGLE_API_KEYS)):
+            key = GOOGLE_API_KEYS[_round_robin_idx % len(GOOGLE_API_KEYS)]
+            _round_robin_idx += 1
             if not r.exists(f"{REDIS_KEY_PREFIX}{key}"):
                 return key
-        # All keys locked — wait with backoff instead of hard sleep(2)
-        print("⚠️ All API keys rate-limited. Using first key with short backoff.")
+        
+        # All keys locked — wait with backoff
+        print("⚠️ All API keys rate-limited/locked. Using fallback with short backoff.")
         time.sleep(0.5)
-        return GOOGLE_API_KEYS[0]
+        key = GOOGLE_API_KEYS[_round_robin_idx % len(GOOGLE_API_KEYS)]
+        _round_robin_idx += 1
+        return key
     else:
         # Round-robin fallback (no Redis)
         key = GOOGLE_API_KEYS[_round_robin_idx % len(GOOGLE_API_KEYS)]
@@ -156,8 +161,8 @@ def call_llm(
             return response.text
         except Exception as e:
             error_msg = str(e).lower()
-            if "429" in error_msg or "quota" in error_msg:
-                print(f"⚠️ Rate limit hit (attempt {attempt + 1}/{_max_retries}). Locking key & rotating...")
+            if any(err in error_msg for err in ["429", "quota", "403", "permission_denied"]):
+                print(f"⚠️ Key rejected or rate limited (attempt {attempt + 1}/{_max_retries}). Locking key & rotating...")
                 lock_api_key(api_key)
                 # Exponential backoff: 0.5s, 1s, 2s, 4s...
                 backoff = min(0.5 * (2 ** attempt), 8)
@@ -211,8 +216,8 @@ def call_llm_structured(
             return json.loads(response.text)
         except Exception as e:
             error_msg = str(e).lower()
-            if "429" in error_msg or "quota" in error_msg:
-                print(f"⚠️ Rate limit hit (attempt {attempt + 1}/{_max_retries}). Locking key & rotating...")
+            if any(err in error_msg for err in ["429", "quota", "403", "permission_denied"]):
+                print(f"⚠️ Key rejected or rate limited (attempt {attempt + 1}/{_max_retries}). Locking key & rotating...")
                 lock_api_key(api_key)
                 backoff = min(0.5 * (2 ** attempt), 8)
                 time.sleep(backoff)
