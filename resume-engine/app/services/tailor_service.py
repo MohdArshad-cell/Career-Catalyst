@@ -13,7 +13,7 @@ from concurrent.futures import ThreadPoolExecutor
 
 from rapidfuzz import fuzz
 
-from app.config import JD_CACHE_TTL
+from app.config import JD_CACHE_TTL, LLM_MODEL_LITE
 from app.services.llm_client import (
     call_llm, parse_ai_json, load_prompt, get_redis_client,
 )
@@ -223,7 +223,7 @@ def parse_raw_text_to_json(raw_text: str) -> str:
     """Step 0: Parse raw resume text/LaTeX into structured JSON."""
     print("--- ⚡ Step 0: Gemini Smart Parsing ---")
     prompt0 = _load('prompt_step0_parser.txt').replace('{raw_resume}', raw_text)
-    return call_llm(prompt0, force_json=True)
+    return call_llm(prompt0, force_json=True, model=LLM_MODEL_LITE)
 
 
 def check_semantic_cache(jd_text: str):
@@ -282,7 +282,7 @@ def execute_tailor_chain(resume_input: str, job_description: str, template_name:
             if jd:
                 return jd
             prompt1 = _load('prompt_step1_jd_analysis.txt').replace('{job_description}', job_description)
-            raw_jd_json = call_llm(prompt1, schema=JobDescriptionAnalysis)
+            raw_jd_json = call_llm(prompt1, schema=JobDescriptionAnalysis, model=LLM_MODEL_LITE)
             jd = json.loads(raw_jd_json)
             cache_jd_analysis(job_description, jd)
             return jd

@@ -111,6 +111,7 @@ def call_llm(
     temperature: float = None,
     max_output_tokens: int = None,
     max_retries: int = None,
+    model: str = None,
 ) -> str:
     """
     Call the Gemini API with automatic key rotation, retry, and rate-limit handling.
@@ -122,6 +123,7 @@ def call_llm(
         temperature: Override default temperature.
         max_output_tokens: Override default max tokens.
         max_retries: Override default retry count.
+        model: Override default LLM model.
     
     Returns:
         Raw response text from the LLM.
@@ -129,6 +131,7 @@ def call_llm(
     _temperature = temperature if temperature is not None else LLM_TEMPERATURE
     _max_tokens = max_output_tokens or LLM_MAX_OUTPUT_TOKENS
     _max_retries = max_retries or LLM_MAX_RETRIES
+    _model = model or LLM_MODEL
 
     config_kwargs = {
         "max_output_tokens": _max_tokens,
@@ -154,7 +157,7 @@ def call_llm(
 
         try:
             response = client.models.generate_content(
-                model=LLM_MODEL,
+                model=_model,
                 contents=prompt,
                 config=gen_config
             )
@@ -186,6 +189,7 @@ def call_llm_structured(
     temperature: float = 0.0,
     max_output_tokens: int = None,
     max_retries: int = None,
+    model: str = None,
 ) -> dict:
     """
     Call the Gemini API with native structured output (response_schema).
@@ -193,6 +197,7 @@ def call_llm_structured(
     """
     _max_tokens = max_output_tokens or LLM_MAX_OUTPUT_TOKENS
     _max_retries = max_retries or LLM_MAX_RETRIES
+    _model = model or LLM_MODEL
 
     config_kwargs = {
         "temperature": temperature,
@@ -209,7 +214,7 @@ def call_llm_structured(
 
         try:
             response = client.models.generate_content(
-                model=LLM_MODEL,
+                model=_model,
                 contents=prompt,
                 config=gen_config
             )
