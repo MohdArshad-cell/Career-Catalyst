@@ -138,13 +138,42 @@ class ResumeGenerator:
 
         # 4. Run Tectonic
         cmd = [self.compiler_cmd, "resume.tex"]
-        try:
+        
+        def run_compiler():
             subprocess.run(cmd, check=True, capture_output=True, text=True, cwd=output_dir)
+
+        try:
+            run_compiler()
         except subprocess.CalledProcessError as e:
-            print("--- ❌ LATEX COMPILATION FAILED ---")
-            print("STDOUT:", e.stdout)
-            print("STDERR:", e.stderr)
-            raise RuntimeError(f"LaTeX Error: {e.stderr or e.stdout}")
+            err_output = e.stderr or e.stdout
+            
+            # Detect corrupted package cache (timeout or truncated file)
+            if "File ended while scanning use of" in err_output or "downloading" in err_output.lower():
+                print("⚠️ Detected Tectonic cache corruption. Wiping cache and retrying...")
+                import shutil
+                cache_dirs = [
+                    os.path.expanduser("~/.cache/Tectonic"),
+                    os.path.expanduser("~/Library/Caches/Tectonic"),
+                    os.path.join(os.environ.get("LOCALAPPDATA", ""), "Tectonic"),
+                ]
+                for cdir in cache_dirs:
+                    if cdir and os.path.exists(cdir):
+                        try:
+                            shutil.rmtree(cdir)
+                            print(f"✅ Cleared corrupted Tectonic cache at: {cdir}")
+                        except Exception as wipe_err:
+                            print(f"❌ Failed to clear cache at {cdir}: {wipe_err}")
+                
+                # Retry compilation once after clearing cache
+                try:
+                    run_compiler()
+                except subprocess.CalledProcessError as retry_e:
+                    raise RuntimeError(f"LaTeX Error (After Cache Wipe): {retry_e.stderr or retry_e.stdout}")
+            else:
+                print("--- ❌ LATEX COMPILATION FAILED ---")
+                print("STDOUT:", e.stdout)
+                print("STDERR:", e.stderr)
+                raise RuntimeError(f"LaTeX Error: {err_output}")
         except FileNotFoundError:
             raise RuntimeError("Tectonic is not installed or not in system PATH.")
 
