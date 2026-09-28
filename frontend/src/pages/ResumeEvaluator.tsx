@@ -8,7 +8,7 @@ import PdfUploadButton from '../components/PdfUploadButton';
 import AiLoadingState from '../components/AiLoadingState';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
-import { FileText, Target, Flame } from 'lucide-react';
+import { FileText, Target, Flame, AlertTriangle, Briefcase, Activity, ShieldAlert, Crosshair } from 'lucide-react';
 import './ToolPages.css';
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
@@ -36,12 +36,33 @@ interface DimensionScores {
     action_verbs: number;
 }
 
+interface DangerZone {
+    question: string;
+    reasoning: string;
+}
+
+interface TaskVsImpact {
+    tasks_percentage: number;
+    impact_percentage: number;
+    feedback: string;
+}
+
+interface SeniorityAlignment {
+    jd_required_yoe: string;
+    resume_yoe: string;
+    alignment_feedback: string;
+}
+
 interface EvaluationData {
     score: number;
     dimension_scores: DimensionScores;
     red_flags: string[];
     missing_keywords: string[];
     constructive_roasts: RoastDetail[];
+    keyword_context_warnings?: string[];
+    interview_danger_zones?: DangerZone[];
+    task_vs_impact?: TaskVsImpact;
+    seniority_alignment?: SeniorityAlignment;
 }
 
 const AtsEvaluatorPage: React.FC = () => {
@@ -299,6 +320,76 @@ const AtsEvaluatorPage: React.FC = () => {
                                     </div>
                                 </div>
 
+                                {/* 🔥 NEW DATA ROW 🔥 */}
+                                <div className="tool-input-grid" style={{ marginBottom: '2rem', gridTemplateColumns: '1fr 1fr 1fr' }}>
+                                    
+                                    {/* 1. Seniority Alignment */}
+                                    {evaluationResult.seniority_alignment && (
+                                        <div className="panel glass-card-premium" style={{ borderTop: '4px solid #f59e0b' }}>
+                                            <h2 className="panel-title" style={{ color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <Briefcase size={20} /> Seniority & YOE
+                                            </h2>
+                                            <div style={{ marginTop: '1rem', background: 'rgba(0,0,0,0.2)', padding: '1rem', borderRadius: '8px' }}>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
+                                                    <span style={{ color: 'var(--text-secondary)' }}>JD Requires:</span>
+                                                    <span style={{ color: '#00e5ff', fontWeight: 'bold' }}>{evaluationResult.seniority_alignment.jd_required_yoe}</span>
+                                                </div>
+                                                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                                                    <span style={{ color: 'var(--text-secondary)' }}>Your Resume:</span>
+                                                    <span style={{ color: '#f59e0b', fontWeight: 'bold' }}>{evaluationResult.seniority_alignment.resume_yoe}</span>
+                                                </div>
+                                                <div style={{ padding: '10px', background: 'rgba(245, 158, 11, 0.1)', color: '#fcd34d', fontSize: '0.9rem', borderRadius: '6px', borderLeft: '3px solid #f59e0b' }}>
+                                                    {evaluationResult.seniority_alignment.alignment_feedback}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* 2. Task vs Impact */}
+                                    {evaluationResult.task_vs_impact && (
+                                        <div className="panel glass-card-premium" style={{ borderTop: '4px solid #10b981' }}>
+                                            <h2 className="panel-title" style={{ color: '#10b981', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <Activity size={20} /> Task vs Impact
+                                            </h2>
+                                            <div style={{ marginTop: '1rem' }}>
+                                                <div style={{ display: 'flex', width: '100%', height: '24px', borderRadius: '12px', overflow: 'hidden', marginBottom: '12px' }}>
+                                                    <div style={{ width: `${evaluationResult.task_vs_impact.impact_percentage}%`, background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#000', fontSize: '0.8rem', fontWeight: 'bold' }}>
+                                                        {evaluationResult.task_vs_impact.impact_percentage}% Impact
+                                                    </div>
+                                                    <div style={{ width: `${evaluationResult.task_vs_impact.tasks_percentage}%`, background: '#64748b', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '0.8rem' }}>
+                                                        {evaluationResult.task_vs_impact.tasks_percentage}% Task
+                                                    </div>
+                                                </div>
+                                                <p style={{ color: '#a7f3d0', fontSize: '0.9rem', lineHeight: '1.4' }}>
+                                                    {evaluationResult.task_vs_impact.feedback}
+                                                </p>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* 3. Anti-Stuffing */}
+                                    {evaluationResult.keyword_context_warnings && (
+                                        <div className="panel glass-card-premium" style={{ borderTop: '4px solid #f43f5e' }}>
+                                            <h2 className="panel-title" style={{ color: '#f43f5e', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <ShieldAlert size={20} /> Anti-Stuffing Check
+                                            </h2>
+                                            <div style={{ marginTop: '1rem' }}>
+                                                {evaluationResult.keyword_context_warnings.length > 0 ? (
+                                                    <ul style={{ color: '#fda4af', paddingLeft: '20px', lineHeight: '1.5', fontSize: '0.9rem', margin: 0 }}>
+                                                        {evaluationResult.keyword_context_warnings.map((warn, idx) => (
+                                                            <li key={idx} style={{ marginBottom: '8px' }}>{warn}</li>
+                                                        ))}
+                                                    </ul>
+                                                ) : (
+                                                    <div style={{ color: '#10b981', fontSize: '0.95rem', display: 'flex', alignItems: 'center', gap: '8px', padding: '10px', background: 'rgba(16, 185, 129, 0.1)', borderRadius: '6px' }}>
+                                                        ✅ Keywords are naturally integrated into experience!
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
                                 {/* KEYWORDS ROW */}
                                 <div className="panel glass-card-premium-premium" style={{ marginBottom: '2rem' }}>
                                     <h2 className="panel-title" style={{ color: '#00e5ff' }}>🔍 Missing Keywords (Semantic Gap)</h2>
@@ -316,6 +407,29 @@ const AtsEvaluatorPage: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
+
+                                {/* 4. Interview Danger Zones */}
+                                {evaluationResult.interview_danger_zones && evaluationResult.interview_danger_zones.length > 0 && (
+                                    <div className="panel glass-card-premium" style={{ marginBottom: '2rem' }}>
+                                        <h2 className="panel-title" style={{ color: '#fb923c', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <Crosshair size={22} /> Interview Danger Zones
+                                        </h2>
+                                        <p style={{ color: 'var(--text-secondary)', marginBottom: '15px' }}>The top 3 hardest questions the hiring manager will ask to challenge the gaps in your resume.</p>
+                                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+                                            {evaluationResult.interview_danger_zones.map((zone, idx) => (
+                                                <div key={idx} style={{ background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(251, 146, 60, 0.3)', borderRadius: '8px', padding: '1.2rem' }}>
+                                                    <div style={{ color: '#fdba74', fontWeight: 'bold', marginBottom: '8px', fontSize: '1.05rem' }}>
+                                                        Q{idx + 1}: "{zone.question}"
+                                                    </div>
+                                                    <div style={{ color: '#d6d3d1', fontSize: '0.9rem', borderLeft: '2px solid #fb923c', paddingLeft: '10px' }}>
+                                                        <span style={{ color: '#fb923c', fontSize: '0.8rem', fontWeight: 'bold', display: 'block' }}>REASONING:</span>
+                                                        {zone.reasoning}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
 
                                 {/* 🔥 NEW HIGH-VISIBILITY ROASTS SECTION 🔥 */}
                                 <div className="panel glass-card-premium">

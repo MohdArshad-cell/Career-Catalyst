@@ -24,6 +24,20 @@ class SkillEvaluation(BaseModel):
     skill_name: str = Field(..., description="The exact noun-based skill extracted FROM THE JOB DESCRIPTION (e.g., 'Spring Boot', 'Redis'). NO VERBS.")
     is_found: bool = Field(..., description="True ONLY IF the skill OR a direct semantic equivalent (e.g., 'React' for 'React.js') is explicitly in the resume. False if missing.")
 
+class DangerZone(BaseModel):
+    question: str = Field(..., description="The hard interview question targeting the gap between JD and Resume.")
+    reasoning: str = Field(..., description="Why this question is being asked.")
+
+class TaskVsImpact(BaseModel):
+    tasks_percentage: int = Field(..., description="Percentage of bullet points that are just tasks (0-100).")
+    impact_percentage: int = Field(..., description="Percentage of bullet points that show measurable impact (0-100).")
+    feedback: str = Field(..., description="Harsh feedback on the ratio.")
+
+class SeniorityAlignment(BaseModel):
+    jd_required_yoe: str = Field(..., description="Years of experience required by JD (e.g. '3-5 Years').")
+    resume_yoe: str = Field(..., description="Years of experience inferred from resume (e.g. '1.5 Years').")
+    alignment_feedback: str = Field(..., description="Brutally honest feedback comparing required vs actual seniority.")
+
 class AIResumeExtractionSchema(BaseModel):
     hard_skills_evaluation: List[SkillEvaluation] = Field(..., description="Evaluation of technical tools, frameworks, and hard skills REQUIRED BY THE JD.")
     soft_skills_evaluation: List[SkillEvaluation] = Field(..., description="Evaluation of methodologies (e.g., Agile) and soft skills REQUIRED BY THE JD.")
@@ -32,6 +46,10 @@ class AIResumeExtractionSchema(BaseModel):
     metrics_score: int = Field(..., description="Score out of 100 on how well the resume uses quantifiable metrics and data.")
     brevity_score: int = Field(..., description="Score out of 100 on brevity, conciseness, and readability.")
     action_verbs_score: int = Field(..., description="Score out of 100 on the use of strong, active verbs vs passive language.")
+    keyword_context_warnings: List[str] = Field(..., description="Warnings for keywords listed in Skills but missing from Experience.")
+    interview_danger_zones: List[DangerZone] = Field(..., description="Top 3 hard interview questions based on gaps.")
+    task_vs_impact: TaskVsImpact = Field(..., description="Analysis of Task vs Impact ratio.")
+    seniority_alignment: SeniorityAlignment = Field(..., description="Analysis of YOE and seniority.")
 
 
 # ==========================================
@@ -112,7 +130,11 @@ def execute_evaluate_chain(resume_text: str, job_description: str) -> dict:
             },
             "red_flags": ai_data.get("red_flags", []),
             "missing_keywords": missing_hard + missing_soft,
-            "constructive_roasts": ai_data.get("constructive_roasts", [])
+            "constructive_roasts": ai_data.get("constructive_roasts", []),
+            "keyword_context_warnings": ai_data.get("keyword_context_warnings", []),
+            "interview_danger_zones": ai_data.get("interview_danger_zones", []),
+            "task_vs_impact": ai_data.get("task_vs_impact", {}),
+            "seniority_alignment": ai_data.get("seniority_alignment", {})
         }
         
         if redis_client:

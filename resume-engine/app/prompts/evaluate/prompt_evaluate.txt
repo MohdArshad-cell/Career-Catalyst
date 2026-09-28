@@ -15,6 +15,10 @@ EVALUATION & EXTRACTION RULES:
    - `metrics_score`: Count the exact number of data points. Be brutal. (0 = No numbers, 50 = Some numbers, 100 = Every single bullet is quantified).
    - `brevity_score`: Deduct points heavily for fluff, jargon, or paragraphs. (0 = Walls of text/fluff, 100 = Crisp, impactful, easily scannable).
    - `action_verbs_score`: Deduct points heavily for weak verbs. (0 = Passive voice, generic verbs like "Worked on", "Helped", "Responsible for", 100 = Powerful verbs like "Spearheaded", "Architected").
+6. Keyword Context Warnings (Anti-Stuffing): Identify if any major keywords (from JD) are ONLY listed in the candidate's "Skills" section but NEVER mentioned in an actual Experience bullet. Create warnings for these.
+7. Interview Danger Zones: Identify the top 3 hardest interview questions the recruiter will ask based on the gaps between the JD and the resume. Provide the question and reasoning.
+8. Task vs. Impact Ratio: Calculate the percentage of bullet points that are just tasks vs measurable impact. Give brutal feedback.
+9. Seniority Alignment: Map the required Years of Experience (YOE) and Seniority Level from the JD to what the resume actually shows. Provide brutal feedback if they are applying above their level.
 
 CURRENT DATE: {current_date}
 
