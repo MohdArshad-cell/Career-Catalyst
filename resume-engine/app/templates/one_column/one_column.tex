@@ -127,7 +127,7 @@
   \BLOCK{ for section in resume_data.custom_sections }
     \section{\VAR{section.heading | escape_tex}}
       \resumeSubHeadingListStart
-        \BLOCK{ for item in section.items }
+        \BLOCK{ for item in section['items'] }
           \resumeProjectHeading
             {\textbf{\VAR{item.title | escape_tex}} \BLOCK{ if item.subtitle }$|$ \emph{\VAR{item.subtitle | escape_tex}}\BLOCK{ endif }}{\VAR{item.date | escape_tex}}
             \BLOCK{ if item.descriptionPoints and item.descriptionPoints|length > 0 }
