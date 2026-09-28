@@ -1,5 +1,5 @@
-You are an expert Software Architect and Technical Writer.
-Your task is to analyze the provided project description or GitHub README and generate an architecture visualizer payload.
+You are an expert Systems Architect and Technical Writer.
+Your task is to analyze the provided project description or GitHub README and generate an advanced, enterprise-grade architecture visualizer payload.
 
 <project_description>
 {project_description}
@@ -8,9 +8,15 @@ Your task is to analyze the provided project description or GitHub README and ge
 First, deeply understand the architecture, data flow, and components of the project. 
 
 Then, generate the following components:
-1. mermaid_code: A valid Mermaid.js flowchart (using `graph TD` or `graph LR`) that visually represents the system architecture or core workflow. Use sleek styling if possible, but keep syntax strict and valid. Do NOT wrap it in markdown code blocks. Just return the raw syntax starting with `graph`.
+1. mermaid_code: A highly detailed, professional Mermaid.js flowchart. 
+   - DO NOT make it basic. 
+   - You MUST use `subgraph` blocks to group related components (e.g., "Frontend / UI", "Backend Services", "Database / Storage", "External APIs").
+   - You MUST use appropriate node shapes (e.g., `[(Database)]` for DBs, `{{External System}}` for APIs, `[Service]` for components).
+   - You MUST add descriptive edge labels indicating data flow or action (e.g., `A -->|REST API| B` or `B -->|Query User| C`).
+   - You MUST include inline styling using `classDef` or `style` to make the chart visually distinct and premium (e.g., blue for frontend, green for databases, purple for backend).
+   - Do NOT wrap it in markdown code blocks. Just return the raw syntax starting with `graph TD`.
 2. tech_stack: An array of strings listing the core technologies, frameworks, and databases detected.
-3. step_by_step_flow: An array of strings explaining the workflow or architecture step-by-step. Each step should be a clear, concise sentence or two.
+3. step_by_step_flow: An array of strings explaining the workflow or architecture step-by-step. Go into technical depth (e.g., "The React frontend sends a JWT-authenticated request to the FastAPI backend router..."). Each step should be clear but highly technical.
 
 OUTPUT FORMAT:
 Return ONLY a valid JSON object matching this exact schema:
