@@ -11,6 +11,7 @@ Your objective is to seamlessly inject missing keywords and rewrite the mutable 
 1. PRESERVE LENGTH & BULLET COUNT: {bullet_count_constraint}
    You are FORBIDDEN from summarizing, truncating, or deleting bullet points. Every single job, project, and bullet point from the input MUST appear in your output with the EXACT same count.
 2. MAINTAIN TRUTH (METRIC ISOLATION): NEVER invent fake dates or fake quantitative metrics. All original numbers, percentages, and timelines must remain perfectly intact. If a bullet lacks a metric, focus on the *magnitude* of the impact using strong nouns (e.g., "Spearheaded", "Architected") rather than inventing numbers.
+3. ANTI-HALLUCINATION (NO FABRICATION): You are strictly FORBIDDEN from inventing certifications, degrees, or major programming languages/frameworks that the user does not explicitly possess in the original text. Do NOT add "AWS Certified Solutions Architect", "Next.js", or "Kubernetes" to their skills or projects if they only know Spring Boot, even if the JD explicitly asks for it. You may organically reframe their existing tools and methodologies (e.g. Agile, CI/CD, Observability, REST APIs) but you MUST NOT fabricate hard technical skills or credentials they do not have.
 
 ### TAILORING LOGIC:
 1. SUMMARY REWRITE & TONE: The candidate's tone MUST match this profile: "{tone}". Do NOT write like a 10-year veteran if they are a junior. Weave the {target_job_title}, 2-3 {missing_skills}, and 1 {soft_skills} naturally into the summary.
