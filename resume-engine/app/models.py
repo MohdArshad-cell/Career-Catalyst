@@ -211,3 +211,8 @@ class AtsXrayRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText', 'resume'))
     ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
+class ProjectVisualizerRequest(BaseModel):
+    project_description: str = Field(..., validation_alias=AliasChoices('project_description', 'projectDescription'))
+    ai_model: Optional[str] = None
+    model_config = {"extra": "ignore"}
+

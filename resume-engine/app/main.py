@@ -579,6 +579,30 @@ async def roadmap_generate(request: RoadmapRequest, user_auth: dict = Depends(ve
     deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_roadmap", cost=2)
     return {"roadmap_data": result}
 
+from app.services.visualizer_service import execute_visualizer_chain
+
+@app.post("/api/ai/project-visualizer")
+async def project_visualizer_generate(request: ProjectVisualizerRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+    if user_auth["current_tokens"] < 1:
+        raise HTTPException(status_code=402, detail="This tool requires 1 token.")
+        
+    check_user_rate_limit(user_auth["user_id"])
+    
+    start_time = time.time()
+    try:
+        result = execute_visualizer_chain(request.project_description, model=request.ai_model)
+        latency_ms = int((time.time() - start_time) * 1000)
+        log_generation(user_auth["user_id"], "ai_project_visualizer", "success", latency_ms)
+    except Exception as ai_error:
+        latency_ms = int((time.time() - start_time) * 1000)
+        log_generation(user_auth["user_id"], "ai_project_visualizer", "failed", latency_ms, str(ai_error))
+        print(f"❌ [AI ERROR]: {str(ai_error)}")
+        raise HTTPException(status_code=500, detail="AI processing failed. Your token was not deducted.")
+    
+    deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "ai_project_visualizer", cost=1)
+    return {"visualizer_data": result}
+
+
 # ==========================================
 # 6.5 FREE TOOLS (No Auth Required)
 # ==========================================

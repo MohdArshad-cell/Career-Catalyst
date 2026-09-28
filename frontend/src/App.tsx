@@ -21,6 +21,7 @@ import ResignationLetterPage from './pages/ResignationLetterPage';
 import ResumeDiffPage from './pages/ResumeDiffPage';
 import ReferralPage from './pages/ReferralPage';
 import UsageHistoryPage from './pages/UsageHistoryPage';
+import ProjectVisualizerPage from './pages/ProjectVisualizerPage';
 import MainLayout from './components/MainLayout';
 import "./App.css";
 
@@ -87,6 +88,11 @@ function App() {
         <Route path="/career-roadmap" element={
             <ProtectedRoute>
                 <CareerRoadmapPage />
+            </ProtectedRoute>
+        } />
+        <Route path="/project-visualizer" element={
+            <ProtectedRoute>
+                <ProjectVisualizerPage />
             </ProtectedRoute>
         } />
         <Route path="/referrals" element={

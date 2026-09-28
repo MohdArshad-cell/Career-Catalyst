@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { supabase } from '../supabaseClient';
 // Added FaEye for the ATS X-Ray Vision icon, and FaLinkedin, FaPaperPlane, FaMapSigns for Phase 3 tools
-import { FaWandMagicSparkles, FaFileLines, FaEnvelopeOpenText, FaFileSignature, FaMicrophone, FaEye, FaLinkedin, FaPaperPlane } from "react-icons/fa6";
+import { FaWandMagicSparkles, FaFileLines, FaEnvelopeOpenText, FaFileSignature, FaMicrophone, FaEye, FaLinkedin, FaPaperPlane, FaNetworkWired } from "react-icons/fa6";
 import { FaMapSigns } from "react-icons/fa";
 
 
@@ -191,6 +191,19 @@ const AiToolsPage = () => {
                         </div>
                     </div>
 
+                </div>
+
+                {/* NEW TOOL: Project Visualizer */}
+                <div className="bento-item tool-card glass-card-premium hover-glow" onMouseMove={handleMouseMove} onClick={() => navigate('/project-visualizer')} style={{ maxWidth: '400px', margin: '2rem auto 0', display: 'block' }}>
+                    <div className="bento-glow"></div>
+                    <div className="bento-content">
+                        <div className="tool-icon-wrapper" style={{ color: '#a855f7' }}>
+                            <FaNetworkWired className="premium-icon" />
+                        </div>
+                        <h3>Codebase X-Ray</h3>
+                        <p>Turn any GitHub README or project description into an interactive architecture diagram instantly.</p>
+                        <div className="tool-cta">Generate Diagram <span className="arrow">→</span></div>
+                    </div>
                 </div>
 
                 {/* PREMIUM "HOW IT WORKS" SECTION */}
