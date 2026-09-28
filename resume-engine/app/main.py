@@ -29,7 +29,7 @@ from supabase import create_client, Client
 
 # Local Imports
 from .models import (
-    GenerationRequest, TailorRequest, EvaluateRequest, CoverLetterRequest, InterviewRequest, LinkedInRequest, OutreachRequest, RoadmapRequest, BulletRewriteRequest, ResignationRequest, AtsXrayRequest
+    GenerationRequest, TailorRequest, EvaluateRequest, CoverLetterRequest, InterviewRequest, LinkedInRequest, OutreachRequest, RoadmapRequest, BulletRewriteRequest, ResignationRequest, AtsXrayRequest, ProjectVisualizerRequest
 )
 from .generator import ResumeGenerator
 from app.services.tailor_service import execute_tailor_chain
