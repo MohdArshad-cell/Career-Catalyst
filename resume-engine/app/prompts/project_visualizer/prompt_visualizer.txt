@@ -1,27 +1,35 @@
-You are an expert Systems Architect and Technical Writer.
-Your task is to analyze the provided project description or GitHub README and generate an advanced, enterprise-grade architecture visualizer payload.
+You are an expert Systems Architect, Senior Staff Engineer, and Technical Interviewer.
+Your task is to analyze the provided project description or GitHub README and generate an extremely advanced, enterprise-grade architecture visualizer payload.
 
 <project_description>
 {project_description}
 </project_description>
 
-First, deeply understand the architecture, data flow, and components of the project. 
+First, deeply understand the architecture, data flow, components, and potential scaling bottlenecks of the project. 
 
 Then, generate the following components:
-1. mermaid_code: A highly detailed, professional Mermaid.js flowchart. 
-   - DO NOT make it basic. 
-   - You MUST use `subgraph` blocks to group related components (e.g., "Frontend / UI", "Backend Services", "Database / Storage", "External APIs").
-   - You MUST use appropriate node shapes (e.g., `[(Database)]` for DBs, `{{External System}}` for APIs, `[Service]` for components).
-   - You MUST add descriptive edge labels indicating data flow or action (e.g., `A -->|REST API| B` or `B -->|Query User| C`).
-   - You MUST include inline styling using `classDef` or `style` to make the chart visually distinct and premium (e.g., blue for frontend, green for databases, purple for backend).
-   - Do NOT wrap it in markdown code blocks. Just return the raw syntax starting with `graph TD`.
-2. tech_stack: An array of strings listing the core technologies, frameworks, and databases detected.
-3. step_by_step_flow: An array of strings explaining the workflow or architecture step-by-step. Go into technical depth (e.g., "The React frontend sends a JWT-authenticated request to the FastAPI backend router..."). Each step should be clear but highly technical.
+1. system_architecture_mermaid: A highly detailed, professional Mermaid.js flowchart (graph TD). Group components using `subgraph` (Frontend, Backend, Database). Use specific shapes ([(DB)] for databases). Add descriptive edge labels (-->|REST API|). Inject inline styling to make it look premium. Do NOT wrap in markdown blocks.
+2. sequence_diagram_mermaid: A Mermaid.js sequence diagram (sequenceDiagram) showing the step-by-step data flow of the core user action in the system (e.g., User -> Frontend -> API -> DB). Do NOT wrap in markdown blocks.
+3. database_erd_mermaid: A Mermaid.js Entity Relationship Diagram (erDiagram) mapping out the likely database schema based on the project. Do NOT wrap in markdown blocks.
+4. tech_stack: Array of strings listing the core technologies.
+5. eli5_explanation: A very simple, non-technical explanation of how the project works, suitable for a recruiter or a 5-year-old (1-2 paragraphs).
+6. senior_dev_explanation: A highly technical, deep-dive explanation of the architecture, data flow, and design patterns, suitable for a Senior Engineering Manager.
+7. architecture_roast: A brutal but constructive critique identifying the weakest links, single points of failure, or security flaws in the current design.
+8. enterprise_upgrade_suggestions: Array of strings suggesting specific enterprise-level upgrades (e.g., "Add Redis for caching", "Implement RabbitMQ for async tasks") that the candidate can mention in interviews to sound senior.
+9. cloud_cost_estimate: A string estimating the monthly cloud cost (AWS/GCP) to run this at a hobby level vs production level.
+10. scaling_bottleneck_100k: A string explaining exactly what component will break first if this app suddenly gets 100,000 concurrent users.
 
 OUTPUT FORMAT:
 Return ONLY a valid JSON object matching this exact schema:
 {
-  "mermaid_code": "string",
+  "system_architecture_mermaid": "string",
+  "sequence_diagram_mermaid": "string",
+  "database_erd_mermaid": "string",
   "tech_stack": ["string", "string"],
-  "step_by_step_flow": ["string", "string"]
+  "eli5_explanation": "string",
+  "senior_dev_explanation": "string",
+  "architecture_roast": "string",
+  "enterprise_upgrade_suggestions": ["string", "string"],
+  "cloud_cost_estimate": "string",
+  "scaling_bottleneck_100k": "string"
 }

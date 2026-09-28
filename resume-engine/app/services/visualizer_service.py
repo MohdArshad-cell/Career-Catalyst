@@ -14,14 +14,16 @@ def execute_visualizer_chain(project_description: str, model: str = None) -> dic
     parsed_data = parse_ai_json(raw_json)
     
     # Clean up mermaid code if LLM included backticks
-    if "mermaid_code" in parsed_data:
-        code = parsed_data["mermaid_code"]
-        if code.startswith("```mermaid"):
-            code = code[10:]
-        elif code.startswith("```"):
-            code = code[3:]
-        if code.endswith("```"):
-            code = code[:-3]
-        parsed_data["mermaid_code"] = code.strip()
-        
+    mermaid_keys = ["system_architecture_mermaid", "sequence_diagram_mermaid", "database_erd_mermaid"]
+    for key in mermaid_keys:
+        if key in parsed_data:
+            code = parsed_data[key]
+            if code.startswith("```mermaid"):
+                code = code[10:]
+            elif code.startswith("```"):
+                code = code[3:]
+            if code.endswith("```"):
+                code = code[:-3]
+            parsed_data[key] = code.strip()
+            
     return parsed_data
