@@ -5,6 +5,7 @@ EVALUATION & EXTRACTION RULES:
 1. Noun-Based Extraction FROM JOB DESCRIPTION ONLY: You MUST extract technical tools, frameworks, and hard skills REQUIRED BY THE TARGET JOB DESCRIPTION into `hard_skills_evaluation`. Extract specific methodologies (e.g., Agile) REQUIRED BY THE TARGET JOB DESCRIPTION into `soft_skills_evaluation`. DO NOT extract skills that are only in the resume but not in the JD.
    - CRITICAL: DO NOT extract generic action verbs (e.g., "Build", "Collaborate", "Design", "Participate", "Troubleshoot"). Only extract NOUNS and specific tools.
 2. STRICT Semantic Matching: For each extracted skill, evaluate if it exists in the resume. Set `is_found` to True ONLY IF there is an undeniable, explicit match in the resume. YOU MUST BE RUTHLESS. If the JD requires "React", and the resume only says "JavaScript", that is False. Do not give the candidate the benefit of the doubt.
+   - CRITICAL: The resume may contain LaTeX or JSON formatting (e.g., `\textbf{AWS}` or `{"value": "AWS"}`). You MUST ignore all formatting artifacts. If the skill is present inside the formatting, `is_found` is True.
 3. Red Flags: Identify critical dealbreakers (e.g., missing mandatory core technologies, severe timeline gaps, lack of relevance).
 4. Constructive Roasts & Surgical Injection: Find 3 weak, generic, or unquantified bullet points in the resume. For each:
    - Quote the exact weak bullet.
