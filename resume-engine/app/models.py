@@ -90,6 +90,16 @@ class CertificationItem(BaseModel):
     issuer: Optional[str] = None
     date: Optional[str] = None
 
+class CustomSectionItem(BaseModel):
+    title: Optional[str] = Field(None, description="Main title, e.g., name of the publication, patent, or role.")
+    subtitle: Optional[str] = Field(None, description="Secondary info, e.g., publisher, issuer, or organization.")
+    date: Optional[str] = Field(None, description="Date or timeframe.")
+    descriptionPoints: Optional[List[str]] = Field([], description="Bullet points for this item.", validation_alias=AliasChoices('descriptionPoints', 'description_points', 'description', 'bullets', 'details'))
+
+class CustomSection(BaseModel):
+    heading: str = Field(..., description="The name of the custom section (e.g., 'Publications', 'Volunteer Experience').")
+    items: List[CustomSectionItem] = Field(...)
+
 class ResumeData(BaseModel):
     summary: Optional[str] = Field(
         None, 
@@ -106,6 +116,8 @@ class ResumeData(BaseModel):
     
     achievements: Optional[List[AchievementItem]] = [] 
     certifications: Optional[List[CertificationItem]] = []
+    
+    custom_sections: Optional[List[CustomSection]] = Field([], description="Any additional sections not covered by standard fields.", validation_alias=AliasChoices('custom_sections', 'customSections'))
 
 class CoverLetterContact(BaseModel):
     phone: str = Field(..., description="Phone number. Leave empty string if not found.")

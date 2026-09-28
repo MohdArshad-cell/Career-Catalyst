@@ -5,7 +5,7 @@ Your objective is to seamlessly inject missing keywords and rewrite the mutable 
 - Output ONLY a raw, valid JSON string.
 - You must start with '{' and end with '}'. Absolutely NO markdown backticks (```) and NO introductory/closing text.
 - Adhere strictly to the JSON schema.
-- **BOLDING REQUIREMENT**: For the 'summary' and every bullet point in 'experience' and 'projects', you MUST use markdown bold (**) to highlight 2 to 3 high-impact keywords, key technologies, or quantitative metrics (e.g., "Reduced latency by **35%** using **Spring Boot** microservices").
+- **BOLDING REQUIREMENT**: For the 'summary' and every bullet point in 'experience', 'projects', and 'custom_sections', you MUST use markdown bold (**) to highlight 2 to 3 high-impact keywords, key technologies, or quantitative metrics (e.g., "Reduced latency by **35%** using **Spring Boot** microservices").
 
 ### STRICT PRESERVATION LAWS (DO NOT VIOLATE):
 1. PRESERVE LENGTH & BULLET COUNT: {bullet_count_constraint}

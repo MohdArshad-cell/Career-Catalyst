@@ -44,20 +44,32 @@ def normalize_and_extract_metrics(text: str) -> set:
 def verify_metrics(baseline_text: str, tailored_data: dict) -> dict:
     """Detect and remove hallucinated metrics not present in the original resume."""
     baseline_numbers = normalize_and_extract_metrics(baseline_text)
-    exp_list = tailored_data.get('experience', [])
+    
+    # Check experience, projects, and custom_sections
+    for section_key in ['experience', 'projects']:
+        for item in tailored_data.get(section_key, []):
+            valid_bullets = []
+            for bullet in item.get('descriptionPoints', []):
+                bullet_nums = normalize_and_extract_metrics(str(bullet))
+                suspicious_nums = {n for n in bullet_nums if n not in baseline_numbers}
+                if suspicious_nums:
+                    print(f"⚠️ Shield Dropped Hallucinated Metric {suspicious_nums} in {section_key}: {str(bullet)[:60]}...")
+                else:
+                    valid_bullets.append(bullet)
+            item['descriptionPoints'] = valid_bullets
 
-    for exp in exp_list:
-        valid_bullets = []
-        for bullet in exp.get('descriptionPoints', []):
-            bullet_nums = normalize_and_extract_metrics(str(bullet))
-            # Flag ANY new number not in the original (stricter than before)
-            suspicious_nums = {n for n in bullet_nums if n not in baseline_numbers}
+    for custom_sec in tailored_data.get('custom_sections', []):
+        for item in custom_sec.get('items', []):
+            valid_bullets = []
+            for bullet in item.get('descriptionPoints', []):
+                bullet_nums = normalize_and_extract_metrics(str(bullet))
+                suspicious_nums = {n for n in bullet_nums if n not in baseline_numbers}
+                if suspicious_nums:
+                    print(f"⚠️ Shield Dropped Hallucinated Metric {suspicious_nums} in custom_sections: {str(bullet)[:60]}...")
+                else:
+                    valid_bullets.append(bullet)
+            item['descriptionPoints'] = valid_bullets
 
-            if suspicious_nums:
-                print(f"⚠️ Shield Dropped Hallucinated Metric {suspicious_nums}: {str(bullet)[:60]}...")
-            else:
-                valid_bullets.append(bullet)
-        exp['descriptionPoints'] = valid_bullets
     return tailored_data
 
 
@@ -93,6 +105,25 @@ def verify_bullet_count(original_json_str: str, tailored_data: dict) -> dict:
                 print(f"⚠️ AI dropped {deficit} bullets from project {orig_p.get('name', 'Unknown')}. Restoring originals.")
                 lost_bullets = orig_bullets[len(tail_bullets):]
                 tail_proj[i]['descriptionPoints'] = tail_bullets + lost_bullets
+
+    # Check custom_sections
+    orig_custom = original_data.get('custom_sections', [])
+    tail_custom = tailored_data.get('custom_sections', [])
+
+    for i, orig_sec in enumerate(orig_custom):
+        if i < len(tail_custom):
+            orig_items = orig_sec.get('items', [])
+            tail_items = tail_custom[i].get('items', [])
+            for j, orig_item in enumerate(orig_items):
+                if j < len(tail_items):
+                    orig_bullets = orig_item.get('descriptionPoints', [])
+                    tail_bullets = tail_items[j].get('descriptionPoints', [])
+                    
+                    if len(tail_bullets) < len(orig_bullets):
+                        deficit = len(orig_bullets) - len(tail_bullets)
+                        print(f"⚠️ AI dropped {deficit} bullets from custom section item {orig_item.get('title', 'Unknown')}. Restoring originals.")
+                        lost_bullets = orig_bullets[len(tail_bullets):]
+                        tail_items[j]['descriptionPoints'] = tail_bullets + lost_bullets
 
     return tailored_data
 
@@ -301,7 +332,7 @@ def execute_tailor_chain(resume_input: str, job_description: str, template_name:
             "achievements": full_resume_data.get("achievements", []),
             "certifications": full_resume_data.get("certifications", [])
         }
-        mutables = {k: full_resume_data.get(k, []) for k in ["summary", "skills", "experience", "projects"]}
+        mutables = {k: full_resume_data.get(k, []) for k in ["summary", "skills", "experience", "projects", "custom_sections"]}
         mutable_json_str = json.dumps(mutables, indent=2)
 
         # ── ANALYZE SKILL GAPS ──
@@ -318,9 +349,11 @@ def execute_tailor_chain(resume_input: str, job_description: str, template_name:
         # ── BUILD BULLET COUNT CONSTRAINT ──
         exp_bullet_counts = [len(e.get('descriptionPoints', [])) for e in mutables.get('experience', [])]
         proj_bullet_counts = [len(p.get('descriptionPoints', [])) for p in mutables.get('projects', [])]
+        custom_bullet_counts = [[len(item.get('descriptionPoints', [])) for item in sec.get('items', [])] for sec in mutables.get('custom_sections', [])]
         bullet_constraint = (
             f"EXPERIENCE bullet counts per job (in order): {exp_bullet_counts}. "
             f"PROJECT bullet counts per project (in order): {proj_bullet_counts}. "
+            f"CUSTOM SECTIONS bullet counts per section item: {custom_bullet_counts}. "
             f"You MUST output EXACTLY these counts."
         )
 

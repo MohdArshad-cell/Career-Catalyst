@@ -7,6 +7,7 @@ CRITICAL EXTRACTION RULES:
 3. STRICT TEXT CLEANING: If the input is LaTeX or HTML, you MUST completely strip all formatting tags, commands (e.g., \textbf{}, \item, \begin{}), and artifacts. Output ONLY clean, readable plain text.
 4. ZERO HALLUCINATION: You must only extract data that exists in the text. Do not invent, guess, or write summaries that are not explicitly provided.
 5. MISSING DATA: If a field does not exist in the resume, you MUST output `null`. Do not output empty strings ("").
+6. CUSTOM SECTIONS: If you encounter professional information that does not fit into Experience, Projects, Education, or Skills (e.g., "Patents", "Publications", "Volunteer Work"), place it into the `custom_sections` array using the original heading.
 
 OUTPUT SCHEMA (Output ONLY valid JSON, do not wrap in ```json blocks):
 {
@@ -64,6 +65,19 @@ OUTPUT SCHEMA (Output ONLY valid JSON, do not wrap in ```json blocks):
       "name": "Cert name",
       "issuer": "Issuer or null",
       "date": "Date or null"
+    }
+  ],
+  "custom_sections": [
+    {
+      "heading": "Section heading (e.g., Publications)",
+      "items": [
+        {
+          "title": "Main title of item",
+          "subtitle": "Secondary info (e.g., Publisher) or null",
+          "date": "Date or null",
+          "descriptionPoints": ["Point 1", "Point 2"]
+        }
+      ]
     }
   ]
 }
