@@ -33,7 +33,7 @@ class AtsXraySchema(BaseModel):
 def _hash_eval(resume: str) -> str:
     return hashlib.sha256(resume[:1000].encode()).hexdigest()
 
-def execute_ats_xray_chain(resume_text: str) -> dict:
+def execute_ats_xray_chain(resume_text: str, model: str = None) -> dict:
     try:
         print("--- 🔎 ATS X-Ray: Checking Cache ---")
         eval_hash = _hash_eval(resume_text)

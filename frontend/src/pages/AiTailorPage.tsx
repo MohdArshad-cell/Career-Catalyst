@@ -10,6 +10,7 @@ import AiLoadingState from '../components/AiLoadingState';
 import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
 import './ToolPages.css';
+import ModelSelector from '../components/ModelSelector';
 
 const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://127.0.0.1:8000';
 
@@ -27,6 +28,7 @@ const AiTailorPage: React.FC = () => {
     const [resumeText, setResumeText] = useState('');
     const [jobDescription, setJobDescription] = useState('');
     const [templateName, setTemplateName] = useState('modern_line');
+    const [aiModel, setAiModel] = useState('gemini-3.1-flash-lite-preview');
     const [isLoading, setIsLoading] = useState(false);
     const [loadingStep, setLoadingStep] = useState(0);
     const [error, setError] = useState('');
@@ -110,7 +112,8 @@ const AiTailorPage: React.FC = () => {
             const payload = { 
                 resume_text: resumeText, 
                 job_description: jobDescription,
-                template_name: templateName
+                template_name: templateName,
+                ai_model: aiModel
             };
             
             // ✅ API CALL WITH HEADERS
@@ -313,7 +316,8 @@ const AiTailorPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="action-row text-center" style={{ margin: '3rem 0' }}>
+                <div className="action-row" style={{ margin: '3rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+                    <ModelSelector selectedModel={aiModel} onModelChange={setAiModel} />
                     <button 
                         className="btn-premium pulse-glow massive-btn" 
                         onClick={handleTailorResume} 

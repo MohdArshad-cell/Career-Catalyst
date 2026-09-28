@@ -19,6 +19,7 @@ EVALUATION & EXTRACTION RULES:
 7. Interview Danger Zones: Identify the top 3 hardest interview questions the recruiter will ask based on the gaps between the JD and the resume. Provide the question and reasoning.
 8. Task vs. Impact Ratio: Calculate the percentage of bullet points that are just tasks vs measurable impact. Give brutal feedback.
 9. Seniority Alignment: Map the required Years of Experience (YOE) and Seniority Level from the JD to what the resume actually shows. Provide brutal feedback if they are applying above their level.
+10. JD Quality Check: Analyze the Job Description to determine if it is generic, poorly written, extremely short, or lacks specific technical requirements. If so, set is_generic to True, identify the missing context, and suggest an actionable application strategy.
 
 CURRENT DATE: {current_date}
 

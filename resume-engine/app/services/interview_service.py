@@ -24,7 +24,7 @@ class InterviewResponse(BaseModel):
 # ==========================================
 # CORE EXECUTION CHAIN
 # ==========================================
-def execute_interview_chain(job_description: str, resume_text: str = "", interview_round: str = "Technical Deep Dive") -> dict:
+def execute_interview_chain(job_description: str, resume_text: str = "", interview_round: str = "Technical Deep Dive", model: str = None) -> dict:
     """
     Executes a single-pass AI chain to analyze a JD + Resume and generate
     10 rigorous interview questions with model answers and follow-ups.
@@ -41,7 +41,7 @@ def execute_interview_chain(job_description: str, resume_text: str = "", intervi
             .replace('{resume_text}', resume_text if resume_text else "None provided") \
             .replace('{interview_round}', interview_round)
 
-        raw_json = call_llm(prompt, force_json=True)
+        raw_json = call_llm(prompt, force_json=True, model=model)
         result = parse_ai_json(raw_json)
         
         # Validate schema

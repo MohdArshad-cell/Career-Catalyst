@@ -38,7 +38,7 @@ class RoadmapResponse(BaseModel):
     milestones: List[Milestone]
     recommended_resources: List[Resource]
 
-def execute_roadmap_chain(resume_text: str, target_goal: str, timeframe: str = "12 Months") -> dict:
+def execute_roadmap_chain(resume_text: str, target_goal: str, timeframe: str = "12 Months", model: str = None) -> dict:
     if not resume_text.strip() or not target_goal.strip():
         raise ValueError("Both resume and target goal are required.")
     
@@ -51,7 +51,7 @@ def execute_roadmap_chain(resume_text: str, target_goal: str, timeframe: str = "
         .replace('{target_goal}', target_goal) \
         .replace('{timeframe}', timeframe)
     
-    raw_json = call_llm(prompt, force_json=True)
+    raw_json = call_llm(prompt, force_json=True, model=model)
     parsed_data = parse_ai_json(raw_json)
     
     # Validate output perfectly matches our schema

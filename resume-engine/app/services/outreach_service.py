@@ -18,7 +18,7 @@ class OutreachResponse(BaseModel):
     coffee_chat_script: str
     twitter_dm: str
 
-def execute_outreach_chain(resume_text: str, job_description: str, tone: str = "Professional") -> dict:
+def execute_outreach_chain(resume_text: str, job_description: str, tone: str = "Professional", model: str = None) -> dict:
     if not resume_text.strip() or not job_description.strip():
         raise ValueError("Both resume and target JD/Company are required.")
     
@@ -31,7 +31,7 @@ def execute_outreach_chain(resume_text: str, job_description: str, tone: str = "
         .replace('{job_description}', job_description) \
         .replace('{tone}', tone)
     
-    raw_json = call_llm(prompt, force_json=True)
+    raw_json = call_llm(prompt, force_json=True, model=model)
     parsed_data = parse_ai_json(raw_json)
     
     # Validate output matches schema

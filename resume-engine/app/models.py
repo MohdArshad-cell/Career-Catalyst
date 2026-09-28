@@ -142,51 +142,60 @@ class CoverLetterData(BaseModel):
 class GenerationRequest(BaseModel):
     template_name: str = Field("modern_line", validation_alias=AliasChoices('template_name', 'templateName'))
     resume_data: ResumeData = Field(..., validation_alias=AliasChoices('resume_data', 'resumeData'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"} 
 
 class TailorRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText'))
     job_description: str = Field(..., validation_alias=AliasChoices('job_description', 'jobDescription'))
     template_name: str = Field("modern_line", validation_alias=AliasChoices('template_name', 'templateName'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class EvaluateRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText', 'resume'))
     job_description: str = Field(..., validation_alias=AliasChoices('job_description', 'jobDescription'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class CoverLetterRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText'))
     job_description: str = Field(..., validation_alias=AliasChoices('job_description', 'jobDescription'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class InterviewRequest(BaseModel):
     job_description: str = Field(..., validation_alias=AliasChoices('job_description', 'jobDescription'))
     resume_text: Optional[str] = Field("", validation_alias=AliasChoices('resume_text', 'resumeText'))
     interview_round: str = Field("Technical Deep Dive", validation_alias=AliasChoices('interview_round', 'interviewRound'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class LinkedInRequest(BaseModel):
     linkedin_content: str = Field(..., validation_alias=AliasChoices('linkedin_content', 'linkedinContent'))
     job_description: Optional[str] = Field("", validation_alias=AliasChoices('job_description', 'jobDescription'))
     tone: str = Field("Professional", validation_alias=AliasChoices('tone', 'Tone'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class OutreachRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText'))
     job_description: str = Field(..., validation_alias=AliasChoices('job_description', 'jobDescription'))
     tone: str = Field("Professional", validation_alias=AliasChoices('tone', 'Tone'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class RoadmapRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText'))
     target_goal: str = Field(..., validation_alias=AliasChoices('target_goal', 'targetGoal'))
     timeframe: str = Field("12 Months", validation_alias=AliasChoices('timeframe', 'Timeframe'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class BulletRewriteRequest(BaseModel):
     bullet_text: str = Field(..., validation_alias=AliasChoices('bullet_text', 'bulletText'))
     target_role: str = Field(None, validation_alias=AliasChoices('target_role', 'targetRole'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class ResignationRequest(BaseModel):
@@ -195,8 +204,10 @@ class ResignationRequest(BaseModel):
     last_date: str = Field(..., validation_alias=AliasChoices('last_date', 'lastDate'))
     tone: str = Field("professional")
     reason: str = Field(None)
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
 class AtsXrayRequest(BaseModel):
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText', 'resume'))
+    ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}

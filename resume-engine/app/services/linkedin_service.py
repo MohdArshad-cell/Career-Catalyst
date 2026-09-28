@@ -25,7 +25,7 @@ class LinkedInResponse(BaseModel):
     networking_targets: List[str]
     banner_prompt: str
 
-def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional") -> dict:
+def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional", model: str = None) -> dict:
     if not linkedin_content.strip():
         raise ValueError("LinkedIn content is required.")
     
@@ -37,7 +37,7 @@ def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional") ->
         .replace('{linkedin_content}', truncated_linkedin) \
         .replace('{tone}', tone)
     
-    raw_json = call_llm(prompt, force_json=True)
+    raw_json = call_llm(prompt, force_json=True, model=model)
     parsed_data = parse_ai_json(raw_json)
     
     # Validate output matches schema

@@ -38,6 +38,11 @@ class SeniorityAlignment(BaseModel):
     resume_yoe: str = Field(..., description="Years of experience inferred from resume (e.g. '1.5 Years').")
     alignment_feedback: str = Field(..., description="Brutally honest feedback comparing required vs actual seniority.")
 
+class JdQualityCheck(BaseModel):
+    is_generic: bool = Field(..., description="True if the JD is vague, extremely short, or lacks specific technical requirements.")
+    missing_context: List[str] = Field(..., description="What the JD fails to specify (e.g. 'Missing tech stack', 'Missing exact YOE requirements').")
+    strategy_suggestion: str = Field(..., description="Actionable strategy for applying to a vague JD (e.g. 'Focus on general problem solving and leadership').")
+
 class AIResumeExtractionSchema(BaseModel):
     hard_skills_evaluation: List[SkillEvaluation] = Field(..., description="Evaluation of technical tools, frameworks, and hard skills REQUIRED BY THE JD.")
     soft_skills_evaluation: List[SkillEvaluation] = Field(..., description="Evaluation of methodologies (e.g., Agile) and soft skills REQUIRED BY THE JD.")
@@ -50,6 +55,7 @@ class AIResumeExtractionSchema(BaseModel):
     interview_danger_zones: List[DangerZone] = Field(..., description="Top 3 hard interview questions based on gaps.")
     task_vs_impact: TaskVsImpact = Field(..., description="Analysis of Task vs Impact ratio.")
     seniority_alignment: SeniorityAlignment = Field(..., description="Analysis of YOE and seniority.")
+    jd_quality: JdQualityCheck = Field(..., description="Analysis of whether the Job Description is well-written or generic.")
 
 
 # ==========================================
@@ -59,7 +65,7 @@ def _hash_eval(resume: str, jd: str) -> str:
     combined = f"{resume[:500]}||{jd[:500]}"
     return hashlib.sha256(combined.encode()).hexdigest()
 
-def execute_evaluate_chain(resume_text: str, job_description: str) -> dict:
+def execute_evaluate_chain(resume_text: str, job_description: str, model: str = None) -> dict:
     try:
         print("--- 🧠 ATS Evaluator: Checking Cache ---")
         eval_hash = _hash_eval(resume_text, job_description)
@@ -85,6 +91,7 @@ def execute_evaluate_chain(resume_text: str, job_description: str) -> dict:
             response_schema=AIResumeExtractionSchema,
             temperature=0.0,
             max_output_tokens=4096,
+            model=model,
         )
 
         hard_skills = ai_data.get("hard_skills_evaluation", [])
@@ -134,7 +141,8 @@ def execute_evaluate_chain(resume_text: str, job_description: str) -> dict:
             "keyword_context_warnings": ai_data.get("keyword_context_warnings", []),
             "interview_danger_zones": ai_data.get("interview_danger_zones", []),
             "task_vs_impact": ai_data.get("task_vs_impact", {}),
-            "seniority_alignment": ai_data.get("seniority_alignment", {})
+            "seniority_alignment": ai_data.get("seniority_alignment", {}),
+            "jd_quality": ai_data.get("jd_quality", {})
         }
         
         if redis_client:

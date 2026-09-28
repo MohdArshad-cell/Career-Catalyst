@@ -403,7 +403,7 @@ async def tailor(request: TailorRequest, background_tasks: BackgroundTasks, user
     # 1. Execute AI Logic FIRST
     start_time = time.time()
     try:
-        result = execute_tailor_chain(request.resume_text, request.job_description, request.template_name)
+        result = execute_tailor_chain(request.resume_text, request.job_description, request.template_name, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_tailor", "success", latency_ms)
     except Exception as ai_error:
@@ -432,7 +432,7 @@ async def evaluate(request: EvaluateRequest, user_auth: dict = Depends(verify_us
     # 1. Execute AI Logic FIRST
     start_time = time.time()
     try:
-        result = execute_evaluate_chain(request.resume_text, request.job_description)
+        result = execute_evaluate_chain(request.resume_text, request.job_description, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_evaluate", "success", latency_ms)
     except Exception as ai_error:
@@ -453,7 +453,7 @@ async def ats_xray(request: AtsXrayRequest, user_auth: dict = Depends(verify_use
     # 1. Execute AI Logic FIRST
     start_time = time.time()
     try:
-        result = execute_ats_xray_chain(request.resume_text)
+        result = execute_ats_xray_chain(request.resume_text, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_ats_xray", "success", latency_ms)
     except Exception as ai_error:
@@ -474,7 +474,7 @@ async def coverletter(request: CoverLetterRequest, background_tasks: BackgroundT
     # 1. Execute AI Logic FIRST
     start_time = time.time()
     try:
-        result = execute_cover_letter_chain(request.resume_text, request.job_description)
+        result = execute_cover_letter_chain(request.resume_text, request.job_description, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_coverletter", "success", latency_ms)
     except Exception as ai_error:
@@ -503,7 +503,7 @@ async def interview(request: InterviewRequest, user_auth: dict = Depends(verify_
     # 1. Execute AI Logic FIRST
     start_time = time.time()
     try:
-        result = execute_interview_chain(request.job_description, request.resume_text, request.interview_round)
+        result = execute_interview_chain(request.job_description, request.resume_text, request.interview_round, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_interview", "success", latency_ms)
     except Exception as ai_error:
@@ -526,7 +526,7 @@ async def linkedin_optimize(request: LinkedInRequest, user_auth: dict = Depends(
     
     start_time = time.time()
     try:
-        result = execute_linkedin_chain(request.linkedin_content, request.tone)
+        result = execute_linkedin_chain(request.linkedin_content, request.tone, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_linkedin", "success", latency_ms)
     except Exception as ai_error:
@@ -545,7 +545,7 @@ async def outreach_generate(request: OutreachRequest, user_auth: dict = Depends(
     
     start_time = time.time()
     try:
-        result = execute_outreach_chain(request.resume_text, request.job_description, request.tone)
+        result = execute_outreach_chain(request.resume_text, request.job_description, request.tone, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_outreach", "success", latency_ms)
     except Exception as ai_error:
@@ -567,7 +567,7 @@ async def roadmap_generate(request: RoadmapRequest, user_auth: dict = Depends(ve
     
     start_time = time.time()
     try:
-        result = execute_roadmap_chain(request.resume_text, request.target_goal, request.timeframe)
+        result = execute_roadmap_chain(request.resume_text, request.target_goal, request.timeframe, model=request.ai_model)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_roadmap", "success", latency_ms)
     except Exception as ai_error:

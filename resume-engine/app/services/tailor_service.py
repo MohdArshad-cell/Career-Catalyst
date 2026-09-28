@@ -73,8 +73,16 @@ def verify_metrics(baseline_text: str, tailored_data: dict) -> dict:
     return tailored_data
 
 
+import difflib
+
+def _is_duplicate_bullet(orig_bullet: str, tail_bullets: list[str]) -> bool:
+    for tb in tail_bullets:
+        if difflib.SequenceMatcher(None, orig_bullet.lower(), tb.lower()).ratio() > 0.7:
+            return True
+    return False
+
 def verify_bullet_count(original_json_str: str, tailored_data: dict) -> dict:
-    """Ensure the AI doesn't shrink the resume by dropping bullet points."""
+    """Ensure the AI doesn't shrink the resume by dropping bullet points, but prevent duplicates."""
     original_data = json.loads(original_json_str)
 
     orig_exp = original_data.get('experience', [])
@@ -87,9 +95,14 @@ def verify_bullet_count(original_json_str: str, tailored_data: dict) -> dict:
 
             if len(tail_bullets) < len(orig_bullets):
                 deficit = len(orig_bullets) - len(tail_bullets)
-                print(f"⚠️ AI dropped {deficit} bullets from {orig_job.get('company', 'Unknown')}. Restoring originals.")
-                lost_bullets = orig_bullets[len(tail_bullets):]
-                tail_exp[i]['descriptionPoints'] = tail_bullets + lost_bullets
+                print(f"⚠️ AI dropped {deficit} bullets from {orig_job.get('company', 'Unknown')}. Restoring non-duplicates.")
+                # Append original bullets that are not already in tail_bullets
+                for ob in orig_bullets:
+                    if len(tail_bullets) >= len(orig_bullets):
+                        break
+                    if not _is_duplicate_bullet(ob, tail_bullets):
+                        tail_bullets.append(ob)
+                tail_exp[i]['descriptionPoints'] = tail_bullets
 
     # Same check for projects
     orig_proj = original_data.get('projects', [])
@@ -102,9 +115,13 @@ def verify_bullet_count(original_json_str: str, tailored_data: dict) -> dict:
 
             if len(tail_bullets) < len(orig_bullets):
                 deficit = len(orig_bullets) - len(tail_bullets)
-                print(f"⚠️ AI dropped {deficit} bullets from project {orig_p.get('name', 'Unknown')}. Restoring originals.")
-                lost_bullets = orig_bullets[len(tail_bullets):]
-                tail_proj[i]['descriptionPoints'] = tail_bullets + lost_bullets
+                print(f"⚠️ AI dropped {deficit} bullets from project {orig_p.get('name', 'Unknown')}. Restoring non-duplicates.")
+                for ob in orig_bullets:
+                    if len(tail_bullets) >= len(orig_bullets):
+                        break
+                    if not _is_duplicate_bullet(ob, tail_bullets):
+                        tail_bullets.append(ob)
+                tail_proj[i]['descriptionPoints'] = tail_bullets
 
     # Check custom_sections
     orig_custom = original_data.get('custom_sections', [])
@@ -121,9 +138,13 @@ def verify_bullet_count(original_json_str: str, tailored_data: dict) -> dict:
                     
                     if len(tail_bullets) < len(orig_bullets):
                         deficit = len(orig_bullets) - len(tail_bullets)
-                        print(f"⚠️ AI dropped {deficit} bullets from custom section item {orig_item.get('title', 'Unknown')}. Restoring originals.")
-                        lost_bullets = orig_bullets[len(tail_bullets):]
-                        tail_items[j]['descriptionPoints'] = tail_bullets + lost_bullets
+                        print(f"⚠️ AI dropped {deficit} bullets from custom section item {orig_item.get('title', 'Unknown')}. Restoring non-duplicates.")
+                        for ob in orig_bullets:
+                            if len(tail_bullets) >= len(orig_bullets):
+                                break
+                            if not _is_duplicate_bullet(ob, tail_bullets):
+                                tail_bullets.append(ob)
+                        tail_items[j]['descriptionPoints'] = tail_bullets
 
     return tailored_data
 
@@ -288,7 +309,7 @@ def cache_jd_analysis(jd_text: str, jd_data: dict):
 # ==========================================
 # 4. MAIN EXECUTION CHAIN
 # ==========================================
-def execute_tailor_chain(resume_input: str, job_description: str, template_name: str = "base_template") -> dict:
+def execute_tailor_chain(resume_input: str, job_description: str, template_name: str = "base_template", model: str = None) -> dict:
     """
     Execute the full tailoring pipeline:
     1. Parse resume (if raw text) + Analyze JD (in parallel)
@@ -376,7 +397,7 @@ def execute_tailor_chain(resume_input: str, job_description: str, template_name:
             .replace('{bullet_count_constraint}', bullet_constraint) \
             .replace('{resume_text}', mutable_json_str)
 
-        raw_tailored_json = call_llm(prompt2, schema=ResumeData)
+        raw_tailored_json = call_llm(prompt2, schema=ResumeData, model=model)
         tailored_data = json.loads(raw_tailored_json)
 
         # ── STEP 3: QUALITY GUARDS ──

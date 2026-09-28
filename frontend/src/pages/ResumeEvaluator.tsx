@@ -10,6 +10,7 @@ import { useToast } from '../components/Toast';
 import { supabase } from '../supabaseClient';
 import { FileText, Target, Flame, AlertTriangle, Briefcase, Activity, ShieldAlert, Crosshair } from 'lucide-react';
 import './ToolPages.css';
+import ModelSelector from '../components/ModelSelector';
 
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 
@@ -53,6 +54,12 @@ interface SeniorityAlignment {
     alignment_feedback: string;
 }
 
+interface JdQuality {
+    is_generic: boolean;
+    missing_context: string[];
+    strategy_suggestion: string;
+}
+
 interface EvaluationData {
     score: number;
     dimension_scores: DimensionScores;
@@ -63,6 +70,7 @@ interface EvaluationData {
     interview_danger_zones?: DangerZone[];
     task_vs_impact?: TaskVsImpact;
     seniority_alignment?: SeniorityAlignment;
+    jd_quality?: JdQuality;
 }
 
 const AtsEvaluatorPage: React.FC = () => {
@@ -78,6 +86,7 @@ const AtsEvaluatorPage: React.FC = () => {
     const [error, setError] = useState('');
     const [isDragging, setIsDragging] = useState(false);
     const [copyState, setCopyState] = useState<{ [key: number]: string }>({});
+    const [aiModel, setAiModel] = useState('gemini-3.1-flash-lite-preview');
 
     // --- DRAG & DROP LOGIC ---
     const handleDragOver = (e: React.DragEvent) => {
@@ -143,7 +152,7 @@ const AtsEvaluatorPage: React.FC = () => {
                 setLoadingStep(prev => prev < 3 ? prev + 1 : prev);
             }, 3000);
 
-            const payload = { resume_text: resumeText, job_description: jobDescription };
+            const payload = { resume_text: resumeText, job_description: jobDescription, ai_model: aiModel };
 
             const response = await axios.post(`${API_BASE_URL}/api/ai/evaluate`, payload, {
                 headers: {
@@ -240,7 +249,8 @@ const AtsEvaluatorPage: React.FC = () => {
                     </div>
                 </div>
 
-                <div className="action-row text-center" style={{ margin: '3rem 0' }}>
+                <div className="action-row" style={{ margin: '3rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+                    <ModelSelector selectedModel={aiModel} onModelChange={setAiModel} />
                     <button
                         className="btn-premium pulse-glow massive-btn"
                         onClick={handleEvaluateResume}
@@ -258,6 +268,32 @@ const AtsEvaluatorPage: React.FC = () => {
                             <AiLoadingState steps={loadingSteps} currentStep={loadingStep} accentColor="#ef4444" />
                         ) : evaluationResult && (
                             <div className="dashboard-wrapper">
+                                {/* JD QUALITY STRATEGY ALERT */}
+                                {evaluationResult.jd_quality?.is_generic && (
+                                    <div className="panel glass-card-premium" style={{ marginBottom: '2rem', border: '1px solid #f59e0b', background: 'rgba(245, 158, 11, 0.05)' }}>
+                                        <h2 className="panel-title" style={{ color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <AlertTriangle size={24} /> Warning: Generic/Misaligned Job Description Detected
+                                        </h2>
+                                        <div style={{ marginTop: '1rem', color: '#fcd34d', fontSize: '1rem', lineHeight: '1.6' }}>
+                                            <p style={{ marginBottom: '10px' }}>This job description lacks specific technical requirements or is poorly written.</p>
+                                            
+                                            <div style={{ marginBottom: '12px' }}>
+                                                <strong>Missing Context:</strong>
+                                                <ul style={{ paddingLeft: '20px', marginTop: '4px', marginBottom: 0 }}>
+                                                    {evaluationResult.jd_quality.missing_context?.map((ctx: string, i: number) => (
+                                                        <li key={i}>{ctx}</li>
+                                                    ))}
+                                                </ul>
+                                            </div>
+
+                                            <div style={{ padding: '12px', background: 'rgba(245, 158, 11, 0.15)', borderRadius: '8px', borderLeft: '4px solid #f59e0b' }}>
+                                                <strong>💡 Application Strategy:</strong><br/>
+                                                {evaluationResult.jd_quality.strategy_suggestion}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                                
                                 {/* SCORE & RED FLAGS ROW */}
                                 <div className="tool-input-grid" style={{ marginBottom: '2rem', gridTemplateColumns: '1fr 1.5fr 1fr' }}>
 

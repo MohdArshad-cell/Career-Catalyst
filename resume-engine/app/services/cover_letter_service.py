@@ -14,7 +14,7 @@ from app.services.tailor_service import clean_data_for_template
 # ==========================================
 # CORE EXECUTION CHAIN (MERGED: 2-step → 1-step)
 # ==========================================
-def execute_cover_letter_chain(resume_text: str, job_description: str) -> dict:
+def execute_cover_letter_chain(resume_text: str, job_description: str, model: str = None) -> dict:
     """
     Executes a single-pass AI chain to generate a premium, highly targeted cover letter,
     and compiles it into a LaTeX PDF.
