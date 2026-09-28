@@ -27,14 +27,22 @@ interface TrajectoryAnalysis {
   optimized_positioning: string;
 }
 
+interface NetworkingStrategy {
+  networking_targets: string[];
+  connection_script: string;
+}
+
 interface LinkedInData {
   trajectory_analysis: TrajectoryAnalysis;
   headline: string;
   about_section: string;
   experience_bullets: ExperienceBullet[];
   project_bullets: ProjectBullet[];
+  top_skills: string[];
+  featured_section: string[];
+  creator_mode_hashtags: string[];
+  networking_strategy: NetworkingStrategy;
   content_ideas: string[];
-  networking_targets: string[];
   banner_prompt: string;
 }
 
@@ -43,6 +51,7 @@ const LinkedInOptimizerPage: React.FC = () => {
     const { showToast } = useToast();
 
     const [linkedinContent, setLinkedinContent] = useState('');
+    const [targetRole, setTargetRole] = useState('');
     const [tone, setTone] = useState('Professional');
     const [optimizedData, setOptimizedData] = useState<LinkedInData | null>(null);
     const [isLoading, setIsLoading] = useState(false);
@@ -114,6 +123,7 @@ const LinkedInOptimizerPage: React.FC = () => {
 
             const payload = { 
                 linkedin_content: linkedinContent,
+                target_role: targetRole,
                 tone: tone
             };
             
@@ -221,7 +231,20 @@ const LinkedInOptimizerPage: React.FC = () => {
                         </div>
                         
                         <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem', marginTop: '-0.5rem' }}>
-                            Upload your LinkedIn export or paste your content manually. The AI will automatically infer your optimal career trajectory.
+                            What is your Target Role / Career Goal? (e.g. "Senior Backend Engineer in FinTech")
+                        </p>
+                        
+                        <input
+                            className="premium-input"
+                            value={targetRole}
+                            onChange={(e) => setTargetRole(e.target.value)}
+                            placeholder="Target Role (e.g. Lead Product Manager)..."
+                            disabled={isLoading}
+                            style={{ width: '100%', marginBottom: '1.5rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', padding: '0.8rem 1.2rem', fontSize: '1rem' }}
+                        />
+
+                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                            Upload your LinkedIn export or paste your content manually.
                         </p>
                         
                         <textarea
@@ -275,17 +298,58 @@ const LinkedInOptimizerPage: React.FC = () => {
                             </div>
                         </div>
 
-                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
-                            {/* Networking Strategy */}
-                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #f59e0b', background: 'rgba(20,20,30,0.8)' }}>
+                        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', marginBottom: '3rem' }}>
+                            {/* Top Skills */}
+                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #10b981', background: 'rgba(20,20,30,0.8)' }}>
                                 <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
-                                    <Users size={18} color="#f59e0b"/> Target Connections
+                                    <CheckCircle size={18} color="#10b981"/> Top 15 SEO Skills
                                 </h4>
-                                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#fcd34d', lineHeight: '1.6' }}>
-                                    {optimizedData.networking_targets.map((target, idx) => (
-                                        <li key={idx} style={{ marginBottom: '0.5rem' }}>{target}</li>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                                    {optimizedData.top_skills?.map((skill, idx) => (
+                                        <span key={idx} style={{ background: 'rgba(16, 185, 129, 0.1)', color: '#6ee7b7', padding: '0.4rem 0.8rem', borderRadius: '50px', fontSize: '0.85rem', border: '1px solid rgba(16, 185, 129, 0.2)' }}>
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Featured Section */}
+                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #0ea5e9', background: 'rgba(20,20,30,0.8)' }}>
+                                <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                                    <Lightbulb size={18} color="#0ea5e9"/> Featured Section Strategy
+                                </h4>
+                                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#bae6fd', lineHeight: '1.6' }}>
+                                    {optimizedData.featured_section?.map((item, idx) => (
+                                        <li key={idx} style={{ marginBottom: '0.5rem' }}>{item}</li>
                                     ))}
                                 </ul>
+                            </div>
+
+                            {/* Networking Strategy */}
+                            <div className="panel glass-card" style={{ padding: '1.5rem', borderRadius: '16px', borderTop: '4px solid #f59e0b', background: 'rgba(20,20,30,0.8)', gridColumn: '1 / -1' }}>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2rem' }}>
+                                    <div style={{ flex: 1, minWidth: '250px' }}>
+                                        <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
+                                            <Users size={18} color="#f59e0b"/> Target Connections
+                                        </h4>
+                                        <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#fcd34d', lineHeight: '1.6' }}>
+                                            {optimizedData.networking_strategy?.networking_targets?.map((target, idx) => (
+                                                <li key={idx} style={{ marginBottom: '0.5rem' }}>{target}</li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                    <div style={{ flex: 2, minWidth: '300px' }}>
+                                        <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '1.1rem' }}>
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}><MessageCircle size={18} color="#f59e0b"/> Connection Script</span>
+                                            <button className="btn-outline" onClick={() => handleCopy(optimizedData.networking_strategy?.connection_script || '', 'script')} style={{ padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem' }}>
+                                                {copiedStates['script'] ? 'Copied' : 'Copy'}
+                                            </button>
+                                        </h4>
+                                        <div style={{ background: 'rgba(0,0,0,0.4)', padding: '1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)', color: '#f8fafc', fontSize: '0.95rem', lineHeight: '1.6', fontStyle: 'italic' }}>
+                                            "{optimizedData.networking_strategy?.connection_script}"
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
 
                             {/* Creator Mode Ideas */}
@@ -293,8 +357,16 @@ const LinkedInOptimizerPage: React.FC = () => {
                                 <h4 style={{ color: 'white', margin: '0 0 1rem 0', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '1.1rem' }}>
                                     <MessageCircle size={18} color="#8b5cf6"/> Post Ideas (Creator Mode)
                                 </h4>
-                                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#c4b5fd', lineHeight: '1.6' }}>
-                                    {optimizedData.content_ideas.map((idea, idx) => (
+                                <div style={{ marginBottom: '1rem' }}>
+                                    <strong style={{ color: '#c4b5fd', fontSize: '0.85rem', textTransform: 'uppercase' }}>Hashtags to pin:</strong>
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginTop: '0.4rem' }}>
+                                        {optimizedData.creator_mode_hashtags?.map((tag, idx) => (
+                                            <span key={idx} style={{ background: 'rgba(139, 92, 246, 0.2)', color: '#c4b5fd', padding: '0.2rem 0.6rem', borderRadius: '4px', fontSize: '0.8rem' }}>{tag}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                                <ul style={{ paddingLeft: '1.2rem', margin: 0, color: '#e2e8f0', lineHeight: '1.6' }}>
+                                    {optimizedData.content_ideas?.map((idea, idx) => (
                                         <li key={idx} style={{ marginBottom: '0.5rem' }}>{idea}</li>
                                     ))}
                                 </ul>

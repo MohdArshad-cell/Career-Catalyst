@@ -173,7 +173,7 @@ class InterviewRequest(BaseModel):
 
 class LinkedInRequest(BaseModel):
     linkedin_content: str = Field(..., validation_alias=AliasChoices('linkedin_content', 'linkedinContent'))
-    job_description: Optional[str] = Field("", validation_alias=AliasChoices('job_description', 'jobDescription'))
+    target_role: Optional[str] = Field("", validation_alias=AliasChoices('target_role', 'targetRole'))
     tone: str = Field("Professional", validation_alias=AliasChoices('tone', 'Tone'))
     ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}

@@ -526,7 +526,7 @@ async def linkedin_optimize(request: LinkedInRequest, user_auth: dict = Depends(
     
     start_time = time.time()
     try:
-        result = execute_linkedin_chain(request.linkedin_content, request.tone, model=request.ai_model)
+        result = execute_linkedin_chain(request.linkedin_content, request.tone, model=request.ai_model, target_role=request.target_role)
         latency_ms = int((time.time() - start_time) * 1000)
         log_generation(user_auth["user_id"], "ai_linkedin", "success", latency_ms)
     except Exception as ai_error:

@@ -15,17 +15,24 @@ class TrajectoryAnalysis(BaseModel):
     current_perception: str
     optimized_positioning: str
 
+class NetworkingStrategy(BaseModel):
+    networking_targets: List[str]
+    connection_script: str
+
 class LinkedInResponse(BaseModel):
     trajectory_analysis: TrajectoryAnalysis
     headline: str
     about_section: str
     experience_bullets: List[ExperienceBullet]
     project_bullets: List[ProjectBullet]
+    top_skills: List[str]
+    featured_section: List[str]
+    creator_mode_hashtags: List[str]
+    networking_strategy: NetworkingStrategy
     content_ideas: List[str]
-    networking_targets: List[str]
     banner_prompt: str
 
-def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional", model: str = None) -> dict:
+def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional", model: str = None, target_role: str = "") -> dict:
     if not linkedin_content.strip():
         raise ValueError("LinkedIn content is required.")
     
@@ -35,7 +42,8 @@ def execute_linkedin_chain(linkedin_content: str, tone: str = "Professional", mo
     prompt_template = load_prompt("linkedin_optimizer", "prompt_linkedin.txt")
     prompt = prompt_template \
         .replace('{linkedin_content}', truncated_linkedin) \
-        .replace('{tone}', tone)
+        .replace('{tone}', tone) \
+        .replace('{target_role}', target_role if target_role else "Infer best trajectory based on current experience")
     
     raw_json = call_llm(prompt, force_json=True, model=model)
     parsed_data = parse_ai_json(raw_json)

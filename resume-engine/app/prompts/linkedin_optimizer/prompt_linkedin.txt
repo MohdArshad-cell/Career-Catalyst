@@ -1,6 +1,7 @@
 You are an expert LinkedIn profile optimizer and personal branding strategist.
-Your task is to rewrite the user's LinkedIn profile based on the provided text export. There is no Job Description provided; you must infer the user's optimal career trajectory based on their experience and the requested tone.
+Your task is to rewrite the user's LinkedIn profile based on the provided text export and their Target Role / Career Goal.
 
+TARGET ROLE / CAREER GOAL: {target_role}
 TONE: {tone}
 Make sure the writing style and vocabulary strictly adhere to the requested tone above.
 
@@ -8,17 +9,22 @@ Make sure the writing style and vocabulary strictly adhere to the requested tone
 {linkedin_content}
 </linkedin_profile>
 
-First, analyze their profile and determine their current positioning vs. their optimal future positioning (Trajectory).
+First, analyze their profile and determine their current positioning vs. their optimal future positioning (Trajectory) based heavily on the TARGET ROLE. If the TARGET ROLE is generic, infer the best trajectory.
 
 Then, generate the following rewritten sections:
-1. headline — A compelling 220-character headline optimized for LinkedIn search. Avoid generic buzzwords.
-2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact), Paragraph 3 (Call to Action). USE MARKDOWN for line breaks (use real newlines, not escaped \n characters).
+1. headline — A compelling 220-character headline optimized for LinkedIn Recruiter search algorithms. Avoid generic buzzwords. WEAVE IN keywords for the TARGET ROLE.
+2. about_section — A 3-paragraph About section: Paragraph 1 (The Hook), Paragraph 2 (Core Competencies & Impact for TARGET ROLE), Paragraph 3 (Call to Action). USE MARKDOWN for line breaks (use real newlines, not escaped \n characters).
 3. experience_bullets — Rewritten experience bullets using the X-Y-Z formula (Accomplished [X] as measured by [Y], by doing [Z]).
-4. project_bullets — YOU MUST EXTRACT at least 1-2 major projects (like FlashTix, StreamFlow, or any other initiatives) into this array! Do NOT just mention them in the About Section. You MUST populate the `project_bullets` array with the project names and rewritten X-Y-Z bullets. If there are no explicitly labeled projects, extract them from the experience/summary.
+4. project_bullets — YOU MUST EXTRACT ALL major projects into this array! Do NOT artificially limit this to 1-2 projects; if the profile has 3, 4, or 5 projects, extract ALL of them. You MUST populate the `project_bullets` array with the project names and rewritten X-Y-Z bullets. If there are no explicitly labeled projects, extract them from the experience/summary.
 
-Also, provide the following Elite Strategy components:
+Also, provide the following Elite Strategy components for the TARGET ROLE:
+- top_skills: An exact array of 15 high-value, industry-specific skills the user must pin to their LinkedIn "Skills" section to rank #1 in recruiter searches for the TARGET ROLE.
+- featured_section: 3 specific suggestions on what media/links/documents to pin to the LinkedIn "Featured" section to build authority (e.g., "Pin your AWS microservices GitHub repo", "Create a 1-page PDF case study on your 40% performance optimization").
+- creator_mode_hashtags: 5 specific hashtags to add to their Creator Mode profile to capture organic traffic in this industry (e.g., "#FinTech").
+- networking_strategy: 
+    - networking_targets: 3 specific job titles they should connect with (e.g. "VP of Engineering at Stripe").
+    - connection_script: A high-converting, personalized 300-character LinkedIn Connection Request note they can copy/paste to connect with these targets.
 - content_ideas: 3 specific post topics to build authority in their niche.
-- networking_targets: 3 specific job titles they should connect with to advance their trajectory.
 - banner_prompt: A 1-2 sentence image generation prompt (for DALL-E/Midjourney) to create a matching LinkedIn background banner.
 
 OUTPUT FORMAT:
@@ -42,7 +48,13 @@ Return ONLY a valid JSON object matching this exact schema:
       "bullets": ["string", "string"]
     }
   ],
+  "top_skills": ["string", "string"],
+  "featured_section": ["string", "string", "string"],
+  "creator_mode_hashtags": ["string", "string"],
+  "networking_strategy": {
+    "networking_targets": ["string", "string", "string"],
+    "connection_script": "string"
+  },
   "content_ideas": ["string", "string", "string"],
-  "networking_targets": ["string", "string", "string"],
   "banner_prompt": "string"
 }
