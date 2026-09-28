@@ -609,3 +609,10 @@
     }
 }
 
+/* Style for all select options in the dark theme */
+select.premium-input option,
+.premium-select option {
+    background-color: #1e293b;
+    color: #f8fafc;
+    padding: 0.5rem;
+}
