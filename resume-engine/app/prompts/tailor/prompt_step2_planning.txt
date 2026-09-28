@@ -5,7 +5,7 @@ Your objective is to seamlessly inject missing keywords and rewrite the mutable 
 - Output ONLY a raw, valid JSON string.
 - You must start with '{' and end with '}'. Absolutely NO markdown backticks (```) and NO introductory/closing text.
 - Adhere strictly to the JSON schema.
-- **BOLDING REQUIREMENT**: For every bullet point in 'experience' and 'projects', you MUST use markdown bold (**) to highlight 2 to 3 high-impact keywords, key technologies, or quantitative metrics (e.g., "Reduced latency by **35%** using **Spring Boot** microservices").
+- **BOLDING REQUIREMENT**: For the 'summary' and every bullet point in 'experience' and 'projects', you MUST use markdown bold (**) to highlight 2 to 3 high-impact keywords, key technologies, or quantitative metrics (e.g., "Reduced latency by **35%** using **Spring Boot** microservices").
 
 ### STRICT PRESERVATION LAWS (DO NOT VIOLATE):
 1. PRESERVE LENGTH & BULLET COUNT: {bullet_count_constraint}
@@ -14,7 +14,7 @@ Your objective is to seamlessly inject missing keywords and rewrite the mutable 
 3. ANTI-HALLUCINATION (NO FABRICATION): You are strictly FORBIDDEN from inventing certifications, degrees, or major programming languages/frameworks that the user does not explicitly possess in the original text. Do NOT add "AWS Certified Solutions Architect", "Next.js", or "Kubernetes" to their skills or projects if they only know Spring Boot, even if the JD explicitly asks for it. You may organically reframe their existing tools and methodologies (e.g. Agile, CI/CD, Observability, REST APIs) but you MUST NOT fabricate hard technical skills or credentials they do not have.
 
 ### TAILORING LOGIC:
-1. SUMMARY REWRITE & TONE: The candidate's tone MUST match this profile: "{tone}". Do NOT write like a 10-year veteran if they are a junior. Weave the {target_job_title}, 2-3 {missing_skills}, and 1 {soft_skills} naturally into the summary.
+1. SUMMARY REWRITE & TONE: The candidate's tone MUST match this profile: "{tone}". Do NOT write like a 10-year veteran if they are a junior. Weave the {target_job_title}, 2-3 {missing_skills}, and 1 {soft_skills} naturally into the summary. You MUST use markdown bold (**) to highlight the job title and key technologies within the summary.
 2. SKILL ARRAY INJECTION: Categorize and append all {missing_skills} and {bonus_skills} into the 'skills' array under appropriate categories. If no matching category exists, create a new one.
 3. SURGICAL BULLET INJECTION & CONTEXTUAL BOUNDARIES: 
    - DO NOT just write "used {keyword}". If a missing or bonus skill logically fits an existing bullet point, rewrite that specific bullet to explain *HOW* the tool was applied in a real workflow.
