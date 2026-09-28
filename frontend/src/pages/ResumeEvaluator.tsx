@@ -212,6 +212,9 @@ const AtsEvaluatorPage: React.FC = () => {
                     </div>
                     <h1 className="tool-header-title">Resume Evaluator</h1>
                     <p className="tool-header-subtitle">No sugarcoating. Find out exactly how a modern semantic ATS ranks you.</p>
+                    <div style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center', zIndex: 10 }}>
+                        <ModelSelector selectedModel={aiModel} onModelChange={setAiModel} />
+                    </div>
                 </div>
 
                 <div className="tool-input-grid">
@@ -250,7 +253,6 @@ const AtsEvaluatorPage: React.FC = () => {
                 </div>
 
                 <div className="action-row" style={{ margin: '3rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
-                    <ModelSelector selectedModel={aiModel} onModelChange={setAiModel} />
                     <button
                         className="btn-premium pulse-glow massive-btn"
                         onClick={handleEvaluateResume}

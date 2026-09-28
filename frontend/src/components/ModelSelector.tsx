@@ -136,9 +136,6 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
                                 </div>
                                 <div className="model-option-right">
                                     <span className="model-cost">{topRatedModel.cost} credit</span>
-                                    {topRatedModel.votes && (
-                                        <span className="model-votes">👍 100% · {topRatedModel.votes}</span>
-                                    )}
                                 </div>
                             </div>
                         </div>
@@ -165,9 +162,6 @@ const ModelSelector: React.FC<ModelSelectorProps> = ({ selectedModel, onModelCha
                                 </div>
                                 <div className="model-option-right">
                                     <span className="model-cost">{model.cost} credit</span>
-                                    {model.votes && (
-                                        <span className="model-votes-simple">{model.votes} votes</span>
-                                    )}
                                 </div>
                             </div>
                         ))}
