@@ -27,7 +27,8 @@ OUTPUT SCHEMA (Output ONLY valid JSON, do not wrap in ```json blocks):
       "degree": "Degree name",
       "startYear": "Year or null",
       "endYear": "Year or null",
-      "grade": "GPA/Grade or null"
+      "grade": "GPA/Grade or null",
+      "coursework": "Comma separated list of courses or null"
     }
   ],
   "skills": [

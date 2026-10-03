@@ -70,6 +70,10 @@
             \textbf{\VAR{ edu.degree | escape_tex }} & \VAR{ edu.startYear | escape_tex } -- \VAR{ edu.endYear | escape_tex } \\
             \textit{\small \VAR{ edu.institution | escape_tex }} & \BLOCK{ if edu.grade }\textit{\small \VAR{ edu.grade | escape_tex }}\BLOCK{ endif }
         \end{tabular*}
+        \BLOCK{ if edu.coursework }
+            \vspace{2pt}
+            \small\textit{Relevant Coursework: \VAR{ edu.coursework | escape_tex }}
+        \BLOCK{ endif }
         \BLOCK{ endif }
     \BLOCK{ endfor }
 \end{itemize}

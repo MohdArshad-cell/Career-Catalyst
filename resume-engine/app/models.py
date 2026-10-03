@@ -46,6 +46,7 @@ class EducationItem(BaseModel):
     startYear: Optional[str] = Field(None, validation_alias=AliasChoices('startYear', 'start_year'))
     endYear: Optional[str] = Field(None, validation_alias=AliasChoices('endYear', 'end_year'))
     grade: Optional[str] = Field(None, validation_alias=AliasChoices('grade', 'gpa'))
+    coursework: Optional[str] = Field(None, description='Comma-separated list of relevant coursework. If present in the original resume, DO NOT REMOVE IT. Tailor it to match the target job description.')
 
 class ExperienceItem(BaseModel):
     role: Optional[str] = Field(

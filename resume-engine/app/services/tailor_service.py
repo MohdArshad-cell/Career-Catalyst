@@ -349,11 +349,10 @@ def execute_tailor_chain(resume_input: str, job_description: str, template_name:
         # ── PREPARE IMMUTABLE vs MUTABLE SECTIONS ──
         immutables = {
             "personal_info": full_resume_data.get("personal_info", {}),
-            "education": full_resume_data.get("education", []),
             "achievements": full_resume_data.get("achievements", []),
             "certifications": full_resume_data.get("certifications", [])
         }
-        mutables = {k: full_resume_data.get(k, []) for k in ["summary", "skills", "experience", "projects", "custom_sections"]}
+        mutables = {k: full_resume_data.get(k, []) for k in ["summary", "skills", "experience", "projects", "education", "custom_sections"]}
         mutable_json_str = json.dumps(mutables, indent=2)
 
         # ── ANALYZE SKILL GAPS ──

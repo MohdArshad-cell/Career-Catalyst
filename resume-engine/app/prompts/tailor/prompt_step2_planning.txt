@@ -21,6 +21,7 @@ Your objective is to seamlessly inject missing keywords and rewrite the mutable 
    - STRICT BOUNDARIES: Keep backend tools with backend work, frontend with frontend, DevOps with DevOps. If a skill does NOT logically fit the existing technical context of a specific job/project, LEAVE IT OUT of the experience section entirely.
    - EXAMPLE of GOOD injection: BEFORE: "Built an API for user management" → AFTER: "Architected a **RESTful API** for user management using **Spring Boot**, processing **10K+** daily requests with **Redis** caching for sub-100ms response times"
    - EXAMPLE of BAD injection: "Built a React frontend using Kubernetes" (Kubernetes doesn't belong in frontend work)
+4. COURSEWORK TAILORING: If the `education` section contains a `coursework` field, you MUST review the comma-separated list of courses and remove irrelevant ones. Keep ONLY the courses that strongly match the {target_job_title} or {missing_skills}. DO NOT drop the `education` array or any of its other fields.
 4. XYZ / STAR FORMULA ENFORCEMENT: Every single bullet point must demonstrate impact. If a bullet lacks a quantifiable metric (because you cannot invent numbers), you MUST rewrite it using strong {action_verbs} to emphasize the *architectural magnitude* or *business context* of the work.
 5. SMART SDLC INTEGRATION: Seamlessly weave {sdlc_and_practices} (e.g., CI/CD, Unit Testing) into professional experience bullets where logically appropriate — NOT forced into every bullet.
 6. PRESERVE TIMELINES: Extract exact dates from input. If blank, output null.

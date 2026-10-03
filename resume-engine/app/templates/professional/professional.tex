@@ -91,6 +91,9 @@
           {\VAR{ edu.startYear | escape_tex } -- \VAR{ edu.endYear | escape_tex }}
           {\VAR{ edu.degree | escape_tex }}
           {\BLOCK{ if edu.grade }Grade: \VAR{ edu.grade | escape_tex }\BLOCK{ endif }}
+        \BLOCK{ if edu.coursework }
+          \newline \small{\textit{Relevant Coursework:} \VAR{edu.coursework | escape_tex}} \vspace{2pt}
+        \BLOCK{ endif }
         \BLOCK{ endif }
     \BLOCK{ endfor }
   \resumeSubHeadingListEnd
