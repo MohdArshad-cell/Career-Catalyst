@@ -182,11 +182,11 @@ def calculate_yoe(experience_list: list) -> str:
     total_years = total_months / 12
 
     if total_years <= 2:
-        return "Ambitious, growth-oriented, and highly adaptable."
+        return "junior/entry-level (focus on academic foundations, fast learning, and core technical competencies)"
     elif total_years <= 7:
-        return "Results-driven professional with proven technical execution."
+        return "mid-level (focus on proven technical execution, project ownership, and measurable impact)"
     else:
-        return "Strategic, high-level leader focused on architecture and business impact."
+        return "senior/executive-level (focus on architectural design, strategic leadership, and high-level business impact)"
 
 
 def _parse_date_string(date_str: str) -> datetime | None:
