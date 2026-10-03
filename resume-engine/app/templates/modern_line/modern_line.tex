@@ -71,8 +71,9 @@
             \textit{\small \VAR{ edu.institution | escape_tex }} & \BLOCK{ if edu.grade }\textit{\small \VAR{ edu.grade | escape_tex }}\BLOCK{ endif }
         \end{tabular*}
         \BLOCK{ if edu.coursework }
-            \vspace{2pt}
-            \small\textit{Relevant Coursework: \VAR{ edu.coursework | escape_tex }}
+            \begin{itemize}[leftmargin=0.2in, itemsep=0pt, label={-}]
+                \item\small \textbf{Relevant Coursework:} \VAR{ edu.coursework | escape_tex }
+            \end{itemize}
         \BLOCK{ endif }
         \BLOCK{ endif }
     \BLOCK{ endfor }
