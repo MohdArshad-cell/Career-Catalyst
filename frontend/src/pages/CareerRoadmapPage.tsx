@@ -59,6 +59,42 @@ const CareerRoadmapPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [checkedItems, setCheckedItems] = useState<Record<string, boolean>>({});
 
+    const [savedResumes, setSavedResumes] = useState<any[]>([]);
+    const [selectedResumeId, setSelectedResumeId] = useState<string>('');
+
+    // --- AUTO-LOAD MASTER RESUMES ---
+    React.useEffect(() => {
+        const fetchMasterResumes = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const res = await axios.get(`${API_BASE_URL}/api/profile/resume`, {
+                    headers: { Authorization: `Bearer ${session.access_token}` }
+                });
+                if (res.data.resumes && res.data.resumes.length > 0) {
+                    setSavedResumes(res.data.resumes);
+                    // Select the first one by default
+                    setSelectedResumeId(res.data.resumes[0].id);
+                    setResumeText(res.data.resumes[0].resume_text);
+                }
+            } catch (err) {
+                console.error("Failed to load master resumes", err);
+            }
+        };
+        fetchMasterResumes();
+    }, []);
+
+    const handleResumeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const id = e.target.value;
+        setSelectedResumeId(id);
+        if (id) {
+            const selected = savedResumes.find(r => r.id === id);
+            if (selected) setResumeText(selected.resume_text);
+        } else {
+            setResumeText(''); // 'custom' option selected
+        }
+    };
+
     const toggleCheck = (id: string) => {
         setCheckedItems(prev => ({ ...prev, [id]: !prev[id] }));
     };
@@ -219,15 +255,45 @@ const CareerRoadmapPage: React.FC = () => {
                             <h2 className="panel-title">
                                 <FileText size={22} color="#67e8f9" /> Your Resume
                             </h2>
-                            <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
+                            {!selectedResumeId && (
+                                <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
+                            )}
                         </div>
-                        <textarea
-                            className="premium-textarea"
-                            value={resumeText}
-                            onChange={(e) => setResumeText(e.target.value)}
-                            placeholder="Paste your resume or upload a PDF..."
-                            disabled={isLoading}
-                        />
+
+                        {savedResumes.length > 0 && (
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#94a3b8', fontSize: '0.9rem' }}>Select from Vault:</label>
+                                <select 
+                                    className="premium-select"
+                                    value={selectedResumeId}
+                                    onChange={handleResumeSelection}
+                                    disabled={isLoading}
+                                    style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(15, 23, 42, 0.6)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                                >
+                                    {savedResumes.map(r => (
+                                        <option key={r.id} value={r.id}>{r.resume_name}</option>
+                                    ))}
+                                    <option value="">-- Upload / Paste Custom Resume --</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {selectedResumeId ? (
+                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
+                                <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Saved Resume</h3>
+                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>This resume will be sent to the AI automatically.</p>
+                            </div>
+                        ) : (
+                            <textarea
+                                className="premium-textarea"
+                                value={resumeText}
+                                onChange={(e) => setResumeText(e.target.value)}
+                                placeholder="Paste your resume or upload a PDF..."
+                                disabled={isLoading}
+                                style={{ flexGrow: 1 }}
+                            />
+                        )}
                     </div>
                     
                     {/* Target Goal Panel */}

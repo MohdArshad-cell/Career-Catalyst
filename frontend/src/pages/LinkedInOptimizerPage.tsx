@@ -59,6 +59,42 @@ const LinkedInOptimizerPage: React.FC = () => {
     const [copiedStates, setCopiedStates] = useState<{ [key: string]: boolean }>({});
     const fileInputRef = useRef<HTMLInputElement>(null);
 
+    const [savedResumes, setSavedResumes] = useState<any[]>([]);
+    const [selectedResumeId, setSelectedResumeId] = useState<string>('');
+
+    // --- AUTO-LOAD MASTER RESUMES ---
+    React.useEffect(() => {
+        const fetchMasterResumes = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const res = await axios.get(`${API_BASE_URL}/api/profile/resume`, {
+                    headers: { Authorization: `Bearer ${session.access_token}` }
+                });
+                if (res.data.resumes && res.data.resumes.length > 0) {
+                    setSavedResumes(res.data.resumes);
+                    // Select the first one by default
+                    setSelectedResumeId(res.data.resumes[0].id);
+                    setLinkedinContent(res.data.resumes[0].resume_text);
+                }
+            } catch (err) {
+                console.error("Failed to load master resumes", err);
+            }
+        };
+        fetchMasterResumes();
+    }, []);
+
+    const handleResumeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const id = e.target.value;
+        setSelectedResumeId(id);
+        if (id) {
+            const selected = savedResumes.find(r => r.id === id);
+            if (selected) setLinkedinContent(selected.resume_text);
+        } else {
+            setLinkedinContent(''); // 'custom' option selected
+        }
+    };
+
     const handleCopy = (text: string, id: string) => {
         navigator.clipboard.writeText(text);
         setCopiedStates(prev => ({ ...prev, [id]: true }));
@@ -211,22 +247,26 @@ const LinkedInOptimizerPage: React.FC = () => {
                                     </select>
                                     <ChevronDown size={16} style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none', color: 'var(--accent-cyan)' }} />
                                 </div>
-                                <input 
-                                    type="file" 
-                                    accept="application/pdf" 
-                                    style={{ display: 'none' }} 
-                                    ref={fileInputRef}
-                                    onChange={handleFileUpload}
-                                />
-                                <button 
-                                    className="btn-outline" 
-                                    onClick={() => fileInputRef.current?.click()}
-                                    disabled={isUploading || isLoading}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '0.9rem', transition: 'all 0.3s ease' }}
-                                >
-                                    <Upload size={16} />
-                                    {isUploading ? 'Extracting...' : 'Upload PDF'}
-                                </button>
+                                {!selectedResumeId && (
+                                    <div>
+                                        <input 
+                                            type="file" 
+                                            accept="application/pdf" 
+                                            style={{ display: 'none' }} 
+                                            ref={fileInputRef}
+                                            onChange={handleFileUpload}
+                                        />
+                                        <button 
+                                            className="btn-outline" 
+                                            onClick={() => fileInputRef.current?.click()}
+                                            disabled={isUploading || isLoading}
+                                            style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.6rem 1.2rem', borderRadius: '8px', fontSize: '0.9rem', transition: 'all 0.3s ease' }}
+                                        >
+                                            <Upload size={16} />
+                                            {isUploading ? 'Extracting...' : 'Upload PDF'}
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         
@@ -243,18 +283,46 @@ const LinkedInOptimizerPage: React.FC = () => {
                             style={{ width: '100%', marginBottom: '1.5rem', background: 'rgba(0,0,0,0.3)', border: '1px solid rgba(255,255,255,0.1)', color: '#fff', borderRadius: '8px', padding: '0.8rem 1.2rem', fontSize: '1rem' }}
                         />
 
-                        <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
-                            Upload your LinkedIn export or paste your content manually.
-                        </p>
-                        
-                        <textarea
-                            className="premium-textarea"
-                            value={linkedinContent}
-                            onChange={(e) => setLinkedinContent(e.target.value)}
-                            placeholder="Paste your content here..."
-                            disabled={isLoading}
-                            style={{ minHeight: '350px', width: '100%', resize: 'vertical' }}
-                        />
+                        {savedResumes.length > 0 && (
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#94a3b8', fontSize: '0.9rem' }}>Select from Vault:</label>
+                                <select 
+                                    className="premium-select"
+                                    value={selectedResumeId}
+                                    onChange={handleResumeSelection}
+                                    disabled={isLoading}
+                                    style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(15, 23, 42, 0.6)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                                >
+                                    {savedResumes.map(r => (
+                                        <option key={r.id} value={r.id}>{r.resume_name}</option>
+                                    ))}
+                                    <option value="">-- Upload / Paste Custom Content --</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {selectedResumeId ? (
+                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
+                                <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Saved Resume</h3>
+                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>This content will be optimized automatically.</p>
+                            </div>
+                        ) : (
+                            <>
+                                <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '1rem' }}>
+                                    Upload your LinkedIn export or paste your content manually.
+                                </p>
+                                
+                                <textarea
+                                    className="premium-textarea"
+                                    value={linkedinContent}
+                                    onChange={(e) => setLinkedinContent(e.target.value)}
+                                    placeholder="Paste your content here..."
+                                    disabled={isLoading}
+                                    style={{ minHeight: '350px', width: '100%', resize: 'vertical' }}
+                                />
+                            </>
+                        )}
                     </div>
                 </div>
 

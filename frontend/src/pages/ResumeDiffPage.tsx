@@ -2,7 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { SplitSquareHorizontal, CheckCircle, ArrowRight, FileText, Search, Sparkles } from 'lucide-react';
 import { useToast } from '../components/Toast';
+import axios from 'axios';
+import { supabase } from '../supabaseClient';
+import PdfUploadButton from '../components/PdfUploadButton';
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8000';
 const ResumeDiffPage: React.FC = () => {
     const navigate = useNavigate();
     const { showToast } = useToast();
@@ -10,6 +14,42 @@ const ResumeDiffPage: React.FC = () => {
     const [originalText, setOriginalText] = useState('');
     const [newText, setNewText] = useState('');
     const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+    const [savedResumes, setSavedResumes] = useState<any[]>([]);
+    const [selectedResumeId, setSelectedResumeId] = useState<string>('');
+
+    // --- AUTO-LOAD MASTER RESUMES ---
+    React.useEffect(() => {
+        const fetchMasterResumes = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const res = await axios.get(`${API_BASE_URL}/api/profile/resume`, {
+                    headers: { Authorization: `Bearer ${session.access_token}` }
+                });
+                if (res.data.resumes && res.data.resumes.length > 0) {
+                    setSavedResumes(res.data.resumes);
+                    // Select the first one by default
+                    setSelectedResumeId(res.data.resumes[0].id);
+                    setOriginalText(res.data.resumes[0].resume_text);
+                }
+            } catch (err) {
+                console.error("Failed to load master resumes", err);
+            }
+        };
+        fetchMasterResumes();
+    }, []);
+
+    const handleResumeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const id = e.target.value;
+        setSelectedResumeId(id);
+        if (id) {
+            const selected = savedResumes.find(r => r.id === id);
+            if (selected) setOriginalText(selected.resume_text);
+        } else {
+            setOriginalText(''); // 'custom' option selected
+        }
+    };
     
     interface DiffLine {
         type: 'added' | 'removed' | 'unchanged';
@@ -95,14 +135,43 @@ const ResumeDiffPage: React.FC = () => {
                             <h2 className="flex items-center gap-2 text-gray-300 font-semibold">
                                 <FileText size={20} /> Original Resume
                             </h2>
+                            {!selectedResumeId && (
+                                <PdfUploadButton onTextExtracted={(text) => setOriginalText(text)} disabled={isAnalyzing} />
+                            )}
                         </div>
-                        <textarea
-                            value={originalText}
-                            onChange={(e) => setOriginalText(e.target.value)}
-                            placeholder="Paste your original resume text..."
-                            disabled={isAnalyzing}
-                            className="w-full flex-grow bg-black/40 border border-white/10 rounded-2xl p-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all min-h-[300px] resize-none"
-                        />
+                        
+                        {savedResumes.length > 0 && (
+                            <div className="mb-4">
+                                <label className="block text-gray-400 text-sm mb-2">Select from Vault:</label>
+                                <select 
+                                    value={selectedResumeId}
+                                    onChange={handleResumeSelection}
+                                    disabled={isAnalyzing}
+                                    className="w-full bg-black/60 border border-white/10 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-emerald-500/50"
+                                >
+                                    {savedResumes.map(r => (
+                                        <option key={r.id} value={r.id}>{r.resume_name}</option>
+                                    ))}
+                                    <option value="">-- Upload / Paste Custom Resume --</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {selectedResumeId ? (
+                            <div className="flex-grow flex flex-col items-center justify-center p-8 bg-emerald-500/10 border border-emerald-500/30 rounded-2xl text-center min-h-[300px]">
+                                <div className="text-4xl mb-4">✅</div>
+                                <h3 className="text-emerald-400 font-semibold mb-2">Using Saved Resume</h3>
+                                <p className="text-gray-400 text-sm">This resume will be compared automatically.</p>
+                            </div>
+                        ) : (
+                            <textarea
+                                value={originalText}
+                                onChange={(e) => setOriginalText(e.target.value)}
+                                placeholder="Paste your original resume text..."
+                                disabled={isAnalyzing}
+                                className="w-full flex-grow bg-black/40 border border-white/10 rounded-2xl p-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all min-h-[300px] resize-none"
+                            />
+                        )}
                     </div>
                     
                     {/* New Resume Input */}
