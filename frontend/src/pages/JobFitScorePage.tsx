@@ -170,6 +170,7 @@ const JobFitScorePage: React.FC = () => {
                                 className="w-full flex-grow bg-black/40 border border-white/10 rounded-2xl p-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all min-h-[300px] resize-none"
                             />
                         )}
+                    </div>
                     
                     {/* JD Input */}
                     <div className="bg-white/[0.02] backdrop-blur-xl border border-white/10 rounded-3xl p-6 shadow-2xl relative flex flex-col">
