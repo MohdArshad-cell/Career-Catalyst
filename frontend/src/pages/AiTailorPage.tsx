@@ -503,7 +503,6 @@ const AiTailorPage: React.FC = () => {
                                         </div>
                                     </div>
                                 </div>
-                                </div>
 
                                 {/* New Follow-Up Question Section */}
                                 <div className="follow-up-section glass-card-premium" style={{ marginTop: '2rem', padding: '2rem' }}>
