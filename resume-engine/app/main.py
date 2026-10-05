@@ -230,6 +230,12 @@ class CheckoutRequest(BaseModel):
     user_id: str
     price_id: str
 
+class ApplicationQuestionRequest(BaseModel):
+    tailored_latex: str
+    job_description: str
+    question: str
+    ai_model: str = "gemini-3.1-flash-lite-preview"
+
 
 # ==========================================
 # 4. HELPER FUNCTIONS (REDIS BACKED)
@@ -649,6 +655,42 @@ import random
 def generate_random_code(length=8):
     chars = string.ascii_uppercase + string.digits
     return ''.join(random.choice(chars) for _ in range(length))
+
+@app.post("/api/ai/application-question")
+async def answer_application_question(req: ApplicationQuestionRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+    start_time = time.time()
+    user_id = user_auth["user_id"]
+    try:
+        prompt = f"""You are an expert career coach helping a user answer a specific job application question.
+You have their tailored resume (in LaTeX format) and the Job Description.
+
+Job Description:
+{req.job_description}
+
+Tailored Resume:
+{req.tailored_latex}
+
+Application Question:
+{req.question}
+
+Using ONLY the context from the user's resume and tailoring it towards the Job Description, write a strong, professional answer to the application question. 
+Write it from the perspective of the user applying for the job. Keep it concise (1-2 paragraphs max) unless the question implies otherwise.
+"""
+        model = get_model(req.ai_model)
+        response = model.generate_content(prompt)
+        answer = response.text
+
+        # Deduct 1 token for this action
+        new_tokens = deduct_token_and_log(user_id, user_auth["current_tokens"], "application_question", cost=1)
+        
+        latency = int((time.time() - start_time) * 1000)
+        log_generation(user_id, "application_question", "success", latency)
+
+        return {"answer": answer, "tokens_left": new_tokens}
+    except Exception as e:
+        latency = int((time.time() - start_time) * 1000)
+        log_generation(user_id, "application_question", "error", latency, str(e))
+        raise HTTPException(status_code=500, detail=f"Failed to generate answer: {str(e)}")
 
 @app.get("/api/referral/stats")
 async def get_referral_stats(user_auth: dict = Depends(verify_user_and_tokens)):

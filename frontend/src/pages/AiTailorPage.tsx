@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Target, Sparkles } from 'lucide-react';
+import { FileText, Target, Sparkles, MessageSquare } from 'lucide-react';
 
 
 
@@ -41,6 +41,35 @@ const AiTailorPage: React.FC = () => {
     const [metrics, setMetrics] = useState<{ score: number, keywords: string[] } | null>(null);
     const [savedResumes, setSavedResumes] = useState<any[]>([]);
     const [selectedResumeId, setSelectedResumeId] = useState<string>('');
+
+    // Follow-up question state
+    const [followUpQuestion, setFollowUpQuestion] = useState('');
+    const [followUpAnswer, setFollowUpAnswer] = useState('');
+    const [isAnswering, setIsAnswering] = useState(false);
+
+    const handleFollowUp = async () => {
+        if (!followUpQuestion.trim()) return;
+        setIsAnswering(true);
+        setFollowUpAnswer('');
+        try {
+            const { data: { session } } = await supabase.auth.getSession();
+            const headers = session ? { Authorization: `Bearer ${session.access_token}` } : {};
+            
+            const response = await axios.post(`${API_BASE_URL}/api/ai/application-question`, {
+                tailored_latex: latexCode,
+                job_description: jobDescription,
+                question: followUpQuestion,
+                ai_model: aiModel
+            }, { headers });
+            
+            setFollowUpAnswer(response.data.answer);
+        } catch (err: any) {
+            console.error("Follow-up error:", err);
+            showToast(err.response?.data?.detail || "Failed to generate answer.", "error");
+        } finally {
+            setIsAnswering(false);
+        }
+    };
 
     // --- AUTO-LOAD MASTER RESUMES ---
     React.useEffect(() => {
@@ -473,6 +502,40 @@ const AiTailorPage: React.FC = () => {
                                             )}
                                         </div>
                                     </div>
+                                </div>
+                                </div>
+
+                                {/* New Follow-Up Question Section */}
+                                <div className="follow-up-section glass-card-premium" style={{ marginTop: '2rem', padding: '2rem' }}>
+                                    <h3 style={{ marginTop: 0, color: 'var(--accent-purple)' }}>
+                                        <MessageSquare size={20} style={{ display: 'inline', marginRight: '8px', verticalAlign: 'middle' }} />
+                                        Job Application Q&A
+                                    </h3>
+                                    <p style={{ color: 'var(--text-secondary)', marginBottom: '1rem' }}>
+                                        Does the application ask specific questions? (e.g. "Describe a complex project" or "Why are you a good fit?") Ask here, and we'll answer it using your tailored resume and the job description.
+                                    </p>
+                                    <textarea 
+                                        className="premium-textarea"
+                                        value={followUpQuestion}
+                                        onChange={(e) => setFollowUpQuestion(e.target.value)}
+                                        placeholder="Type the application question here..."
+                                        style={{ width: '100%', minHeight: '80px', marginBottom: '1rem', resize: 'vertical' }}
+                                        disabled={isAnswering}
+                                    />
+                                    <button 
+                                        className="btn-outline" 
+                                        onClick={handleFollowUp}
+                                        disabled={isAnswering || !followUpQuestion.trim()}
+                                    >
+                                        {isAnswering ? 'Generating Answer...' : 'Generate Answer'}
+                                    </button>
+                                    
+                                    {followUpAnswer && (
+                                        <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
+                                            <h4 style={{ margin: '0 0 10px 0', color: 'var(--accent-cyan)' }}>Generated Answer:</h4>
+                                            <p style={{ whiteSpace: 'pre-wrap', margin: 0, color: '#e2e8f0', lineHeight: 1.6, fontSize: '0.95rem' }}>{followUpAnswer}</p>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         )}
