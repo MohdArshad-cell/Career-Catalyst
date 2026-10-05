@@ -676,9 +676,7 @@ Application Question:
 Using ONLY the context from the user's resume and tailoring it towards the Job Description, write a strong, professional answer to the application question. 
 Write it from the perspective of the user applying for the job. Keep it concise (1-2 paragraphs max) unless the question implies otherwise.
 """
-        model = get_model(req.ai_model)
-        response = model.generate_content(prompt)
-        answer = response.text
+        answer = call_llm(prompt, model=req.ai_model, force_json=False)
 
         # Deduct 1 token for this action
         new_tokens = deduct_token_and_log(user_id, user_auth["current_tokens"], "application_question", cost=1)
