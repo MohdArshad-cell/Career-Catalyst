@@ -39,27 +39,41 @@ const AiTailorPage: React.FC = () => {
     
     const [isCompiling, setIsCompiling] = useState(false);
     const [metrics, setMetrics] = useState<{ score: number, keywords: string[] } | null>(null);
-    const [isUsingMasterResume, setIsUsingMasterResume] = useState(false);
+    const [savedResumes, setSavedResumes] = useState<any[]>([]);
+    const [selectedResumeId, setSelectedResumeId] = useState<string>('');
 
-    // --- AUTO-LOAD MASTER RESUME ---
+    // --- AUTO-LOAD MASTER RESUMES ---
     React.useEffect(() => {
-        const fetchMasterResume = async () => {
+        const fetchMasterResumes = async () => {
             try {
                 const { data: { session } } = await supabase.auth.getSession();
                 if (!session) return;
                 const res = await axios.get(`${API_BASE_URL}/api/profile/resume`, {
                     headers: { Authorization: `Bearer ${session.access_token}` }
                 });
-                if (res.data.saved_resume_text) {
-                    setResumeText(res.data.saved_resume_text);
-                    setIsUsingMasterResume(true);
+                if (res.data.resumes && res.data.resumes.length > 0) {
+                    setSavedResumes(res.data.resumes);
+                    // Select the first one by default
+                    setSelectedResumeId(res.data.resumes[0].id);
+                    setResumeText(res.data.resumes[0].resume_text);
                 }
             } catch (err) {
-                console.error("Failed to load master resume", err);
+                console.error("Failed to load master resumes", err);
             }
         };
-        fetchMasterResume();
+        fetchMasterResumes();
     }, []);
+
+    const handleResumeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        const id = e.target.value;
+        setSelectedResumeId(id);
+        if (id) {
+            const selected = savedResumes.find(r => r.id === id);
+            if (selected) setResumeText(selected.resume_text);
+        } else {
+            setResumeText(''); // 'custom' option selected
+        }
+    };
 
     // --- DRAG & DROP LOGIC ---
     const handleDragOver = (e: React.DragEvent) => {
@@ -293,18 +307,34 @@ const AiTailorPage: React.FC = () => {
                             <h2 className="panel-title">
                                 <FileText size={22} color="#67e8f9" /> Your Resume
                             </h2>
-                            {!isUsingMasterResume && (
+                            {!selectedResumeId && (
                                 <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
                             )}
                         </div>
-                        {isUsingMasterResume ? (
-                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                        
+                        {savedResumes.length > 0 && (
+                            <div style={{ marginBottom: '1rem' }}>
+                                <label style={{ display: 'block', marginBottom: '0.5rem', color: '#94a3b8', fontSize: '0.9rem' }}>Select from Vault:</label>
+                                <select 
+                                    className="premium-select"
+                                    value={selectedResumeId}
+                                    onChange={handleResumeSelection}
+                                    disabled={isLoading}
+                                    style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(15, 23, 42, 0.6)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
+                                >
+                                    {savedResumes.map(r => (
+                                        <option key={r.id} value={r.id}>{r.resume_name}</option>
+                                    ))}
+                                    <option value="">-- Upload / Paste Custom Resume --</option>
+                                </select>
+                            </div>
+                        )}
+
+                        {selectedResumeId ? (
+                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: '1rem' }}>
                                 <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
-                                <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Master Resume</h3>
-                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Your saved resume will be used for this analysis automatically.</p>
-                                <button className="glass-button" onClick={() => { setIsUsingMasterResume(false); setResumeText(''); }} style={{ margin: '0 auto' }}>
-                                    Use a different resume
-                                </button>
+                                <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Saved Resume</h3>
+                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>This resume will be sent to the AI automatically.</p>
                             </div>
                         ) : (
                             <textarea
@@ -316,6 +346,7 @@ const AiTailorPage: React.FC = () => {
                                 onDrop={handleDrop}
                                 placeholder='Paste your resume text, or click "Upload PDF" above to extract text from a PDF file...'
                                 disabled={isLoading}
+                                style={{ flexGrow: 1 }}
                             />
                         )}
                     </div>

@@ -5,7 +5,7 @@ import { supabase } from '../supabaseClient';
 // Added FaEye for the ATS X-Ray Vision icon, and FaLinkedin, FaPaperPlane, FaMapSigns for Phase 3 tools
 import { FaWandMagicSparkles, FaFileLines, FaEnvelopeOpenText, FaFileSignature, FaMicrophone, FaEye, FaLinkedin, FaPaperPlane, FaNetworkWired } from "react-icons/fa6";
 import { FaMapSigns } from "react-icons/fa";
-import { MasterResumeManager } from '../components/MasterResumeManager';
+
 
 
 import './AiToolsPage.css';
@@ -60,8 +60,16 @@ const AiToolsPage = () => {
 
             <div className="container content-wrapper" style={{ paddingTop: '120px', paddingBottom: '5rem' }}>
                 
-                {/* NEW: Master Resume Vault */}
-                <MasterResumeManager />
+                {/* NEW: Resume Vault Link */}
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <button 
+                        className="glass-button primary-glow" 
+                        onClick={() => navigate('/vault')}
+                        style={{ padding: '1rem 2rem', fontSize: '1.1rem', borderRadius: '50px', display: 'inline-flex', alignItems: 'center', gap: '10px' }}
+                    >
+                        <FaFileLines /> Manage My Resume Vault
+                    </button>
+                </div>
 
                 {/* Premium Header Section */}
                 <div className="page-header text-center" style={{ marginTop: '2rem' }}>

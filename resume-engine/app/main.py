@@ -842,31 +842,47 @@ def deduct_token(user_auth: dict = Depends(verify_user_and_tokens)):
     return {"status": "success", "tokens_left": new_tokens}
 
 # ==========================================
-# 9. PROFILE / MASTER RESUME ROUTE
+# 9. PROFILE / RESUME VAULT ROUTES (MULTIPLE RESUMES)
 # ==========================================
 @app.get("/api/profile/resume")
-async def get_saved_resume(user_auth: dict = Depends(verify_user_only)):
-    """Fetch the saved master resume for the user."""
+async def get_saved_resumes(user_auth: dict = Depends(verify_user_only)):
+    """Fetch all saved resumes for the user."""
     user_id = user_auth["user_id"]
     try:
-        res = supabase.table("profiles").select("saved_resume_text").eq("id", user_id).execute()
-        if res.data and len(res.data) > 0:
-            return {"saved_resume_text": res.data[0].get("saved_resume_text") or ""}
-        return {"saved_resume_text": ""}
+        res = supabase.table("user_resumes").select("*").eq("user_id", user_id).order("created_at", desc=True).execute()
+        return {"resumes": res.data or []}
     except Exception as e:
         print(f"❌ SUPABASE GET RESUME ERROR: {e}")
-        raise HTTPException(status_code=500, detail="Failed to fetch saved resume.")
+        raise HTTPException(status_code=500, detail="Failed to fetch saved resumes.")
 
 @app.post("/api/profile/resume")
 async def save_master_resume(request: SaveResumeRequest, user_auth: dict = Depends(verify_user_only)):
-    """Save or update the master resume for the user."""
+    """Save a new resume or update an existing one."""
     user_id = user_auth["user_id"]
     try:
-        supabase.table("profiles").upsert({
-            "id": user_id,
-            "saved_resume_text": request.resume_text
-        }).execute()
-        return {"status": "success", "message": "Master resume saved successfully!"}
+        data = {
+            "user_id": user_id,
+            "resume_name": request.resume_name,
+            "resume_text": request.resume_text
+        }
+        if request.id:
+            data["id"] = request.id
+            supabase.table("user_resumes").update(data).eq("id", request.id).eq("user_id", user_id).execute()
+        else:
+            supabase.table("user_resumes").insert(data).execute()
+            
+        return {"status": "success", "message": "Resume saved successfully!"}
     except Exception as e:
         print(f"❌ SUPABASE SAVE RESUME ERROR: {e}")
-        raise HTTPException(status_code=500, detail="Failed to save master resume.")
+        raise HTTPException(status_code=500, detail="Failed to save resume.")
+
+@app.delete("/api/profile/resume/{resume_id}")
+async def delete_saved_resume(resume_id: str, user_auth: dict = Depends(verify_user_only)):
+    """Delete a saved resume."""
+    user_id = user_auth["user_id"]
+    try:
+        supabase.table("user_resumes").delete().eq("id", resume_id).eq("user_id", user_id).execute()
+        return {"status": "success", "message": "Resume deleted successfully!"}
+    except Exception as e:
+        print(f"❌ SUPABASE DELETE RESUME ERROR: {e}")
+        raise HTTPException(status_code=500, detail="Failed to delete resume.")

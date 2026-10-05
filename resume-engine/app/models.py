@@ -218,5 +218,7 @@ class ProjectVisualizerRequest(BaseModel):
     model_config = {"extra": "ignore"}
 
 class SaveResumeRequest(BaseModel):
+    id: Optional[str] = Field(None)
+    resume_name: str = Field(..., description="Name of the resume, e.g., 'SDE Resume'")
     resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText'))
     model_config = {"extra": "ignore"}

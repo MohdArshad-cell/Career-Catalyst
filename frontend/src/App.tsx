@@ -22,6 +22,7 @@ import ResumeDiffPage from './pages/ResumeDiffPage';
 import ReferralPage from './pages/ReferralPage';
 import UsageHistoryPage from './pages/UsageHistoryPage';
 import ProjectVisualizerPage from './pages/ProjectVisualizerPage';
+import ResumeVaultPage from './pages/ResumeVaultPage';
 import MainLayout from './components/MainLayout';
 import "./App.css";
 
@@ -103,6 +104,11 @@ function App() {
         <Route path="/history" element={
             <ProtectedRoute>
                 <UsageHistoryPage />
+            </ProtectedRoute>
+        } />
+        <Route path="/vault" element={
+            <ProtectedRoute>
+                <ResumeVaultPage />
             </ProtectedRoute>
         } />
         
