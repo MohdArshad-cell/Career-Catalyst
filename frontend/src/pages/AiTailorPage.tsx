@@ -39,6 +39,27 @@ const AiTailorPage: React.FC = () => {
     
     const [isCompiling, setIsCompiling] = useState(false);
     const [metrics, setMetrics] = useState<{ score: number, keywords: string[] } | null>(null);
+    const [isUsingMasterResume, setIsUsingMasterResume] = useState(false);
+
+    // --- AUTO-LOAD MASTER RESUME ---
+    React.useEffect(() => {
+        const fetchMasterResume = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const res = await axios.get(`${API_BASE_URL}/api/profile/resume`, {
+                    headers: { Authorization: `Bearer ${session.access_token}` }
+                });
+                if (res.data.saved_resume_text) {
+                    setResumeText(res.data.saved_resume_text);
+                    setIsUsingMasterResume(true);
+                }
+            } catch (err) {
+                console.error("Failed to load master resume", err);
+            }
+        };
+        fetchMasterResume();
+    }, []);
 
     // --- DRAG & DROP LOGIC ---
     const handleDragOver = (e: React.DragEvent) => {
@@ -270,20 +291,33 @@ const AiTailorPage: React.FC = () => {
                     <div className="panel glass-panel relative-panel">
                         <div className="panel-header">
                             <h2 className="panel-title">
-                                <FileText size={22} color="#67e8f9" /> Your Resume (Text, JSON, or PDF)
+                                <FileText size={22} color="#67e8f9" /> Your Resume
                             </h2>
-                            <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
+                            {!isUsingMasterResume && (
+                                <PdfUploadButton onTextExtracted={(text) => setResumeText(text)} disabled={isLoading} />
+                            )}
                         </div>
-                        <textarea
-                            className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
-                            value={resumeText}
-                            onChange={(e) => setResumeText(e.target.value)}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
-                            placeholder='Paste your resume text, or click "Upload PDF" above to extract text from a PDF file...'
-                            disabled={isLoading}
-                        />
+                        {isUsingMasterResume ? (
+                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
+                                <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Master Resume</h3>
+                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Your saved resume will be used for this analysis automatically.</p>
+                                <button className="glass-button" onClick={() => { setIsUsingMasterResume(false); setResumeText(''); }} style={{ margin: '0 auto' }}>
+                                    Use a different resume
+                                </button>
+                            </div>
+                        ) : (
+                            <textarea
+                                className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
+                                value={resumeText}
+                                onChange={(e) => setResumeText(e.target.value)}
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                                onDrop={handleDrop}
+                                placeholder='Paste your resume text, or click "Upload PDF" above to extract text from a PDF file...'
+                                disabled={isLoading}
+                            />
+                        )}
                     </div>
                     <div className="panel glass-panel">
                         <div className="panel-header">

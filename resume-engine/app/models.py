@@ -217,3 +217,6 @@ class ProjectVisualizerRequest(BaseModel):
     ai_model: Optional[str] = None
     model_config = {"extra": "ignore"}
 
+class SaveResumeRequest(BaseModel):
+    resume_text: str = Field(..., validation_alias=AliasChoices('resume_text', 'resumeText'))
+    model_config = {"extra": "ignore"}

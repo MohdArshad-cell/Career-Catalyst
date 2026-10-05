@@ -36,6 +36,27 @@ const AtsXrayPage: React.FC = () => {
     const [isDragging, setIsDragging] = useState(false);
     const [copyState, setCopyState] = useState<{ [key: number]: string }>({});
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [isUsingMasterResume, setIsUsingMasterResume] = useState(false);
+
+    // --- AUTO-LOAD MASTER RESUME ---
+    React.useEffect(() => {
+        const fetchMasterResume = async () => {
+            try {
+                const { data: { session } } = await supabase.auth.getSession();
+                if (!session) return;
+                const res = await axios.get(`${API_BASE_URL}/api/profile/resume`, {
+                    headers: { Authorization: `Bearer ${session.access_token}` }
+                });
+                if (res.data.saved_resume_text) {
+                    setResumeText(res.data.saved_resume_text);
+                    setIsUsingMasterResume(true);
+                }
+            } catch (err) {
+                console.error("Failed to load master resume", err);
+            }
+        };
+        fetchMasterResume();
+    }, []);
 
     // --- DRAG & DROP LOGIC ---
     const handleDragOver = (e: React.DragEvent) => { e.preventDefault(); setIsDragging(true); };
@@ -186,36 +207,51 @@ const AtsXrayPage: React.FC = () => {
                     <div className="panel glass-panel relative-panel">
                         <div className="panel-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <h2 className="panel-title">
-                                <FileText size={22} color="#67e8f9" /> Your Resume (Text or PDF)
+                                <FileText size={22} color="#67e8f9" /> Your Resume
                             </h2>
-                            <input 
-                                type="file" 
-                                accept="application/pdf" 
-                                style={{ display: 'none' }} 
-                                ref={fileInputRef}
-                                onChange={handleFileUpload}
-                            />
-                            <button 
-                                className="btn-outline" 
-                                onClick={() => fileInputRef.current?.click()}
-                                disabled={isUploading || isLoading}
-                                style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.85rem' }}
-                            >
-                                <Upload size={14} />
-                                {isUploading ? 'Extracting...' : 'Upload PDF'}
-                            </button>
+                            {!isUsingMasterResume && (
+                                <div>
+                                    <input 
+                                        type="file" 
+                                        accept="application/pdf" 
+                                        style={{ display: 'none' }} 
+                                        ref={fileInputRef}
+                                        onChange={handleFileUpload}
+                                    />
+                                    <button 
+                                        className="btn-outline" 
+                                        onClick={() => fileInputRef.current?.click()}
+                                        disabled={isUploading || isLoading}
+                                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.4rem 0.8rem', borderRadius: '8px', fontSize: '0.85rem' }}
+                                    >
+                                        <Upload size={14} />
+                                        {isUploading ? 'Extracting...' : 'Upload PDF'}
+                                    </button>
+                                </div>
+                            )}
                         </div>
-                        <textarea
-                            className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
-                            value={resumeText}
-                            onChange={(e) => setResumeText(e.target.value)}
-                            onDragOver={handleDragOver}
-                            onDragLeave={handleDragLeave}
-                            onDrop={handleDrop}
-                            placeholder='Paste your resume text here, or click "Upload PDF" above...'
-                            style={{ minHeight: '300px', width: '100%', resize: 'vertical' }}
-                            disabled={isLoading}
-                        />
+                        {isUsingMasterResume ? (
+                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', minHeight: '300px' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
+                                <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Master Resume</h3>
+                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '1.5rem' }}>Your saved resume will be used for this analysis automatically.</p>
+                                <button className="glass-button" onClick={() => { setIsUsingMasterResume(false); setResumeText(''); }} style={{ margin: '0 auto' }}>
+                                    Use a different resume
+                                </button>
+                            </div>
+                        ) : (
+                            <textarea
+                                className={`premium-textarea drop-zone ${isDragging ? 'drag-active' : ''}`}
+                                value={resumeText}
+                                onChange={(e) => setResumeText(e.target.value)}
+                                onDragOver={handleDragOver}
+                                onDragLeave={handleDragLeave}
+                                onDrop={handleDrop}
+                                placeholder='Paste your resume text here, or click "Upload PDF" above...'
+                                style={{ minHeight: '300px', width: '100%', resize: 'vertical' }}
+                                disabled={isLoading}
+                            />
+                        )}
                     </div>
 
                     <div className="action-row text-center" style={{ margin: '3rem 0' }}>

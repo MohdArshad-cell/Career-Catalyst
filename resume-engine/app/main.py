@@ -29,7 +29,7 @@ from supabase import create_client, Client
 
 # Local Imports
 from .models import (
-    GenerationRequest, TailorRequest, EvaluateRequest, CoverLetterRequest, InterviewRequest, LinkedInRequest, OutreachRequest, RoadmapRequest, BulletRewriteRequest, ResignationRequest, AtsXrayRequest, ProjectVisualizerRequest
+    GenerationRequest, TailorRequest, EvaluateRequest, CoverLetterRequest, InterviewRequest, LinkedInRequest, OutreachRequest, RoadmapRequest, BulletRewriteRequest, ResignationRequest, AtsXrayRequest, ProjectVisualizerRequest, SaveResumeRequest
 )
 from .generator import ResumeGenerator
 from app.services.tailor_service import execute_tailor_chain
@@ -840,3 +840,33 @@ def deduct_token(user_auth: dict = Depends(verify_user_and_tokens)):
     new_tokens = deduct_token_and_log(user_auth["user_id"], user_auth["current_tokens"], "manual_generation")
     print(f"📉 TOKEN DEDUCTED SECURELY: User {user_auth['user_id']} used 1 token. Tokens left: {new_tokens}")
     return {"status": "success", "tokens_left": new_tokens}
+
+# ==========================================
+# 9. PROFILE / MASTER RESUME ROUTE
+# ==========================================
+@app.get("/api/profile/resume")
+async def get_saved_resume(user_auth: dict = Depends(verify_user_only)):
+    """Fetch the saved master resume for the user."""
+    user_id = user_auth["user_id"]
+    try:
+        res = supabase.table("profiles").select("saved_resume_text").eq("id", user_id).execute()
+        if res.data and len(res.data) > 0:
+            return {"saved_resume_text": res.data[0].get("saved_resume_text") or ""}
+        return {"saved_resume_text": ""}
+    except Exception as e:
+        print(f"❌ SUPABASE GET RESUME ERROR: {e}")
+        raise HTTPException(status_code=500, detail="Failed to fetch saved resume.")
+
+@app.post("/api/profile/resume")
+async def save_master_resume(request: SaveResumeRequest, user_auth: dict = Depends(verify_user_only)):
+    """Save or update the master resume for the user."""
+    user_id = user_auth["user_id"]
+    try:
+        supabase.table("profiles").upsert({
+            "id": user_id,
+            "saved_resume_text": request.resume_text
+        }).execute()
+        return {"status": "success", "message": "Master resume saved successfully!"}
+    except Exception as e:
+        print(f"❌ SUPABASE SAVE RESUME ERROR: {e}")
+        raise HTTPException(status_code=500, detail="Failed to save master resume.")
