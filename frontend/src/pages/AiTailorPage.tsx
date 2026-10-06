@@ -41,6 +41,7 @@ const AiTailorPage: React.FC = () => {
     const [metrics, setMetrics] = useState<{ score: number, keywords: string[] } | null>(null);
     const [savedResumes, setSavedResumes] = useState<any[]>([]);
     const [selectedResumeId, setSelectedResumeId] = useState<string>('');
+    const [autoSelectFeedback, setAutoSelectFeedback] = useState<{name: string, reason: string} | null>(null);
 
     // Follow-up question state
     const [followUpQuestion, setFollowUpQuestion] = useState('');
@@ -163,6 +164,7 @@ const AiTailorPage: React.FC = () => {
         setLatexCode('');
         setPdfData(null);
         setMetrics(null);
+        setAutoSelectFeedback(null);
         setLoadingStep(0);
 
         let stepInterval: any = null;
@@ -197,6 +199,10 @@ const AiTailorPage: React.FC = () => {
                     const bestResume = savedResumes.find(r => r.id === bestId);
                     if (bestResume) {
                         finalResumeText = bestResume.resume_text;
+                        setAutoSelectFeedback({
+                            name: bestResume.resume_name,
+                            reason: selectRes.data.reason || "This resume best matched the job description."
+                        });
                         showToast(`🤖 AI Selected: ${bestResume.resume_name}`, "success");
                     } else {
                         finalResumeText = savedResumes[0].resume_text;
@@ -475,6 +481,16 @@ const AiTailorPage: React.FC = () => {
                     </button>
                     {error && <div className="error-status" style={{ marginTop: '1rem', fontSize: '1.1rem' }}>{error}</div>}
                 </div>
+
+                {autoSelectFeedback && !isLoading && (
+                    <div style={{ backgroundColor: 'rgba(56, 189, 248, 0.1)', border: '1px solid #38bdf8', borderRadius: '12px', padding: '1.5rem', marginBottom: '2rem', textAlign: 'left', display: 'flex', alignItems: 'flex-start', gap: '1rem' }}>
+                        <div style={{ fontSize: '2rem' }}>💡</div>
+                        <div>
+                            <h4 style={{ color: '#38bdf8', margin: '0 0 0.5rem 0' }}>Auto-Selected: {autoSelectFeedback.name}</h4>
+                            <p style={{ color: '#94a3b8', margin: 0, fontSize: '0.95rem', lineHeight: '1.5' }}>{autoSelectFeedback.reason}</p>
+                        </div>
+                    </div>
+                )}
 
                 {(isLoading || latexCode || pdfData) && (
                     <div className="output-section">
