@@ -236,6 +236,18 @@ class ApplicationQuestionRequest(BaseModel):
     question: str
     ai_model: str = "gemini-3.1-flash-lite-preview"
 
+from typing import List
+
+class ResumeOption(BaseModel):
+    id: str
+    title: str
+    content: str
+
+class SelectBestResumeRequest(BaseModel):
+    resumes: List[ResumeOption]
+    job_description: str
+    ai_model: str = "gemini-3.1-flash-lite-preview"
+
 
 # ==========================================
 # 4. HELPER FUNCTIONS (REDIS BACKED)
@@ -689,6 +701,50 @@ Write it from the perspective of the user applying for the job. Keep it concise 
         latency = int((time.time() - start_time) * 1000)
         log_generation(user_id, "application_question", "error", latency, str(e))
         raise HTTPException(status_code=500, detail=f"Failed to generate answer: {str(e)}")
+
+@app.post("/api/ai/select-best-resume")
+async def select_best_resume(req: SelectBestResumeRequest, user_auth: dict = Depends(verify_user_and_tokens)):
+    start_time = time.time()
+    user_id = user_auth["user_id"]
+    try:
+        # Construct the resumes text for the prompt
+        resumes_context = ""
+        for idx, resume in enumerate(req.resumes):
+            resumes_context += f"--- Resume {idx + 1} (ID: {resume.id}, Title: {resume.title}) ---\n"
+            resumes_context += f"{resume.content[:2000]}...\n\n" # Send first 2000 chars to save tokens, it's enough to judge
+
+        prompt = f"""You are an expert AI Applicant Tracking System.
+You have been provided with a Job Description and a list of Resumes.
+Your task is to determine WHICH resume is the BEST FIT for this specific job description.
+
+Job Description:
+{req.job_description}
+
+Available Resumes:
+{resumes_context}
+
+Analyze the skills, experiences, and overall match of each resume against the job description.
+Return a JSON object containing ONLY the 'best_id' (the exact string ID of the best matching resume) and a 'reason' (brief 1-sentence explanation).
+Example:
+{{"best_id": "abc-123", "reason": "Resume 1 has more relevant frontend React experience."}}
+"""
+        raw = call_llm(prompt, model=req.ai_model, force_json=True)
+        parsed = parse_ai_json(raw)
+        best_id = parsed.get("best_id")
+        
+        if not best_id:
+            best_id = req.resumes[0].id
+
+        latency = int((time.time() - start_time) * 1000)
+        log_generation(user_id, "select_best_resume", "success", latency)
+
+        return {"best_id": best_id, "reason": parsed.get("reason", "")}
+    except Exception as e:
+        print(f"❌ [AI ERROR] Auto-select best resume: {e}")
+        latency = int((time.time() - start_time) * 1000)
+        log_generation(user_id, "select_best_resume", "error", latency, str(e))
+        # Fallback to first resume on error
+        return {"best_id": req.resumes[0].id if req.resumes else "", "reason": "Fallback due to AI error."}
 
 @app.get("/api/referral/stats")
 async def get_referral_stats(user_auth: dict = Depends(verify_user_and_tokens)):

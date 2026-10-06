@@ -82,9 +82,13 @@ const AiTailorPage: React.FC = () => {
                 });
                 if (res.data.resumes && res.data.resumes.length > 0) {
                     setSavedResumes(res.data.resumes);
-                    // Select the first one by default
-                    setSelectedResumeId(res.data.resumes[0].id);
-                    setResumeText(res.data.resumes[0].resume_text);
+                    if (res.data.resumes.length > 1) {
+                        setSelectedResumeId('auto');
+                        setResumeText(''); // Auto mode doesn't need to preview a specific text
+                    } else {
+                        setSelectedResumeId(res.data.resumes[0].id);
+                        setResumeText(res.data.resumes[0].resume_text);
+                    }
                 }
             } catch (err) {
                 console.error("Failed to load master resumes", err);
@@ -96,7 +100,9 @@ const AiTailorPage: React.FC = () => {
     const handleResumeSelection = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const id = e.target.value;
         setSelectedResumeId(id);
-        if (id) {
+        if (id === 'auto') {
+            setResumeText(''); // Handled dynamically
+        } else if (id) {
             const selected = savedResumes.find(r => r.id === id);
             if (selected) setResumeText(selected.resume_text);
         } else {
@@ -142,8 +148,13 @@ const AiTailorPage: React.FC = () => {
 
     // --- MAIN API CALL WITH TOLL PLAZA ---
     const handleTailorResume = async () => {
-        if (!resumeText.trim() || !jobDescription.trim()) {
-            setError('Please provide both your resume and the job description.');
+        if (!jobDescription.trim()) {
+            setError('Please provide the job description.');
+            return;
+        }
+        
+        if (selectedResumeId !== 'auto' && !resumeText.trim()) {
+            setError('Please provide your resume text or select a saved resume.');
             return;
         }
 
@@ -168,13 +179,47 @@ const AiTailorPage: React.FC = () => {
                 return;
             }
 
+            let finalResumeText = resumeText;
+            const headers = {
+                'Authorization': `Bearer ${session.access_token}`,
+                'Content-Type': 'application/json'
+            };
+
+            if (selectedResumeId === 'auto' && savedResumes.length > 1) {
+                try {
+                    const selectRes = await axios.post(`${API_BASE_URL}/api/ai/select-best-resume`, {
+                        resumes: savedResumes.map(r => ({ id: r.id, title: r.resume_name, content: r.resume_text })),
+                        job_description: jobDescription,
+                        ai_model: aiModel
+                    }, { headers });
+                    
+                    const bestId = selectRes.data.best_id;
+                    const bestResume = savedResumes.find(r => r.id === bestId);
+                    if (bestResume) {
+                        finalResumeText = bestResume.resume_text;
+                        showToast(`🤖 AI Selected: ${bestResume.resume_name}`, "success");
+                    } else {
+                        finalResumeText = savedResumes[0].resume_text;
+                    }
+                } catch (e) {
+                    console.error("Auto-select failed, falling back to first resume", e);
+                    finalResumeText = savedResumes[0].resume_text;
+                }
+            }
+
+            if (!finalResumeText.trim()) {
+                setError('No valid resume found to tailor.');
+                setIsLoading(false);
+                return;
+            }
+
             // ✅ Start Loading Animation
             stepInterval = setInterval(() => {
                 setLoadingStep(prev => prev < 3 ? prev + 1 : prev);
             }, 4000);
 
             const payload = { 
-                resume_text: resumeText, 
+                resume_text: finalResumeText, 
                 job_description: jobDescription,
                 template_name: templateName,
                 ai_model: aiModel
@@ -182,10 +227,7 @@ const AiTailorPage: React.FC = () => {
             
             // ✅ API CALL WITH HEADERS
             const response = await axios.post(`${API_BASE_URL}/api/ai/tailor`, payload, {
-                headers: {
-                    'Authorization': `Bearer ${session.access_token}`,
-                    'Content-Type': 'application/json'
-                }
+                headers
             });
             
             if (stepInterval) clearInterval(stepInterval); 
@@ -351,6 +393,9 @@ const AiTailorPage: React.FC = () => {
                                     disabled={isLoading}
                                     style={{ width: '100%', padding: '0.8rem', backgroundColor: 'rgba(15, 23, 42, 0.6)', color: 'white', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px' }}
                                 >
+                                    {savedResumes.length > 1 && (
+                                        <option value="auto">🤖 Auto-Select Best Resume</option>
+                                    )}
                                     {savedResumes.map(r => (
                                         <option key={r.id} value={r.id}>{r.resume_name}</option>
                                     ))}
@@ -359,7 +404,13 @@ const AiTailorPage: React.FC = () => {
                             </div>
                         )}
 
-                        {selectedResumeId ? (
+                        {selectedResumeId === 'auto' ? (
+                            <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(56, 189, 248, 0.1)', border: '1px solid #38bdf8', borderRadius: '12px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: '1rem' }}>
+                                <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>🤖</div>
+                                <h3 style={{ color: '#38bdf8', margin: '0 0 10px 0' }}>AI Auto-Select</h3>
+                                <p style={{ color: '#94a3b8', fontSize: '0.9rem', margin: 0 }}>We will automatically evaluate your vault and select the best matching resume for the job description you provide.</p>
+                            </div>
+                        ) : selectedResumeId ? (
                             <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', borderRadius: '12px', flexGrow: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', marginTop: '1rem' }}>
                                 <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>✅</div>
                                 <h3 style={{ color: '#10b981', margin: '0 0 10px 0' }}>Using Saved Resume</h3>
@@ -417,7 +468,7 @@ const AiTailorPage: React.FC = () => {
                     <button 
                         className="btn-premium pulse-glow massive-btn" 
                         onClick={handleTailorResume} 
-                        disabled={isLoading || !resumeText.trim() || !jobDescription.trim()}
+                        disabled={isLoading || !jobDescription.trim()}
                         style={{ padding: '1.2rem 3rem', fontSize: '1.2rem', borderRadius: '50px' }}
                     >
                         {isLoading ? 'Processing Pipeline...' : 'Tailor My Resume 🚀'}
