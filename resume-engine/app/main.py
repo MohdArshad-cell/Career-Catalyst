@@ -686,7 +686,10 @@ Application Question:
 {req.question}
 
 Using ONLY the context from the user's resume and tailoring it towards the Job Description, write a strong, professional answer to the application question. 
-Write it from the perspective of the user applying for the job. Keep it concise (1-2 paragraphs max) unless the question implies otherwise.
+Write it from the perspective of the user applying for the job. 
+IMPORTANT: Make the answer sound completely human and natural, not like an AI generated it. 
+CRITICAL: Do NOT use any markdown formatting whatsoever (no **bold**, no italics, no bullet points). Output plain text only.
+Keep it concise (1-2 paragraphs max) unless the question implies otherwise.
 """
         answer = call_llm(prompt, model=req.ai_model, force_json=False)
 
