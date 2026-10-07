@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Target, Sparkles, MessageSquare } from 'lucide-react';
+import { FileText, Target, Sparkles, MessageSquare, Copy } from 'lucide-react';
 
 
 
@@ -47,6 +47,11 @@ const AiTailorPage: React.FC = () => {
     const [followUpQuestion, setFollowUpQuestion] = useState('');
     const [followUpAnswer, setFollowUpAnswer] = useState('');
     const [isAnswering, setIsAnswering] = useState(false);
+
+    const copyToClipboard = (text: string, label: string) => {
+        navigator.clipboard.writeText(text);
+        showToast(`📋 ${label} copied to clipboard!`, 'success');
+    };
 
     const handleFollowUp = async () => {
         if (!followUpQuestion.trim()) return;
@@ -527,6 +532,13 @@ const AiTailorPage: React.FC = () => {
                                             <h3 style={{ margin: 0, color: 'var(--accent-cyan)' }}>💻 LaTeX Source</h3>
                                             <div style={{display: 'flex', gap: '10px'}}>
                                                 <button 
+                                                    onClick={() => copyToClipboard(latexCode, 'LaTeX Source')} 
+                                                    className="btn-outline"
+                                                    title="Copy LaTeX"
+                                                >
+                                                    <Copy size={16} style={{ marginRight: '5px' }} /> Copy
+                                                </button>
+                                                <button 
                                                     onClick={handleRecompile} 
                                                     disabled={isCompiling} 
                                                     className="btn-outline"
@@ -597,8 +609,18 @@ const AiTailorPage: React.FC = () => {
                                     </button>
                                     
                                     {followUpAnswer && (
-                                        <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                                            <h4 style={{ margin: '0 0 10px 0', color: 'var(--accent-cyan)' }}>Generated Answer:</h4>
+                                        <div style={{ marginTop: '1.5rem', padding: '1.5rem', background: 'rgba(0,0,0,0.3)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', position: 'relative' }}>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
+                                                <h4 style={{ margin: 0, color: 'var(--accent-cyan)' }}>Generated Answer:</h4>
+                                                <button 
+                                                    onClick={() => copyToClipboard(followUpAnswer, 'Answer')} 
+                                                    className="btn-outline" 
+                                                    style={{ padding: '0.3rem 0.6rem', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '5px' }}
+                                                    title="Copy Answer"
+                                                >
+                                                    <Copy size={14} /> Copy
+                                                </button>
+                                            </div>
                                             <p style={{ whiteSpace: 'pre-wrap', margin: 0, color: '#e2e8f0', lineHeight: 1.6, fontSize: '0.95rem' }}>{followUpAnswer}</p>
                                         </div>
                                     )}
